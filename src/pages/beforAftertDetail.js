@@ -1,113 +1,176 @@
-/*
-  This example requires some changes to your config:
-  
-  ```
-  // tailwind.config.js
-  module.exports = {
-    // ...
-    plugins: [
-      // ...
-      require('@tailwindcss/forms'),
-    ],
-  }
-  ```
-*/
-import { PhotoIcon, UserCircleIcon } from '@heroicons/react/24/solid'
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 
 export default function Example() {
+  const [comments, setComments] = useState([
+    { id: 1, author: '사용자1', content: '멋진 before/after 사진이네요!' },
+    { id: 2, author: '사용자2', content: '정말 대단한 변화입니다.' },
+    { id: 3, author: '사용자3', content: '어떤 방법으로 이렇게 변했나요?' },
+    { id: 4, author: '사용자4', content: '놀라운 결과네요!' },
+    { id: 5, author: '사용자5', content: '정말 인상적입니다.' },
+    { id: 6, author: '사용자6', content: '변화가 대단해요.' },
+    { id: 7, author: '사용자7', content: '어떤 과정을 거쳤는지 궁금해요.' },
+  ]);
+  const [newComment, setNewComment] = useState('');
+  const [currentPage, setCurrentPage] = useState(1);
+  const commentsPerPage = 5;
+
+  const indexOfLastComment = currentPage * commentsPerPage;
+  const indexOfFirstComment = indexOfLastComment - commentsPerPage;
+  const currentComments = comments.slice(indexOfFirstComment, indexOfLastComment);
+
+  const totalPages = Math.ceil(comments.length / commentsPerPage);
+
+  const handleSubmitComment = (e) => {
+    e.preventDefault();
+    if (newComment.trim() !== '') {
+      const newCommentObj = {
+        id: comments.length + 1,
+        author: '현재 사용자',
+        content: newComment.trim(),
+      };
+      setComments([...comments, newCommentObj]);
+      setNewComment('');
+      setCurrentPage(Math.ceil((comments.length + 1) / commentsPerPage));
+    }
+  };
+
+  const handlePageChange = (pageNumber) => {
+    setCurrentPage(pageNumber);
+  };
+
   return (
-    <form className='mx-auto max-w-7xl'>
-      <div className="space-y-12">
-        <div className="border-b border-gray-900/10 pb-12">
-          <h2 className="text-base font-semibold leading-7 text-gray-900">글쓰기</h2>
-          <p className="mt-1 text-sm leading-6 text-gray-600">
-            This information will be displayed publicly so be careful what you share.
-          </p>
-
-          <div className="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
-          <div className="col-span-full">
-              <label htmlFor="about" className="block text-sm font-medium leading-6 text-gray-900">
-                제목
-              </label>
-              <div className="mt-2">
-                <textarea
-                  id="about"
-                  name="about"
-                  rows={3}
-                  className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                  defaultValue={''}
-                />
-              </div>
-              {/* <p className="mt-3 text-sm leading-6 text-gray-600">Write a few sentences about yourself.</p> */}
-            </div>
-            <div className="col-span-full">
-              <label htmlFor="about" className="block text-sm font-medium leading-6 text-gray-900">
-                설명
-              </label>
-              <div className="mt-2">
-                <textarea
-                  id="about"
-                  name="about"
-                  rows={3}
-                  className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                  defaultValue={''}
-                />
-              </div>
-              {/* <p className="mt-3 text-sm leading-6 text-gray-600">Write a few sentences about yourself.</p> */}
-            </div>
-
-            <div className="col-span-full">
-              <label htmlFor="photo" className="block text-sm font-medium leading-6 text-gray-900">
-                Photo
-              </label>
-              <div className="mt-2 flex items-center gap-x-3">
-                <UserCircleIcon aria-hidden="true" className="h-12 w-12 text-gray-300" />
-                <button
-                  type="button"
-                  className="rounded-md bg-white px-2.5 py-1.5 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
-                >
-                  Change
-                </button>
-              </div>
-            </div>
-
-            <div className="col-span-full">
-              <label htmlFor="cover-photo" className="block text-sm font-medium leading-6 text-gray-900">
-                Cover photo
-              </label>
-              <div className="mt-2 flex justify-center rounded-lg border border-dashed border-gray-900/25 px-6 py-10">
-                <div className="text-center">
-                  <PhotoIcon aria-hidden="true" className="mx-auto h-12 w-12 text-gray-300" />
-                  <div className="mt-4 flex text-sm leading-6 text-gray-600">
-                    <label
-                      htmlFor="file-upload"
-                      className="relative cursor-pointer rounded-md bg-white font-semibold text-indigo-600 focus-within:outline-none focus-within:ring-2 focus-within:ring-indigo-600 focus-within:ring-offset-2 hover:text-indigo-500"
-                    >
-                      <span>Upload a file</span>
-                      <input id="file-upload" name="file-upload" type="file" className="sr-only" />
-                    </label>
-                    <p className="pl-1">or drag and drop</p>
-                  </div>
-                  <p className="text-xs leading-5 text-gray-600">PNG, JPG, GIF up to 10MB</p>
-                </div>
-              </div>
-            </div>
-          </div>
+    <div className="bg-white py-24 sm:py-32 relative mx-auto max-w-7xl">
+      <div className="flex">
+      </div>
+      <div className="flex gap-4">
+        <div className="relative aspect-[16/9] sm:aspect-[2/1] lg:aspect-square w-64 lg:shrink-0">
+          <img
+            alt=""
+            src={'https://images.unsplash.com/photo-1496128858413-b36217c2ce36?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=3603&q=80'}
+            className="absolute inset-0 h-full w-full rounded-2xl bg-gray-50 object-cover"
+          />
+          <div className="absolute inset-0 rounded-2xl ring-1 ring-inset ring-gray-900/10" />
+          <p className="absolute text-white left-4 top-4">BEFORE</p>
+        </div>
+        <div className="relative aspect-[16/9] sm:aspect-[2/1] lg:aspect-square w-64 lg:shrink-0">
+          <img
+            alt=""
+            src={'https://images.unsplash.com/photo-1496128858413-b36217c2ce36?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=3603&q=80'}
+            className="absolute inset-0 h-full w-full rounded-2xl bg-gray-50 object-cover"
+          />
+          <div className="absolute inset-0 rounded-2xl ring-1 ring-inset ring-gray-900/10" />
+          <p className="absolute text-white left-4 top-4">BEFORE</p>
+        </div>
+        <div className="relative aspect-[16/9] sm:aspect-[2/1] lg:aspect-square w-64 lg:shrink-0">
+          <img
+            alt=""
+            src={'https://images.unsplash.com/photo-1496128858413-b36217c2ce36?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=3603&q=80'}
+            className="absolute inset-0 h-full w-full rounded-2xl bg-gray-50 object-cover"
+          />
+          <div className="absolute inset-0 rounded-2xl ring-1 ring-inset ring-gray-900/10" />
+          <p className="absolute text-white left-4 top-4">BEFORE</p>
+        </div>
+        <div className="relative aspect-[16/9] sm:aspect-[2/1] lg:aspect-square w-64 lg:shrink-0">
+          <img
+            alt=""
+            src={'https://images.unsplash.com/photo-1496128858413-b36217c2ce36?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=3603&q=80'}
+            className="absolute inset-0 h-full w-full rounded-2xl bg-gray-50 object-cover"
+          />
+          <div className="absolute inset-0 rounded-2xl ring-1 ring-inset ring-gray-900/10" />
+          <p className="absolute text-white left-4 top-4">BEFORE</p>
         </div>
       </div>
 
-      <div className="mt-6 flex items-center justify-end gap-x-6">
-        <button type="button" className="text-sm font-semibold leading-6 text-gray-900">
-          Cancel
-        </button>
-        <button
-          type="submit"
-          className="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-        >
-          Save
-        </button>
+      <div className="flex">
       </div>
-    </form>
-  )
+      <div className="flex gap-4">
+        <div className="relative aspect-[16/9] sm:aspect-[2/1] lg:aspect-square w-64 lg:shrink-0">
+          <img
+            alt=""
+            src={'https://images.unsplash.com/photo-1496128858413-b36217c2ce36?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=3603&q=80'}
+            className="absolute inset-0 h-full w-full rounded-2xl bg-gray-50 object-cover"
+          />
+          <div className="absolute inset-0 rounded-2xl ring-1 ring-inset ring-gray-900/10" />
+          <p className="absolute text-white left-4 top-4">AFTER</p>
+        </div>
+        <div className="relative aspect-[16/9] sm:aspect-[2/1] lg:aspect-square w-64 lg:shrink-0">
+          <img
+            alt=""
+            src={'https://images.unsplash.com/photo-1496128858413-b36217c2ce36?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=3603&q=80'}
+            className="absolute inset-0 h-full w-full rounded-2xl bg-gray-50 object-cover"
+          />
+          <div className="absolute inset-0 rounded-2xl ring-1 ring-inset ring-gray-900/10" />
+          <p className="absolute text-white left-4 top-4">AFTER</p>
+        </div>
+        <div className="relative aspect-[16/9] sm:aspect-[2/1] lg:aspect-square w-64 lg:shrink-0">
+          <img
+            alt=""
+            src={'https://images.unsplash.com/photo-1496128858413-b36217c2ce36?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=3603&q=80'}
+            className="absolute inset-0 h-full w-full rounded-2xl bg-gray-50 object-cover"
+          />
+          <div className="absolute inset-0 rounded-2xl ring-1 ring-inset ring-gray-900/10" />
+          <p className="absolute text-white left-4 top-4">AFTER</p>
+        </div>
+        <div className="relative aspect-[16/9] sm:aspect-[2/1] lg:aspect-square w-64 lg:shrink-0">
+          <img
+            alt=""
+            src={'https://images.unsplash.com/photo-1496128858413-b36217c2ce36?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=3603&q=80'}
+            className="absolute inset-0 h-full w-full rounded-2xl bg-gray-50 object-cover"
+          />
+          <div className="absolute inset-0 rounded-2xl ring-1 ring-inset ring-gray-900/10" />
+          <p className="absolute text-white left-4 top-4">AFTER</p>
+        </div>
+      </div>
+      <div className='flex'>
+        <img
+          alt=""
+          src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
+          className="inline-block h-14 w-14 rounded-full"
+        />
+        <h1>닉네임</h1>
+      </div>
+      <p>블라블라 설명</p>
+
+      <div className="mt-8">
+        <h2 className="text-2xl font-bold mb-4">댓글</h2>
+        <div className="space-y-4">
+          {currentComments.map((comment) => (
+            <div key={comment.id} className="bg-gray-100 p-4 rounded-lg">
+              <p className="font-semibold">{comment.author}</p>
+              <p>{comment.content}</p>
+            </div>
+          ))}
+        </div>
+        <div className="mt-4 flex justify-center">
+          {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
+            <button
+              key={page}
+              onClick={() => handlePageChange(page)}
+              className={`mx-1 px-3 py-1 rounded ${
+                currentPage === page ? 'bg-blue-500 text-white' : 'bg-gray-200'
+              }`}
+            >
+              {page}
+            </button>
+          ))}
+        </div>
+        <form onSubmit={handleSubmitComment} className="mt-4">
+          <textarea
+            value={newComment}
+            onChange={(e) => setNewComment(e.target.value)}
+            className="w-full p-2 border border-gray-300 rounded-lg"
+            rows="3"
+            placeholder="댓글을 입력하세요..."
+          ></textarea>
+          <button
+            type="submit"
+            className="mt-2 px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600"
+          >
+            댓글 작성
+          </button>
+        </form>
+      </div>
+    </div>
+  );
 }

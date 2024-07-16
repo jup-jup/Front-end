@@ -10,8 +10,10 @@ import BeforeAfter from './pages/beforeAfter';
 import SignIn from './pages/signIn';
 import SignUp from './pages/signUp';
 import ForgetPw from './pages/forgetPw';
+import BeforAftertUpload from './pages/beforAftertUpload';
 import BeforAftertDetail from './pages/beforAftertDetail';
 import JupjupDetail from './pages/jupjupDetail';
+import Chat from './pages/chat';
 
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 const root = ReactDOM.createRoot(document.getElementById('root'));
@@ -28,6 +30,8 @@ root.render(
 					<Route path="/signUp" element={<SignUp />}></Route>
 					<Route path="/forgetPw" element={<ForgetPw />}></Route>
 					<Route path="/jupjupDetail" element={<JupjupDetail />}></Route>
+					<Route path="/beforAftertUpload" element={<BeforAftertUpload />}></Route>
+					<Route path="/chat" element={<Chat />}></Route>
 					<Route path="/beforAftertDetail" element={<BeforAftertDetail />}></Route>
 				</Routes>
         <div className="flex-grow justify-center"></div>

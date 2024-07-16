@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 const posts = [
     {
       id: 1,
@@ -36,7 +37,7 @@ const posts = [
               {posts.map((post) => (
                 <article key={post.id} className="relative isolate gap-8">
                 <div class="flex gap-4">
-                  <div className="relative aspect-[16/9] sm:aspect-[2/1] lg:aspect-square lg:w-64 lg:shrink-0">
+                  <div className="relative aspect-[16/9] sm:aspect-[2/1] lg:aspect-square w-64 lg:shrink-0">
                     <img
                       alt=""
                       src={post.imageUrl}
@@ -99,12 +100,12 @@ const posts = [
                 </svg> 찜
                 </div>
                 <div className="mt-10 flex items-center gap-x-6">
-              <a
+              <Link to ="/chat"
                 href="#"
                 className="rounded-md bg-[#4EC0DE] px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-[#4EC0DE] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
               >
                 채팅하기
-              </a>
+              </Link>
           </div>
             </div>
           </div>
