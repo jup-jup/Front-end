@@ -58,7 +58,7 @@ function ChatApp() {
     </div>
     <div className='flex'>
         <img src={'https://via.placeholder.com/40'} className="w-10 h-10 rounded-full mr-3" />
-        <p>글올린 사람 닉네임</p>
+        <p>채팅걸어오신 분의 닉네임</p>
     </div>
     <div className="flex flex-col h-screen bg-gray-100">
       <div className="flex-1" />
@@ -104,6 +104,9 @@ function ChatApp() {
           </button>
         </div>
     </div>
+    <button className="p-2 bg-gray-200 rounded-full hover:bg-gray-300 transition">
+        거래 완료
+    </button>
     </div>
   );
 }

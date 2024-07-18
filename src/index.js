@@ -14,6 +14,12 @@ import BeforAftertUpload from './pages/beforAftertUpload';
 import BeforAftertDetail from './pages/beforAftertDetail';
 import JupjupDetail from './pages/jupjupDetail';
 import Chat from './pages/chat';
+import JupjupWrite from './pages/jupjupWrite';
+import ChatOtherList from './pages/chatOtherList';
+import ChatOtherDetail from './pages/chatOtherDetail';
+import Mypage from './pages/Mypage';
+import MypageGIVE from './pages/MypageGIVE';
+import MypageReceive from './pages/MypageReceive';
 
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 const root = ReactDOM.createRoot(document.getElementById('root'));
@@ -33,6 +39,12 @@ root.render(
 					<Route path="/beforAftertUpload" element={<BeforAftertUpload />}></Route>
 					<Route path="/chat" element={<Chat />}></Route>
 					<Route path="/beforAftertDetail" element={<BeforAftertDetail />}></Route>
+					<Route path="/jupjupWrite" element={<JupjupWrite />}></Route>
+					<Route path="/chatOtherList" element={<ChatOtherList />}></Route>
+					<Route path="/chatOtherDetail" element={<ChatOtherDetail />}></Route>
+					<Route path="/Mypage" element={<Mypage />}></Route>
+					<Route path="/MypageGIVE" element={<MypageGIVE />}></Route>
+					<Route path="/MypageReceive" element={<MypageReceive />}></Route>
 				</Routes>
         <div className="flex-grow justify-center"></div>
         <Footer />
