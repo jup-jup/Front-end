@@ -20,6 +20,8 @@ import ChatOtherDetail from './pages/chatOtherDetail';
 import Mypage from './pages/Mypage';
 import MypageGIVE from './pages/MypageGIVE';
 import MypageReceive from './pages/MypageReceive';
+import JupjupUpdate from './pages/jupjupUpdate';
+import ProfileUpdate from './pages/ProfileUpdate';
 
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 const root = ReactDOM.createRoot(document.getElementById('root'));
@@ -45,6 +47,8 @@ root.render(
 					<Route path="/Mypage" element={<Mypage />}></Route>
 					<Route path="/MypageGIVE" element={<MypageGIVE />}></Route>
 					<Route path="/MypageReceive" element={<MypageReceive />}></Route>
+					<Route path="/jupjupUpdate" element={<JupjupUpdate />}></Route>
+					<Route path="/ProfileUpdate" element={<ProfileUpdate />}></Route>
 				</Routes>
         <div className="flex-grow justify-center"></div>
         <Footer />

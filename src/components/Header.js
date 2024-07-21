@@ -71,8 +71,8 @@ export default function Example() {
           <Link to ="/chatOtherList" className="text-sm font-black leading-6">
             채팅
           </Link>
-          <Link to ="/" className="text-sm font-black leading-6">
-            물물교환
+          <Link to ="/ProfileUpdate" className="text-sm font-black leading-6">
+            프로필수정
           </Link>
           <Link to ="/Mypage" className="text-sm font-black leading-6">
             MyPage
@@ -138,10 +138,10 @@ export default function Example() {
                   채팅
                 </Link>
                 <Link
-                  to ="/"
+                  to ="/ProfileUpdate"
                   className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"
                 >
-                  물물교환
+                  프로필수정
                 </Link>
                 <Link
                   to ="/Mypage"

@@ -62,65 +62,9 @@ export default function Example() {
           <div className="absolute inset-0 rounded-2xl ring-1 ring-inset ring-gray-900/10" />
           <p className="absolute text-white left-4 top-4">BEFORE</p>
         </div>
-        <div className="relative aspect-[16/9] sm:aspect-[2/1] lg:aspect-square w-64 lg:shrink-0">
-          <img
-            alt=""
-            src={'https://images.unsplash.com/photo-1496128858413-b36217c2ce36?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=3603&q=80'}
-            className="absolute inset-0 h-full w-full rounded-2xl bg-gray-50 object-cover"
-          />
-          <div className="absolute inset-0 rounded-2xl ring-1 ring-inset ring-gray-900/10" />
-          <p className="absolute text-white left-4 top-4">BEFORE</p>
-        </div>
-        <div className="relative aspect-[16/9] sm:aspect-[2/1] lg:aspect-square w-64 lg:shrink-0">
-          <img
-            alt=""
-            src={'https://images.unsplash.com/photo-1496128858413-b36217c2ce36?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=3603&q=80'}
-            className="absolute inset-0 h-full w-full rounded-2xl bg-gray-50 object-cover"
-          />
-          <div className="absolute inset-0 rounded-2xl ring-1 ring-inset ring-gray-900/10" />
-          <p className="absolute text-white left-4 top-4">BEFORE</p>
-        </div>
       </div>
 
       <div className="flex">
-      </div>
-      <div className="flex gap-4">
-        <div className="relative aspect-[16/9] sm:aspect-[2/1] lg:aspect-square w-64 lg:shrink-0">
-          <img
-            alt=""
-            src={'https://images.unsplash.com/photo-1496128858413-b36217c2ce36?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=3603&q=80'}
-            className="absolute inset-0 h-full w-full rounded-2xl bg-gray-50 object-cover"
-          />
-          <div className="absolute inset-0 rounded-2xl ring-1 ring-inset ring-gray-900/10" />
-          <p className="absolute text-white left-4 top-4">AFTER</p>
-        </div>
-        <div className="relative aspect-[16/9] sm:aspect-[2/1] lg:aspect-square w-64 lg:shrink-0">
-          <img
-            alt=""
-            src={'https://images.unsplash.com/photo-1496128858413-b36217c2ce36?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=3603&q=80'}
-            className="absolute inset-0 h-full w-full rounded-2xl bg-gray-50 object-cover"
-          />
-          <div className="absolute inset-0 rounded-2xl ring-1 ring-inset ring-gray-900/10" />
-          <p className="absolute text-white left-4 top-4">AFTER</p>
-        </div>
-        <div className="relative aspect-[16/9] sm:aspect-[2/1] lg:aspect-square w-64 lg:shrink-0">
-          <img
-            alt=""
-            src={'https://images.unsplash.com/photo-1496128858413-b36217c2ce36?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=3603&q=80'}
-            className="absolute inset-0 h-full w-full rounded-2xl bg-gray-50 object-cover"
-          />
-          <div className="absolute inset-0 rounded-2xl ring-1 ring-inset ring-gray-900/10" />
-          <p className="absolute text-white left-4 top-4">AFTER</p>
-        </div>
-        <div className="relative aspect-[16/9] sm:aspect-[2/1] lg:aspect-square w-64 lg:shrink-0">
-          <img
-            alt=""
-            src={'https://images.unsplash.com/photo-1496128858413-b36217c2ce36?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=3603&q=80'}
-            className="absolute inset-0 h-full w-full rounded-2xl bg-gray-50 object-cover"
-          />
-          <div className="absolute inset-0 rounded-2xl ring-1 ring-inset ring-gray-900/10" />
-          <p className="absolute text-white left-4 top-4">AFTER</p>
-        </div>
       </div>
       <div className='flex'>
         <img
@@ -130,7 +74,12 @@ export default function Example() {
         />
         <h1>닉네임</h1>
       </div>
-      <p>블라블라 설명</p>
+      <p className='mb-12'>블라블라 설명</p>
+
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="size-6">
+        <path strokeLinecap="round" strokeLinejoin="round" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z" />
+      </svg> 하트찜 총 수 
+
 
       <div className="mt-8">
         <h2 className="text-2xl font-bold mb-4">댓글</h2>
@@ -139,6 +88,11 @@ export default function Example() {
             <div key={comment.id} className="bg-gray-100 p-4 rounded-lg">
               <p className="font-semibold">{comment.author}</p>
               <p>{comment.content}</p>
+              <div className='mt-2 flex gap-4'>
+                <p className='text-xs'>신고하기</p>
+                <p className='text-xs'>수정하기</p>
+                <p className='text-xs'>삭제하기</p>
+              </div>
             </div>
           ))}
         </div>
