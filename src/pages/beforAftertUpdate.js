@@ -20,7 +20,7 @@ export default function Example() {
     <form className='mx-auto max-w-7xl w-[50%]'>
       <div className="space-y-12">
         <div className="border-b border-gray-900/10 pb-12">
-          <h2 className="text-base font-semibold leading-7 text-gray-900">글쓰기</h2>
+          <h2 className="text-base font-semibold leading-7 text-gray-900">수정하기</h2>
           <div className="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
           <div className="col-span-full">
               <label htmlFor="about" className="block text-sm font-medium leading-6 text-gray-900">
