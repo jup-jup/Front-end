@@ -40,6 +40,7 @@ export default function Example() {
   };
 
   return (
+    <>
     <div className="bg-white py-24 sm:py-32 relative mx-auto max-w-7xl">
       <div className="flex">
       </div>
@@ -125,6 +126,13 @@ export default function Example() {
           </button>
         </form>
       </div>
+      <Link to ="/beforAftertUpdate"
+                href="#"
+                className="-mt-20 rounded-md bg-[#4EC0DE] px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-[#4EC0DE] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+              >
+                수정하기
+              </Link>
     </div>
+    </>
   );
 }

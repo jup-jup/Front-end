@@ -22,6 +22,7 @@ import MypageGIVE from './pages/MypageGIVE';
 import MypageReceive from './pages/MypageReceive';
 import JupjupUpdate from './pages/jupjupUpdate';
 import ProfileUpdate from './pages/ProfileUpdate';
+import BeforAftertUpdate from './pages/beforAftertUpdate';
 
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 const root = ReactDOM.createRoot(document.getElementById('root'));
@@ -49,6 +50,7 @@ root.render(
 					<Route path="/MypageReceive" element={<MypageReceive />}></Route>
 					<Route path="/jupjupUpdate" element={<JupjupUpdate />}></Route>
 					<Route path="/ProfileUpdate" element={<ProfileUpdate />}></Route>
+					<Route path="/beforAftertUpdate" element={<BeforAftertUpdate />}></Route>
 				</Routes>
         <div className="flex-grow justify-center"></div>
         <Footer />
