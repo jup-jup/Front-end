@@ -79,8 +79,19 @@ export default function Example() {
   //   staleTime: 10000, // 10초 동안 데이터를 "신선"하다고 간주
   // });
 
-  // if (isLoading) return <div>로딩 중...</div>;
-  // if (error) return <div>에러가 발생했습니다: {error.message}</div>;
+  // if (isLoading) {
+  //   return <div className='loading'>데이터를 불러오는 중...</div>;
+  // }
+
+  // if (error) {
+  //   return (
+  //     <div className='error'>데이터를 불러오는 데 문제가 발생했습니다.</div>
+  //   );
+  // }
+
+  // if (!data || data.data.length === 0) {
+  //   return <div className='no-data'>표시할 데이터가 없습니다.</div>;
+  // }
 
   return (
     //test data
