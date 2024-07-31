@@ -135,21 +135,20 @@ export default function Example() {
           </div>
         </div>
 
-        <div className='flex'>
-          <div className='mt-2 w-full'>
+        <div className='flex mt-12 mb-12'>
+          <div className="mt-2 mx-auto w-[30rem] relative">
             <input
-              id='text'
-              name='text'
-              type='text'
-              className='block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6'
+              id="text"
+              name="text"
+              type="text"
+              className="block w-full py-1.5 text-gray-900 border-b placeholder:text-gray-400 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+              placeholder="검색어를 입력하세요."
             />
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" 
+          className="size-5 absolute right-0 bottom-2">
+            <path strokeLinecap="round" strokeLinejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
+          </svg>
           </div>
-          <button
-            type='button'
-            className='rounded-md bg-indigo-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600'
-          >
-            검색하기
-          </button>
         </div>
 
         {activeTab === '나눔내역' ? (
@@ -266,8 +265,8 @@ export default function Example() {
           </div>
         ) : (
           <div>
-            <h3 className='text-lg font-semibold'>받음내역</h3>
             <div className='mx-auto max-w-7xl px-6 lg:px-8'>
+            <h3 className='text-lg font-semibold'>받음내역</h3>
               <div className='mx-auto max-w-2xl lg:max-w-4xl'>
                 {/* <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">From the blog</h2>
           <p className="mt-2 text-lg leading-8 text-gray-600">

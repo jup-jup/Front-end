@@ -41,7 +41,7 @@ export default function Example() {
 
   return (
     <>
-    <div className="bg-white py-24 sm:py-32 relative mx-auto max-w-7xl">
+    <div className="bg-white py-2 sm:py-12 relative mx-auto max-w-7xl">
       <div className="flex">
       </div>
       <div className="flex gap-4">
@@ -67,15 +67,22 @@ export default function Example() {
 
       <div className="flex">
       </div>
-      <div className='flex'>
+      <div className='flex mt-6'>
         <img
           alt=""
           src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
-          className="inline-block h-14 w-14 rounded-full"
+          className="inline-block h-8 w-8 rounded-full"
         />
-        <h1>닉네임</h1>
+        <h1 className='mt-1 ml-2'>닉네임</h1>
+
       </div>
-      <p className='mb-12'>블라블라 설명</p>
+        <Link to ="/beforAftertUpdate"
+          href="#"
+          className="float-right rounded-md bg-[#4EC0DE] px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-[#4EC0DE] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+        >
+          수정하기
+        </Link>
+      <p className='mb-12 mt-6'>블라블라 설명</p>
 
       <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="size-6">
         <path strokeLinecap="round" strokeLinejoin="round" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z" />
@@ -126,12 +133,6 @@ export default function Example() {
           </button>
         </form>
       </div>
-      <Link to ="/beforAftertUpdate"
-                href="#"
-                className="-mt-20 rounded-md bg-[#4EC0DE] px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-[#4EC0DE] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-              >
-                수정하기
-              </Link>
     </div>
     </>
   );

@@ -63,30 +63,33 @@ const posts = [
   
   export default function Example() {
     return (
-      <div className="bg-white py-24 sm:py-12 mx-auto max-w-7xl">
-         <div className='flex'>
-          <div className="mt-2 w-full">
+      <div className="bg-white py-2 sm:py-12 mx-auto max-w-7xl w-full px-12 sm:px-0">
+        <div className='flex'>
+          <div className="mt-2 mx-auto w-[30rem] relative">
             <input
               id="text"
               name="text"
               type="text"
-              className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+              className="block w-full py-1.5 text-gray-900 border-b placeholder:text-gray-400 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+              placeholder="검색어를 입력하세요."
             />
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" 
+          className="size-5 absolute right-0 bottom-2">
+            <path strokeLinecap="round" strokeLinejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
+          </svg>
           </div>
-        <button
-        type="button"
-        className="rounded-md bg-indigo-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-      >
-        검색하기
-      </button>
         </div>
+        <div  className="mt-4 mx-auto max-w-7xl xl:w-[37%] sm:w-[60%]">
+          <Link to ="/jupjupWrite"        
+          className="float-right rounded-md bg-indigo-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+        >
+          글쓰기
+        </Link>
+        </div>
+        
 
-        <div className="mx-auto max-w-7xl px-6 lg:px-8">
+        <div className="mx-auto max-w-7xl px-6 lg:px-8 pt-4 pb-20 xl:w-[45%] sm:w-[60%]">
           <div className="mx-auto max-w-2xl lg:max-w-4xl">
-            {/* <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">From the blog</h2>
-            <p className="mt-2 text-lg leading-8 text-gray-600">
-              Learn how to grow your business with our expert advice.
-            </p> */}
             <div className="mt-16 space-y-20 lg:mt-20 lg:space-y-20">
               {posts.map((post) => (
                 <article key={post.id} className="relative isolate flex flex-col gap-8 lg:flex-row">
@@ -130,7 +133,7 @@ const posts = [
                               {post.author.name}
                             </a>
                           </p>
-                          <div className="flex">
+                          <div className="flex mt-1">
                           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="size-6">
                             <path strokeLinecap="round" strokeLinejoin="round" d="M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178Z" />
                             <path strokeLinecap="round" strokeLinejoin="round" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
@@ -147,13 +150,10 @@ const posts = [
             </div>
           </div>
         </div>
-        <div  className="mt-20">
-          <Link to ="/jupjupWrite"        
-          className="rounded-md bg-indigo-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-        >
-          글쓰기
-        </Link>
-      </div>
+
+        {/* 무한스크롤로 만들기 */}
+
+
       </div>
     )
   }

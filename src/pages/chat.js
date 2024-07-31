@@ -224,21 +224,21 @@ function ChatApp() {
   return (
     <div className='mx-auto max-w-7xl'>
       <div className='flex mb-12'>
-        <img className='w-40' src="https://images.unsplash.com/photo-1505840717430-882ce147ef2d?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=8&w=1024&h=1024&q=80" alt="Header" />
-        <div>
+        <img className='w-20' src="https://images.unsplash.com/photo-1505840717430-882ce147ef2d?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=8&w=1024&h=1024&q=80" alt="Header" />
+        <div className='ml-2'>
           <p>제목제목</p>
           <p>설명설명</p>
         </div>
       </div>
-      <div className='flex'>
+      <div className='flex mb-4'>
         <img src={'https://via.placeholder.com/40'} className="w-10 h-10 rounded-full mr-3" alt="User avatar" />
         <p>글올린 사람 닉네임</p>
       </div>
-      <div className="flex flex-col h-screen bg-gray-100">
+      <div className="flex flex-col h-[40rem] w-[30rem] bg-gray-100">
         <div className="flex-1" />
         <div 
           ref={chatContainerRef}
-          className="overflow-y-auto p-4 max-h-[70vh]"
+          className="overflow-y-auto p-4"
         >
           {messages.map((message) => (
             <div key={message.id} className={`flex mb-4 ${message.sender.id === currentUser.id ? 'justify-end' : 'justify-start'}`}>
