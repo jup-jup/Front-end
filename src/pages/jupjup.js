@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-// 테스트 입니다. 충돌 테스트
+// 충돌테스트~~~
 const posts = [
     {
       id: 1,
