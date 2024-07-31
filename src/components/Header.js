@@ -34,7 +34,7 @@ import { Link } from 'react-router-dom';
 //   { name: 'Watch demo', href: '#', icon: PlayCircleIcon },
 //   { name: 'Contact sales', href: '#', icon: PhoneIcon },
 // ]
-
+//올라가는거 테스트중
 export default function Example() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
 
