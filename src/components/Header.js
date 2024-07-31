@@ -36,6 +36,7 @@ import { Link } from 'react-router-dom';
 // ]
 // 테스트 중입니다 테스트 브랜치
 
+//올라가는거 테스트중 lee브랜치 충돌 테스트 중
 export default function Example() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
 
@@ -133,7 +134,7 @@ export default function Example() {
                   비포&에프터
                 </Link>
                 <Link
-                  to ="/"
+                  to ="/chatOtherList"
                   className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"
                 >
                   채팅

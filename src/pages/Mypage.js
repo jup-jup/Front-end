@@ -79,8 +79,19 @@ export default function Example() {
   //   staleTime: 10000, // 10초 동안 데이터를 "신선"하다고 간주
   // });
 
-  // if (isLoading) return <div>로딩 중...</div>;
-  // if (error) return <div>에러가 발생했습니다: {error.message}</div>;
+  // if (isLoading) {
+  //   return <div className='loading'>데이터를 불러오는 중...</div>;
+  // }
+
+  // if (error) {
+  //   return (
+  //     <div className='error'>데이터를 불러오는 데 문제가 발생했습니다.</div>
+  //   );
+  // }
+
+  // if (!data || data.data.length === 0) {
+  //   return <div className='no-data'>표시할 데이터가 없습니다.</div>;
+  // }
 
   return (
     //test data
@@ -225,18 +236,18 @@ export default function Example() {
                                 xmlns='http://www.w3.org/2000/svg'
                                 fill='none'
                                 viewBox='0 0 24 24'
-                                stroke-width='1.5'
+                                strokeWidth='1.5'
                                 stroke='currentColor'
-                                class='size-6'
+                                className='size-6'
                               >
                                 <path
-                                  stroke-linecap='round'
-                                  stroke-linejoin='round'
+                                  strokeLinecap='round'
+                                  strokeLinejoin='round'
                                   d='M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178Z'
                                 />
                                 <path
-                                  stroke-linecap='round'
-                                  stroke-linejoin='round'
+                                  strokeLinecap='round'
+                                  strokeLinejoin='round'
                                   d='M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z'
                                 />
                               </svg>
