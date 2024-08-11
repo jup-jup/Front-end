@@ -14,34 +14,24 @@
 */
 import { Link } from 'react-router-dom';
 
-import { useLogin } from '../hooks/useAuthApi';
-
 export default function Example() {
-  const googleLogin = useLogin('google');
-  const kakaoLogin = useLogin('kakao');
-  const naverLogin = useLogin('naver');
-
   const handleLogin = (provider) => {
     switch (provider) {
       case 'google':
-        googleLogin.refetch();
+        window.location.href = 'http://jupjup.store/user/login?provider=google';
+
         break;
       case 'kakao':
-        kakaoLogin.refetch();
+        window.location.href = 'http://jupjup.store/user/login?provider=kakao';
         break;
       case 'naver':
-        naverLogin.refetch();
+        window.location.href = 'http://jupjup.store/user/login?provider=naver';
         break;
       default:
-        console.error('알 수 없는 제공자');
+        console.log(`${provider} login clicked`);
+        break;
     }
   };
-
-  // const { mutate: login } = useLogin();
-
-  // const handleLogin = (provider) => {
-  //   login(provider); // provider를 전달하여 로그인 요청 실행
-  // };
 
   return (
     <>
