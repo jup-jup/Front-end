@@ -13,10 +13,39 @@
   ```
 */
 import { Link } from 'react-router-dom';
+
+import { useLogin } from '../hooks/useAuthApi';
+
 export default function Example() {
-    return (
-      <>
-        {/*
+  const googleLogin = useLogin('google');
+  const kakaoLogin = useLogin('kakao');
+  const naverLogin = useLogin('naver');
+
+  const handleLogin = (provider) => {
+    switch (provider) {
+      case 'google':
+        googleLogin.refetch();
+        break;
+      case 'kakao':
+        kakaoLogin.refetch();
+        break;
+      case 'naver':
+        naverLogin.refetch();
+        break;
+      default:
+        console.error('알 수 없는 제공자');
+    }
+  };
+
+  // const { mutate: login } = useLogin();
+
+  // const handleLogin = (provider) => {
+  //   login(provider); // provider를 전달하여 로그인 요청 실행
+  // };
+
+  return (
+    <>
+      {/*
           This example requires updating your template:
   
           ```
@@ -24,23 +53,38 @@ export default function Example() {
           <body className="h-full">
           ```
         */}
-        <div className="flex min-h-full flex-1 flex-col justify-center py-12 sm:px-6 lg:px-8">
-          <div className="sm:mx-auto sm:w-full sm:max-w-md">
-            <h2 className="mt-6 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
-              로그인
-            </h2>
-          </div>
-  
-          <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-[480px]">
-            <div className="bg-white px-6 py-12 shadow sm:rounded-lg sm:px-12">
-              <form action="#" method="POST" className="space-y-6">
+      <div className='flex min-h-full flex-1 flex-col justify-center py-12 sm:px-6 lg:px-8'>
+        <div className='sm:mx-auto sm:w-full sm:max-w-md'>
+          <h2 className='mt-6 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900'>
+            로그인
+          </h2>
+        </div>
+
+        <div className='mt-10 sm:mx-auto sm:w-full sm:max-w-[480px]'>
+          <div className='bg-white px-6 py-12 shadow sm:rounded-lg sm:px-12'>
+            <form action='#' method='POST' className='space-y-6'>
               <div className='m-auto'>
-                  <img src='/login/Google.png' className='h-20 w-full mt-2' />
-                  <img src='/login/Kakao.png' className='h-20 w-full mt-2' />
-                  <img src='/login/Naver.png' className='h-20 w-full mt-2' />
-                </div>
-  
-                {/* <div className="flex justify-between">
+                <img
+                  src='/login/Google.png'
+                  className='h-20 w-full mt-2 cursor-pointer'
+                  onClick={() => handleLogin('google')}
+                  alt='Google 로그인'
+                />
+                <img
+                  src='/login/Kakao.png'
+                  className='h-20 w-full mt-2 cursor-pointer'
+                  onClick={() => handleLogin('kakao')}
+                  alt='Kakao 로그인'
+                />
+                <img
+                  src='/login/Naver.png'
+                  className='h-20 w-full mt-2 cursor-pointer'
+                  onClick={() => handleLogin('naver')}
+                  alt='Naver 로그인'
+                />
+              </div>
+
+              {/* <div className="flex justify-between">
                 
                 <div className="text-sm leading-6 ml-auto">
                     <Link to ="/forgetPw" className="font-semibold text-[#4EC0DE] hover:text-[#4EC0DE]">
@@ -53,10 +97,10 @@ export default function Example() {
                       회원가입
                     </Link>
                   </div> */}
-              </form>
-  
-              <div>
-                {/* <div className="relative mt-10">
+            </form>
+
+            <div>
+              {/* <div className="relative mt-10">
                   <div aria-hidden="true" className="absolute inset-0 flex items-center">
                     <div className="w-full border-t border-gray-200" />
                   </div>
@@ -105,18 +149,17 @@ export default function Example() {
                     <span className="text-sm font-semibold leading-6">GitHub</span>
                   </a>
                 </div> */}
-              </div>
             </div>
-  
-            {/* <p className="mt-10 text-center text-sm text-gray-500">
+          </div>
+
+          {/* <p className="mt-10 text-center text-sm text-gray-500">
               Not a member?{' '}
               <a href="#" className="font-semibold leading-6 text-indigo-600 hover:text-indigo-500">
                 Start a 14 day free trial
               </a>
             </p> */}
-          </div>
         </div>
-      </>
-    )
-  }
-  
+      </div>
+    </>
+  );
+}

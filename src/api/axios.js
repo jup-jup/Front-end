@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const instance = axios.create({
-  baseURL: 'https://jsonplaceholder.typicode.com', // TEST API 주소
+  baseURL: 'https://jupjup.store',
   timeout: 5000,
   headers: {
     'Content-Type': 'application/json',
