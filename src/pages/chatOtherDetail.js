@@ -1,5 +1,11 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useRef, useEffect, useCallback } from 'react';
-import { PhotoIcon, CameraIcon, MapPinIcon, CalendarIcon } from '@heroicons/react/24/solid';
+import {
+  PhotoIcon,
+  CameraIcon,
+  MapPinIcon,
+  CalendarIcon,
+} from '@heroicons/react/24/solid';
 
 function ChatApp() {
   const [messages, setMessages] = useState([]);
@@ -27,18 +33,19 @@ function ChatApp() {
   const currentUser = {
     id: 'user1',
     name: '나',
-    avatar: 'https://via.placeholder.com/40'
+    avatar: 'https://via.placeholder.com/40',
   };
 
   const otherUser = {
     id: 'user2',
     name: '상대방',
-    avatar: 'https://via.placeholder.com/40'
+    avatar: 'https://via.placeholder.com/40',
   };
 
   useEffect(() => {
     const script = document.createElement('script');
-    script.src = '//dapi.kakao.com/v2/maps/sdk.js?appkey=f167408a014dd101fa1012319a829f76&libraries=services&autoload=false';
+    script.src =
+      '//dapi.kakao.com/v2/maps/sdk.js?appkey=f167408a014dd101fa1012319a829f76&libraries=services&autoload=false';
     script.async = true;
     script.onload = () => {
       window.kakao.maps.load(() => {
@@ -54,7 +61,8 @@ function ChatApp() {
 
   useEffect(() => {
     if (chatContainerRef.current) {
-      chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight;
+      chatContainerRef.current.scrollTop =
+        chatContainerRef.current.scrollHeight;
     }
   }, [messages]);
 
@@ -62,12 +70,15 @@ function ChatApp() {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
         (pos) => {
-          const newCenter = { lat: pos.coords.latitude, lng: pos.coords.longitude };
+          const newCenter = {
+            lat: pos.coords.latitude,
+            lng: pos.coords.longitude,
+          };
           setCenter(newCenter);
           setPosition(newCenter);
         },
         (err) => {
-          console.error("Error getting position:", err);
+          console.error('Error getting position:', err);
         },
         { enableHighAccuracy: true, timeout: 5000, maximumAge: 0 }
       );
@@ -80,18 +91,18 @@ function ChatApp() {
       const newMessage = {
         id: Date.now(),
         text: inputMessage,
-        sender: currentUser
+        sender: currentUser,
       };
       setMessages([...messages, newMessage]);
       setInputMessage('');
-      
+
       setTimeout(() => {
         const replyMessage = {
           id: Date.now() + 1,
           text: '안녕하세요! 메시지 잘 받았습니다.',
-          sender: otherUser
+          sender: otherUser,
         };
-        setMessages(prevMessages => [...prevMessages, replyMessage]);
+        setMessages((prevMessages) => [...prevMessages, replyMessage]);
       }, 1000);
     }
   };
@@ -101,7 +112,7 @@ function ChatApp() {
 
     const options = {
       center: new kakao.maps.LatLng(center.lat, center.lng),
-      level: 3
+      level: 3,
     };
 
     const map = new kakao.maps.Map(mapRef.current, options);
@@ -109,7 +120,7 @@ function ChatApp() {
 
     const markerPosition = new kakao.maps.LatLng(position.lat, position.lng);
     const marker = new kakao.maps.Marker({
-      position: markerPosition
+      position: markerPosition,
     });
     marker.setMap(map);
     markerRef.current = marker;
@@ -117,7 +128,7 @@ function ChatApp() {
     const geocoder = new kakao.maps.services.Geocoder();
     updateAddress(position.lat, position.lng, geocoder, map, kakao);
 
-    kakao.maps.event.addListener(map, 'click', function(mouseEvent) {
+    kakao.maps.event.addListener(map, 'click', function (mouseEvent) {
       const latlng = mouseEvent.latLng;
       marker.setPosition(latlng);
       updateAddress(latlng.getLat(), latlng.getLng(), geocoder, map, kakao);
@@ -143,7 +154,6 @@ function ChatApp() {
         }
       });
     }
-
   }, [kakao, center, position]);
 
   function displayMarker(place, map, geocoder, kakao) {
@@ -153,7 +163,7 @@ function ChatApp() {
     } else {
       markerRef.current = new kakao.maps.Marker({
         position: position,
-        map: map
+        map: map,
       });
     }
     map.setCenter(position);
@@ -169,11 +179,11 @@ function ChatApp() {
         } else {
           fullAddress = result[0].address.address_name;
         }
-        
+
         if (result[0].road_address && result[0].road_address.building_name) {
           fullAddress += ` (${result[0].road_address.building_name})`;
         }
-        
+
         setLocation(fullAddress);
 
         if (infowindowRef.current) {
@@ -181,7 +191,7 @@ function ChatApp() {
         }
 
         const infowindow = new kakao.maps.InfoWindow({
-          content: `<div style="padding:5px;font-size:12px;">${fullAddress}</div>`
+          content: `<div style="padding:5px;font-size:12px;">${fullAddress}</div>`,
         });
         infowindow.open(map, markerRef.current);
 
@@ -205,9 +215,9 @@ function ChatApp() {
       const locationMessage = {
         id: Date.now(),
         text: `선택한 위치: ${location}`,
-        sender: currentUser
+        sender: currentUser,
       };
-      setMessages(prevMessages => [...prevMessages, locationMessage]);
+      setMessages((prevMessages) => [...prevMessages, locationMessage]);
     }
     setShowMap(false);
   };
@@ -215,94 +225,127 @@ function ChatApp() {
   return (
     <div className='mx-auto max-w-7xl'>
       <div className='flex mb-12'>
-        <img className='w-20' src="https://images.unsplash.com/photo-1505840717430-882ce147ef2d?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=8&w=1024&h=1024&q=80" alt="Header" />
+        <img
+          className='w-20'
+          src='https://images.unsplash.com/photo-1505840717430-882ce147ef2d?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=8&w=1024&h=1024&q=80'
+          alt='Header'
+        />
         <div className='ml-2'>
           <p>제목제목</p>
           <p>설명설명</p>
         </div>
       </div>
       <div className='flex mb-4'>
-        <img src={'https://via.placeholder.com/40'} className="w-10 h-10 rounded-full mr-3" alt="User avatar" />
+        <img
+          src={'https://via.placeholder.com/40'}
+          className='w-10 h-10 rounded-full mr-3'
+          alt='User avatar'
+        />
         <p>채팅걸어오신 분의 닉네임</p>
       </div>
-      <div className="flex flex-col h-[40rem] w-[30rem] bg-gray-100">
-        <div className="flex-1" />
-        <div 
+      <div className='flex flex-col h-[40rem] w-[30rem] bg-gray-100'>
+        <div className='flex-1' />
+        <div
           ref={chatContainerRef}
-          className="overflow-y-auto p-4 max-h-[70vh]"
+          className='overflow-y-auto p-4 max-h-[70vh]'
         >
           {messages.map((message) => (
-            <div key={message.id} className={`flex mb-4 ${message.sender.id === currentUser.id ? 'justify-end' : 'justify-start'}`}>
+            <div
+              key={message.id}
+              className={`flex mb-4 ${
+                message.sender.id === currentUser.id
+                  ? 'justify-end'
+                  : 'justify-start'
+              }`}
+            >
               {message.sender.id !== currentUser.id && (
-                <img src={message.sender.avatar} alt={message.sender.name} className="w-10 h-10 rounded-full mr-3" />
+                <img
+                  src={message.sender.avatar}
+                  alt={message.sender.name}
+                  className='w-10 h-10 rounded-full mr-3'
+                />
               )}
-              <div className={`max-w-xs ${message.sender.id === currentUser.id ? 'bg-blue-500 text-white' : 'bg-white'} rounded-lg p-3 shadow`}>
+              <div
+                className={`max-w-xs ${
+                  message.sender.id === currentUser.id
+                    ? 'bg-blue-500 text-white'
+                    : 'bg-white'
+                } rounded-lg p-3 shadow`}
+              >
                 {message.sender.id !== currentUser.id && (
-                  <div className="font-bold mb-1">{message.sender.name}</div>
+                  <div className='font-bold mb-1'>{message.sender.name}</div>
                 )}
                 <div>{message.text}</div>
               </div>
             </div>
           ))}
         </div>
-        <form onSubmit={handleSubmit} className="p-4 bg-white">
+        <form onSubmit={handleSubmit} className='p-4 bg-white'>
           <input
-            type="text"
+            type='text'
             value={inputMessage}
             onChange={(e) => setInputMessage(e.target.value)}
-            className="w-full border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-            placeholder="메시지를 입력하세요..."
+            className='w-full border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-500'
+            placeholder='메시지를 입력하세요...'
           />
         </form>
-        <div className="flex justify-around">
-          <button className="p-2 bg-gray-200 rounded-full hover:bg-gray-300 transition">
-            <PhotoIcon className="h-6 w-6 text-gray-600" />
+        <div className='flex justify-around'>
+          <button className='p-2 bg-gray-200 rounded-full hover:bg-gray-300 transition'>
+            <PhotoIcon className='h-6 w-6 text-gray-600' />
           </button>
-          <button className="p-2 bg-gray-200 rounded-full hover:bg-gray-300 transition">
-            <CameraIcon className="h-6 w-6 text-gray-600" />
+          <button className='p-2 bg-gray-200 rounded-full hover:bg-gray-300 transition'>
+            <CameraIcon className='h-6 w-6 text-gray-600' />
           </button>
-          <button 
-            className="p-2 bg-gray-200 rounded-full hover:bg-gray-300 transition"
+          <button
+            className='p-2 bg-gray-200 rounded-full hover:bg-gray-300 transition'
             onClick={handleMapButtonClick}
             disabled={!kakao}
           >
-            <MapPinIcon className="h-6 w-6 text-gray-600" />
+            <MapPinIcon className='h-6 w-6 text-gray-600' />
           </button>
-          <button className="p-2 bg-gray-200 rounded-full hover:bg-gray-300 transition">
-            <CalendarIcon className="h-6 w-6 text-gray-600" />
+          <button className='p-2 bg-gray-200 rounded-full hover:bg-gray-300 transition'>
+            <CalendarIcon className='h-6 w-6 text-gray-600' />
           </button>
         </div>
       </div>
-      <button className="p-2 text-white bg-indigo-500 rounded-full hover:bg-gray-300 transition mt-4 mb-20 float-right">
+      <button className='p-2 text-white bg-indigo-500 rounded-full hover:bg-gray-300 transition mt-4 mb-20 float-right'>
         거래 완료
       </button>
       {showMap && kakao && (
-        <div className="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full">
-          <div className="relative top-20 mx-auto p-5 border w-96 shadow-lg rounded-md bg-white">
-            <div className="mt-3 text-center">
-              <h3 className="text-lg leading-6 font-medium text-gray-900">위치 선택</h3>
-              <div className="mt-2 px-7 py-3">
+        <div className='fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full'>
+          <div className='relative top-20 mx-auto p-5 border w-96 shadow-lg rounded-md bg-white'>
+            <div className='mt-3 text-center'>
+              <h3 className='text-lg leading-6 font-medium text-gray-900'>
+                위치 선택
+              </h3>
+              <div className='mt-2 px-7 py-3'>
                 <input
                   ref={searchInputRef}
-                  type="text"
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
-                  placeholder="위치 검색..."
+                  type='text'
+                  className='w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500'
+                  placeholder='위치 검색...'
                 />
-                <div ref={mapRef} style={{width: '100%', height: '400px'}} className="mt-3"></div>
+                <div
+                  ref={mapRef}
+                  style={{ width: '100%', height: '400px' }}
+                  className='mt-3'
+                ></div>
                 {location && (
-                  <p className="mt-2 text-sm text-gray-500">선택된 주소: {location}</p>
+                  <p className='mt-2 text-sm text-gray-500'>
+                    선택된 주소: {location}
+                  </p>
                 )}
               </div>
-              <div className="items-center px-4 py-3">
+              <div className='items-center px-4 py-3'>
                 <button
                   onClick={handleConfirmLocation}
-                  className="px-4 py-2 bg-blue-500 text-white text-base font-medium rounded-md w-full shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-300 mb-2"
+                  className='px-4 py-2 bg-blue-500 text-white text-base font-medium rounded-md w-full shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-300 mb-2'
                 >
                   확인
                 </button>
                 <button
                   onClick={() => setShowMap(false)}
-                  className="px-4 py-2 bg-gray-500 text-white text-base font-medium rounded-md w-full shadow-sm hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-300"
+                  className='px-4 py-2 bg-gray-500 text-white text-base font-medium rounded-md w-full shadow-sm hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-300'
                 >
                   취소
                 </button>
