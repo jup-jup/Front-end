@@ -12,25 +12,18 @@
   }
   ```
 */
-import { Link } from 'react-router-dom';
+import instance from '../api/axios';
 
 export default function Example() {
-  const handleLogin = (provider) => {
-    switch (provider) {
-      case 'google':
-        window.location.href = 'http://jupjup.store/user/login?provider=google';
+  const baseURL = instance.defaults.baseURL;
+  const validProviders = ['google', 'kakao', 'naver'];
 
-        break;
-      case 'kakao':
-        window.location.href = 'http://jupjup.store/user/login?provider=kakao';
-        break;
-      case 'naver':
-        window.location.href = 'http://jupjup.store/user/login?provider=naver';
-        break;
-      default:
-        console.log(`${provider} login clicked`);
-        break;
+  const handleLogin = (provider) => {
+    if (!validProviders.includes(provider)) {
+      alert(`지원되지 않는 로그인 방식입니다: ${provider}`);
+      return;
     }
+    window.location.href = `${baseURL}/user/login?provider=${provider}`;
   };
 
   return (
@@ -54,26 +47,16 @@ export default function Example() {
           <div className='bg-white px-6 py-12 shadow sm:rounded-lg sm:px-12'>
             <form action='#' method='POST' className='space-y-6'>
               <div className='m-auto'>
-                <img
-                  src='/login/Google.png'
-                  className='h-20 w-full mt-2 cursor-pointer'
-                  onClick={() => handleLogin('google')}
-                  alt='Google 로그인'
-                />
-                <img
-                  src='/login/Kakao.png'
-                  className='h-20 w-full mt-2 cursor-pointer'
-                  onClick={() => handleLogin('kakao')}
-                  alt='Kakao 로그인'
-                />
-                <img
-                  src='/login/Naver.png'
-                  className='h-20 w-full mt-2 cursor-pointer'
-                  onClick={() => handleLogin('naver')}
-                  alt='Naver 로그인'
-                />
+                {['google', 'kakao', 'naver'].map((provider) => (
+                  <img
+                    key={provider}
+                    src={`/login/${provider}.png`}
+                    className='h-20 w-full mt-2 cursor-pointer'
+                    onClick={() => handleLogin(provider)}
+                    alt={`${provider} 로그인`}
+                  />
+                ))}
               </div>
-
               {/* <div className="flex justify-between">
                 
                 <div className="text-sm leading-6 ml-auto">
