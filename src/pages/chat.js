@@ -12,6 +12,19 @@ function ChatApp() {
   const searchInputRef = useRef(null);
   const mapInstanceRef = useRef(null);
   const markerRef = useRef(null);
+  const infowindowRef = useRef(null);
+
+  // 지도의 중심좌표
+  const [center, setCenter] = useState({
+    lat: 33.450701,
+    lng: 126.570667,
+  });
+
+  // 현재 위치
+  const [position, setPosition] = useState({
+    lat: 33.450701,
+    lng: 126.570667,
+  });
 
   const currentUser = {
     id: 'user1',
@@ -47,6 +60,59 @@ function ChatApp() {
     }
   }, [messages]);
 
+  useEffect(() => {
+    console.log("Geolocation effect running");
+  
+    if (navigator.geolocation) {
+      console.log("Geolocation is supported");
+  
+      const options = {
+        enableHighAccuracy: true,
+        timeout: 5000,
+        maximumAge: 0
+      };
+  
+      navigator.geolocation.getCurrentPosition(
+        (pos) => {
+          console.log("Position acquired", pos);
+          const newCenter = { lat: pos.coords.latitude, lng: pos.coords.longitude };
+          setCenter(newCenter);
+          setPosition(newCenter);
+        },
+        (err) => {
+          console.error("Error getting position:", err);
+          // 에러 발생 시 기본 위치 설정
+          const defaultPosition = { lat: 33.450701, lng: 126.570667 };
+          setCenter(defaultPosition);
+          setPosition(defaultPosition);
+        },
+        options
+      );
+  
+      const watchId = navigator.geolocation.watchPosition(
+        (pos) => {
+          console.log("Position updated", pos);
+          setPosition({ lat: pos.coords.latitude, lng: pos.coords.longitude });
+        },
+        (err) => {
+          console.error("Error watching position:", err);
+        },
+        options
+      );
+  
+      return () => {
+        console.log("Clearing geolocation watch");
+        navigator.geolocation.clearWatch(watchId);
+      };
+    } else {
+      console.log("Geolocation is not supported");
+      // 지오로케이션이 지원되지 않는 경우 기본 위치 설정
+      const defaultPosition = { lat: 33.450701, lng: 126.570667 };
+      setCenter(defaultPosition);
+      setPosition(defaultPosition);
+    }
+  }, []);
+
   const handleSubmit = (e) => {
     e.preventDefault();
     if (inputMessage.trim() !== '') {
@@ -72,84 +138,52 @@ function ChatApp() {
   const initializeMap = useCallback(() => {
     if (!kakao || !mapRef.current) return;
 
-    // if (!mapInstanceRef.current) {
-    //   mapInstanceRef.current = new kakao.maps.Map(mapRef.current, {
-    //     center: new kakao.maps.LatLng(37.566826, 126.9786567),
-    //     level: 3
-    //   });
-    // }
-
-    if (mapInstanceRef.current) {
-      // mapInstanceRef.current.destroy();
-      mapInstanceRef.current = null;
-    }
-
-    mapInstanceRef.current = new kakao.maps.Map(mapRef.current, {
-      center: new window.kakao.maps.LatLng(33.450701, 126.570667),
+    const options = {
+      center: new kakao.maps.LatLng(center.lat, center.lng),
       level: 3
+    };
+
+    const map = new kakao.maps.Map(mapRef.current, options);
+    mapInstanceRef.current = map;
+
+    const markerPosition = new kakao.maps.LatLng(position.lat, position.lng);
+    const marker = new kakao.maps.Marker({
+      position: markerPosition
     });
+    marker.setMap(map);
+    markerRef.current = marker;
 
     const geocoder = new kakao.maps.services.Geocoder();
+    updateAddress(position.lat, position.lng, geocoder, map, kakao);
 
-    if (navigator.geolocationm) {
-      navigator.geolocation.getCurrentPosition(
-        (position) => {
-          const lat = position.coords.latitude;
-          const lng = position.coords.longitude;
-          const currentPos = new kakao.maps.LatLng(lat, lng);
-          mapInstanceRef.current.setCenter(currentPos);
-
-          if (!markerRef.current) {
-            markerRef.current = new kakao.maps.Marker({
-              position: currentPos,
-              map: mapInstanceRef.current
-            });
-          } else {
-            markerRef.current.setPosition(currentPos);
-          }
-
-          updateAddress(lat, lng, geocoder, mapInstanceRef.current, kakao);
-        },
-        (error) => {
-          console.error("Error: " + error.message);
-        },
-        { enableHighAccuracy: true, maximumAge: 0, timeout: 5000 }
-      );
-    }
-
-    kakao.maps.event.addListener(mapInstanceRef.current, 'click', function(mouseEvent) {
+    kakao.maps.event.addListener(map, 'click', function(mouseEvent) {
       const latlng = mouseEvent.latLng;
-      if (markerRef.current) {
-        markerRef.current.setPosition(latlng);
-      } else {
-        markerRef.current = new kakao.maps.Marker({
-          position: latlng,
-          map: mapInstanceRef.current
-        });
-      }
-      updateAddress(latlng.getLat(), latlng.getLng(), geocoder, mapInstanceRef.current, kakao);
+      marker.setPosition(latlng);
+      updateAddress(latlng.getLat(), latlng.getLng(), geocoder, map, kakao);
     });
 
     const ps = new kakao.maps.services.Places();
     const searchInput = searchInputRef.current;
 
-    searchInput.addEventListener('keypress', (e) => {
-      if (e.key === 'Enter') {
-        e.preventDefault();
-        ps.keywordSearch(searchInput.value, (data, status) => {
-          if (status === kakao.maps.services.Status.OK) {
-            const bounds = new kakao.maps.LatLngBounds();
-            for (let i = 0; i < data.length; i++) {
-              displayMarker(data[i], mapInstanceRef.current, geocoder, kakao);
-              bounds.extend(new kakao.maps.LatLng(data[i].y, data[i].x));
+    if (searchInput) {
+      searchInput.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') {
+          e.preventDefault();
+          ps.keywordSearch(searchInput.value, (data, status) => {
+            if (status === kakao.maps.services.Status.OK) {
+              const bounds = new kakao.maps.LatLngBounds();
+              for (let i = 0; i < data.length; i++) {
+                displayMarker(data[i], map, geocoder, kakao);
+                bounds.extend(new kakao.maps.LatLng(data[i].y, data[i].x));
+              }
+              map.setBounds(bounds);
             }
-            mapInstanceRef.current.setBounds(bounds);
-          }
-        });
-      }
-    });
+          });
+        }
+      });
+    }
 
-  }, [kakao]);
+  }, [kakao, center, position]);
 
   function displayMarker(place, map, geocoder, kakao) {
     const position = new kakao.maps.LatLng(place.y, place.x);
@@ -181,10 +215,19 @@ function ChatApp() {
         
         setLocation(fullAddress);
 
+        // 기존 infowindow가 있다면 닫기
+        if (infowindowRef.current) {
+          infowindowRef.current.close();
+        }
+
+        // 새로운 infowindow 생성 및 열기
         const infowindow = new kakao.maps.InfoWindow({
           content: `<div style="padding:5px;font-size:12px;">${fullAddress}</div>`
         });
         infowindow.open(map, markerRef.current);
+
+        // infowindow 참조 업데이트
+        infowindowRef.current = infowindow;
       }
     });
   }
@@ -195,18 +238,8 @@ function ChatApp() {
     }
   }, [showMap, kakao, initializeMap]);
 
-  useEffect(() => {
-    if (kakao) {
-      initializeMap();
-    }
-  }, [kakao, initializeMap]);
-
   const handleMapButtonClick = () => {
     setShowMap(true);
-    // 지도를 표시한 후 약간의 지연을 두고 초기화
-    setTimeout(() => {
-      initializeMap();
-    }, 100);
   };
 
   const handleConfirmLocation = () => {
