@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const instance = axios.create({
-  baseURL: 'https://jupjup.store',
+  baseURL: 'https://jupjup.store/api/v1',
   timeout: 5000,
   headers: {
     'Content-Type': 'application/json',
