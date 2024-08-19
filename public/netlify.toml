@@ -1,6 +1,4 @@
-# netlify.toml
-
-[[redirects]]
-  from = "/*"
-  to = "/index.html"
-  status = 200
+# example netlify.toml
+[build]
+    command = "CI= npm run build"
+    publish = "build"
