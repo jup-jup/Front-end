@@ -29,11 +29,11 @@ export default function Example() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   useEffect(() => {
-    const accessToken = sessionStorage.getItem('access_token');
+    const accessToken = sessionStorage.getItem('userEmail');
     setIsLoggedIn(!!accessToken);
 
     const handleLoginStateChange = () => {
-      const newAccessToken = sessionStorage.getItem('access_token');
+      const newAccessToken = sessionStorage.getItem('userEmail');
       setIsLoggedIn(!!newAccessToken);
     };
 
