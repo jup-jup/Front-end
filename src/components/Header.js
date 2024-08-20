@@ -55,9 +55,9 @@ export default function Example() {
           <Link to ="/jupjup" className="text-sm font-black leading-6">
             나눔하기
           </Link>
-          <Link to ="/beforeAfter" className="text-sm font-black leading-6">
+          {/* <Link to ="/beforeAfter" className="text-sm font-black leading-6">
             비포&에프터
-          </Link>
+          </Link> */}
           <Link to ="/chatOtherList" className="text-sm font-black leading-6">
             채팅
           </Link>
@@ -115,12 +115,12 @@ export default function Example() {
                 >
                   나눔하기
                 </Link>
-                <Link
+                {/* <Link
                   to ="/beforeAfter"
                   className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"
                 >
                   비포&에프터
-                </Link>
+                </Link> */}
                 <Link
                   to ="/chatOtherList"
                   className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"

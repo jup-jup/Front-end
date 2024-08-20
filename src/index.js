@@ -8,7 +8,7 @@ import Footer from './components/Footer';
 import JupJup from './pages/jupjup';
 import BeforeAfter from './pages/beforeAfter';
 import SignIn from './pages/signIn';
-import SignUp from './pages/signUp';
+// import SignUp from './pages/signUp';
 import ForgetPw from './pages/forgetPw';
 import BeforAftertUpload from './pages/beforAftertUpload';
 import BeforAftertDetail from './pages/beforAftertDetail';
@@ -49,7 +49,7 @@ root.render(
             <Route path='/JupJup' element={<JupJup />}></Route>
             <Route path='/BeforeAfter' element={<BeforeAfter />}></Route>
             <Route path='/signin' element={<SignIn />}></Route>
-            <Route path='/signUp' element={<SignUp />}></Route>
+            {/* <Route path='/signUp' element={<SignUp />}></Route> */}
             <Route path='/forgetPw' element={<ForgetPw />}></Route>
             <Route path='/jupjupDetail' element={<JupjupDetail />}></Route>
             <Route

@@ -106,7 +106,7 @@ export default function Example() {
     //   </ul>
     // </div>
     <>
-      <div className='bg-white py-24 sm:py-12 mx-auto max-w-7xl'>
+      <div className='bg-white py-24 sm:py-12 mx-auto max-w-7xl w-[60%]'>
         <div>
           <div className='block'>
             <div className='border-b border-gray-200'>
