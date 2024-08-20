@@ -1,6 +1,5 @@
 'use client'
-
-import { useState } from 'react'
+import React, { useEffect, useState } from 'react';
 import {
   Dialog,
   DialogPanel,
@@ -27,6 +26,22 @@ import { Link } from 'react-router-dom';
 //올라가는거 테스트중 lee브랜치 충돌 테스트 중
 export default function Example() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  useEffect(() => {
+    const accessToken = sessionStorage.getItem('access_token');
+    setIsLoggedIn(!!accessToken);
+  }, []);
+
+  const handleLogout = () => {
+    sessionStorage.removeItem('access_token');
+    sessionStorage.removeItem('userEmail');
+    sessionStorage.removeItem('userName');
+    setIsLoggedIn(false);
+
+
+    // 로그아웃 api 연결 하기
+  };
 
   return (
     <header className="bg-white">
@@ -74,9 +89,15 @@ export default function Example() {
 
         </PopoverGroup>
         <div className="hidden lg:flex lg:flex-1 lg:justify-end">
-          <Link to ="/signIn" className="text-sm font-semibold leading-6">
-            Log in <span aria-hidden="true">&rarr;</span>
-          </Link>
+        {isLoggedIn ? (
+            <Link onClick={handleLogout} className="text-sm font-semibold leading-6">
+              Log out <span aria-hidden="true">&rarr;</span>
+            </Link>
+          ) : (
+            <Link to="/signIn" className="text-sm font-semibold leading-6">
+              Log in <span aria-hidden="true">&rarr;</span>
+            </Link>
+          )}
         </div>
       </nav>
       <Dialog open={mobileMenuOpen} onClose={setMobileMenuOpen} className="lg:hidden">
@@ -141,12 +162,21 @@ export default function Example() {
                 </Link>
               </div>
               <div className="py-6">
-                <Link
-                  to ="/signin"
-                  className="-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"
-                >
-                  Log in
-                </Link>
+              {isLoggedIn ? (
+                  <Link
+                    onClick={handleLogout}
+                    className="-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"
+                  >
+                    Log out
+                  </Link>
+                ) : (
+                  <Link
+                    to="/signin"
+                    className="-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"
+                  >
+                    Log in
+                  </Link>
+                )}
               </div>
             </div>
           </div>

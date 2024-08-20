@@ -1,3 +1,7 @@
+
+import { useParams, useLocation } from 'react-router-dom';
+import React, { useEffect } from 'react';
+
 const posts = [
   {
     id: 1,
@@ -49,6 +53,27 @@ const posts = [
 ];
 
 export default function Example() {
+  const params = useParams();
+  const location = useLocation();
+
+  useEffect(() => {
+    // URL의 쿼리 파라미터를 파싱합니다.
+    const searchParams = new URLSearchParams(location.search);
+    const accessToken = searchParams.get('access_token');
+    const userEmail = searchParams.get('userEmail');
+    const userName = searchParams.get('userName');
+
+    // sessionStorage에 저장
+    if (accessToken) sessionStorage.setItem('access_token', accessToken);
+    if (userEmail) sessionStorage.setItem('userEmail', userEmail);
+    if (userName) sessionStorage.setItem('userName', userName);
+
+    console.log('URL Parameters:');
+    console.log('Access Token:', accessToken);
+    console.log('User Email:', userEmail);
+    console.log('User Name:', userName);
+    console.log('All params:', Object.fromEntries(searchParams));
+  }, [location]);
   return (
     <>
       <div className='relative bg-[#A4C9DB] sm:h-[57rem]'>
