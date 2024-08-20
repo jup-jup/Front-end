@@ -64,16 +64,16 @@ export default function Example() {
     const userName = searchParams.get('userName');
 
     // sessionStorage에 저장
-    if (accessToken) sessionStorage.setItem('access_token', accessToken);
+    if (accessToken) {
+      sessionStorage.setItem('access_token', accessToken);
+      window.dispatchEvent(new Event('loginStateChange'));
+    }
     if (userEmail) sessionStorage.setItem('userEmail', userEmail);
     if (userName) sessionStorage.setItem('userName', userName);
 
-    console.log('URL Parameters:');
-    console.log('Access Token:', accessToken);
-    console.log('User Email:', userEmail);
-    console.log('User Name:', userName);
-    console.log('All params:', Object.fromEntries(searchParams));
+    // ... 나머지 코드는 그대로 유지
   }, [location]);
+
   return (
     <>
       <div className='relative bg-[#A4C9DB] sm:h-[57rem]'>

@@ -31,6 +31,17 @@ export default function Example() {
   useEffect(() => {
     const accessToken = sessionStorage.getItem('access_token');
     setIsLoggedIn(!!accessToken);
+
+    const handleLoginStateChange = () => {
+      const newAccessToken = sessionStorage.getItem('access_token');
+      setIsLoggedIn(!!newAccessToken);
+    };
+
+    window.addEventListener('loginStateChange', handleLoginStateChange);
+
+    return () => {
+      window.removeEventListener('loginStateChange', handleLoginStateChange);
+    };
   }, []);
 
   const handleLogout = () => {
@@ -38,10 +49,11 @@ export default function Example() {
     sessionStorage.removeItem('userEmail');
     sessionStorage.removeItem('userName');
     setIsLoggedIn(false);
-
+    window.dispatchEvent(new Event('loginStateChange'));
 
     // 로그아웃 api 연결 하기
   };
+
 
   return (
     <header className="bg-white">

@@ -10,6 +10,8 @@ export default function Example() {
       return;
     }
     window.location.href = `${baseURL}/user/login?provider=${provider}`;
+    sessionStorage.setItem('access_token', provider);
+    window.dispatchEvent(new Event('loginStateChange'));
   };
 
   return (
