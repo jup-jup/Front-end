@@ -66,9 +66,11 @@ export default function Example() {
     // sessionStorage에 저장
     if (accessToken) {
       sessionStorage.setItem('access_token', accessToken);
+    }
+    if (userEmail) {
+      sessionStorage.setItem('userEmail', userEmail);
       window.dispatchEvent(new Event('loginStateChange'));
     }
-    if (userEmail) sessionStorage.setItem('userEmail', userEmail);
     if (userName) sessionStorage.setItem('userName', userName);
 
     // ... 나머지 코드는 그대로 유지
