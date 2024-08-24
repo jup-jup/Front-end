@@ -1,3 +1,4 @@
+import Button from "components/button/Button";
 import BasicModal from "components/portalModal/basicmodal/BasicModal";
 import ExampleModal from "components/portalModal/ExampleModal/ExampleModal";
 import { useState } from "react";
@@ -10,12 +11,13 @@ const ModalView = () => {
   return (
     <div>
       <div>
-        <button
+        <Button
           onClick={() => setModal1(true)}
-          className="border border-red-100"
+          theme="secondary"
+          size="small"
         >
           기본 모달
-        </button>
+        </Button>
         <button
           onClick={() => setModal2(true)}
           className="border border-red-100"
