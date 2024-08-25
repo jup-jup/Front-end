@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 
-export default function Example() {
+export default function BeforeAfter() {
   const [isFilled, setIsFilled] = useState(false);
 
   const toggleHeart = () => {
@@ -9,7 +9,7 @@ export default function Example() {
   };
 
   return (
-    <div className='bg-white py-2 sm:py-12 relative mx-auto max-w-7xl'>
+    <div className='relative py-2 mx-auto bg-white sm:py-12 max-w-7xl'>
       <div className='mt-10 mb-12'>
         <Link
           to='/beforAftertUpload'
@@ -47,7 +47,7 @@ export default function Example() {
             src={
               'https://images.unsplash.com/photo-1496128858413-b36217c2ce36?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=3603&q=80'
             }
-            className='absolute inset-0 h-full w-full rounded-2xl bg-gray-50 object-cover'
+            className='absolute inset-0 object-cover w-full h-full rounded-2xl bg-gray-50'
           />
           <div className='absolute inset-0 rounded-2xl ring-1 ring-inset ring-gray-900/10' />
           <p className='absolute text-white left-4 top-4'>BEFORE</p>
@@ -59,7 +59,7 @@ export default function Example() {
             src={
               'https://images.unsplash.com/photo-1496128858413-b36217c2ce36?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=3603&q=80'
             }
-            className='absolute inset-0 h-full w-full rounded-2xl bg-gray-50 object-cover'
+            className='absolute inset-0 object-cover w-full h-full rounded-2xl bg-gray-50'
           />
           <div className='absolute inset-0 rounded-2xl ring-1 ring-inset ring-gray-900/10' />
           <p className='absolute text-white left-4 top-4'>AFTER</p>

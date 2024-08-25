@@ -7,7 +7,7 @@ import {
   CalendarIcon,
 } from '@heroicons/react/24/solid';
 
-function ChatApp() {
+export default function ChatOtherDetail() {
   const [messages, setMessages] = useState([]);
   const [inputMessage, setInputMessage] = useState('');
   const [location, setLocation] = useState(null);
@@ -20,13 +20,11 @@ function ChatApp() {
   const markerRef = useRef(null);
   const infowindowRef = useRef(null);
 
-  // 지도의 중심좌표
   const [center, setCenter] = useState({
     lat: 33.450701,
     lng: 126.570667,
   });
 
-  // 현재 위치
   const [position, setPosition] = useState({
     lat: 33.450701,
     lng: 126.570667,
@@ -69,20 +67,9 @@ function ChatApp() {
   }, [messages]);
 
   useEffect(() => {
-    console.log('Geolocation effect running');
-
     if (navigator.geolocation) {
-      console.log('Geolocation is supported');
-
-      const options = {
-        enableHighAccuracy: true,
-        timeout: 5000,
-        maximumAge: 0,
-      };
-
       navigator.geolocation.getCurrentPosition(
         (pos) => {
-          console.log('Position acquired', pos);
           const newCenter = {
             lat: pos.coords.latitude,
             lng: pos.coords.longitude,
@@ -92,35 +79,9 @@ function ChatApp() {
         },
         (err) => {
           console.error('Error getting position:', err);
-          // 에러 발생 시 기본 위치 설정
-          const defaultPosition = { lat: 33.450701, lng: 126.570667 };
-          setCenter(defaultPosition);
-          setPosition(defaultPosition);
         },
-        options
+        { enableHighAccuracy: true, timeout: 5000, maximumAge: 0 }
       );
-
-      const watchId = navigator.geolocation.watchPosition(
-        (pos) => {
-          console.log('Position updated', pos);
-          setPosition({ lat: pos.coords.latitude, lng: pos.coords.longitude });
-        },
-        (err) => {
-          console.error('Error watching position:', err);
-        },
-        options
-      );
-
-      return () => {
-        console.log('Clearing geolocation watch');
-        navigator.geolocation.clearWatch(watchId);
-      };
-    } else {
-      console.log('Geolocation is not supported');
-      // 지오로케이션이 지원되지 않는 경우 기본 위치 설정
-      const defaultPosition = { lat: 33.450701, lng: 126.570667 };
-      setCenter(defaultPosition);
-      setPosition(defaultPosition);
     }
   }, []);
 
@@ -225,18 +186,15 @@ function ChatApp() {
 
         setLocation(fullAddress);
 
-        // 기존 infowindow가 있다면 닫기
         if (infowindowRef.current) {
           infowindowRef.current.close();
         }
 
-        // 새로운 infowindow 생성 및 열기
         const infowindow = new kakao.maps.InfoWindow({
           content: `<div style="padding:5px;font-size:12px;">${fullAddress}</div>`,
         });
         infowindow.open(map, markerRef.current);
 
-        // infowindow 참조 업데이트
         infowindowRef.current = infowindow;
       }
     });
@@ -280,14 +238,17 @@ function ChatApp() {
       <div className='flex mb-4'>
         <img
           src={'https://via.placeholder.com/40'}
-          className='w-10 h-10 rounded-full mr-3'
+          className='w-10 h-10 mr-3 rounded-full'
           alt='User avatar'
         />
-        <p>글올린 사람 닉네임</p>
+        <p>채팅걸어오신 분의 닉네임</p>
       </div>
       <div className='flex flex-col h-[40rem] w-[30rem] bg-gray-100'>
         <div className='flex-1' />
-        <div ref={chatContainerRef} className='overflow-y-auto p-4'>
+        <div
+          ref={chatContainerRef}
+          className='overflow-y-auto p-4 max-h-[70vh]'
+        >
           {messages.map((message) => (
             <div
               key={message.id}
@@ -301,7 +262,7 @@ function ChatApp() {
                 <img
                   src={message.sender.avatar}
                   alt={message.sender.name}
-                  className='w-10 h-10 rounded-full mr-3'
+                  className='w-10 h-10 mr-3 rounded-full'
                 />
               )}
               <div
@@ -312,7 +273,7 @@ function ChatApp() {
                 } rounded-lg p-3 shadow`}
               >
                 {message.sender.id !== currentUser.id && (
-                  <div className='font-bold mb-1'>{message.sender.name}</div>
+                  <div className='mb-1 font-bold'>{message.sender.name}</div>
                 )}
                 <div>{message.text}</div>
               </div>
@@ -324,37 +285,40 @@ function ChatApp() {
             type='text'
             value={inputMessage}
             onChange={(e) => setInputMessage(e.target.value)}
-            className='w-full border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-500'
+            className='w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500'
             placeholder='메시지를 입력하세요...'
           />
         </form>
         <div className='flex justify-around'>
-          <button className='p-2 bg-gray-200 rounded-full hover:bg-gray-300 transition'>
-            <PhotoIcon className='h-6 w-6 text-gray-600' />
+          <button className='p-2 transition bg-gray-200 rounded-full hover:bg-gray-300'>
+            <PhotoIcon className='w-6 h-6 text-gray-600' />
           </button>
-          <button className='p-2 bg-gray-200 rounded-full hover:bg-gray-300 transition'>
-            <CameraIcon className='h-6 w-6 text-gray-600' />
+          <button className='p-2 transition bg-gray-200 rounded-full hover:bg-gray-300'>
+            <CameraIcon className='w-6 h-6 text-gray-600' />
           </button>
           <button
-            className='p-2 bg-gray-200 rounded-full hover:bg-gray-300 transition'
+            className='p-2 transition bg-gray-200 rounded-full hover:bg-gray-300'
             onClick={handleMapButtonClick}
             disabled={!kakao}
           >
-            <MapPinIcon className='h-6 w-6 text-gray-600' />
+            <MapPinIcon className='w-6 h-6 text-gray-600' />
           </button>
-          <button className='p-2 bg-gray-200 rounded-full hover:bg-gray-300 transition'>
-            <CalendarIcon className='h-6 w-6 text-gray-600' />
+          <button className='p-2 transition bg-gray-200 rounded-full hover:bg-gray-300'>
+            <CalendarIcon className='w-6 h-6 text-gray-600' />
           </button>
         </div>
       </div>
+      <button className='float-right p-2 mt-4 mb-20 text-white transition bg-indigo-500 rounded-full hover:bg-gray-300'>
+        거래 완료
+      </button>
       {showMap && kakao && (
-        <div className='fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full'>
-          <div className='relative top-20 mx-auto p-5 border w-96 shadow-lg rounded-md bg-white'>
+        <div className='fixed inset-0 w-full h-full overflow-y-auto bg-gray-600 bg-opacity-50'>
+          <div className='relative p-5 mx-auto bg-white border rounded-md shadow-lg top-20 w-96'>
             <div className='mt-3 text-center'>
-              <h3 className='text-lg leading-6 font-medium text-gray-900'>
+              <h3 className='text-lg font-medium leading-6 text-gray-900'>
                 위치 선택
               </h3>
-              <div className='mt-2 px-7 py-3'>
+              <div className='py-3 mt-2 px-7'>
                 <input
                   ref={searchInputRef}
                   type='text'
@@ -375,13 +339,13 @@ function ChatApp() {
               <div className='items-center px-4 py-3'>
                 <button
                   onClick={handleConfirmLocation}
-                  className='px-4 py-2 bg-blue-500 text-white text-base font-medium rounded-md w-full shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-300 mb-2'
+                  className='w-full px-4 py-2 mb-2 text-base font-medium text-white bg-blue-500 rounded-md shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-300'
                 >
                   확인
                 </button>
                 <button
                   onClick={() => setShowMap(false)}
-                  className='px-4 py-2 bg-gray-500 text-white text-base font-medium rounded-md w-full shadow-sm hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-300'
+                  className='w-full px-4 py-2 text-base font-medium text-white bg-gray-500 rounded-md shadow-sm hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-300'
                 >
                   취소
                 </button>
@@ -393,5 +357,3 @@ function ChatApp() {
     </div>
   );
 }
-
-export default ChatApp;

@@ -1,29 +1,28 @@
 import { useEffect } from 'react';
-import { Route, Routes, useLocation, useParams } from 'react-router-dom';
-import BeforeAfter from './pages/beforeAfter';
-import JupJup from './pages/jupjup';
-import SignIn from './pages/signIn';
+import { Route, Routes, useLocation } from 'react-router-dom';
+import BeforeAfter from './pages/BeforeAfter/BeforeAfter';
+import JupJup from './pages/JupJup/JupJup';
+import SignIn from './pages/SignIn';
 // import SignUp from './pages/signUp';
 import { PageLayout } from 'Outlet';
 import Main from 'pages/Main';
 import ModalView from 'pages/ModalView';
-import BeforAftertDetail from './pages/BeforAftertDetail';
-import BeforAftertUpdate from './pages/beforAftertUpdate';
-import BeforAftertUpload from './pages/beforAftertUpload';
-import Chat from './pages/chat';
-import ChatOtherDetail from './pages/chatOtherDetail';
-import ChatOtherList from './pages/chatOtherList';
-import ForgetPw from './pages/forgetPw';
-import JupjupDetail from './pages/jupjupDetail';
-import JupjupUpdate from './pages/jupjupUpdate';
-import JupjupWrite from './pages/jupjupWrite';
-import Mypage from './pages/Mypage';
-import MypageGIVE from './pages/MypageGIVE';
-import MypageReceive from './pages/MypageReceive';
-import ProfileUpdate from './pages/ProfileUpdate';
+import BeforAftertDetail from './pages/BeforeAfter/BeforAftertDetail';
+import BeforAftertUpdate from './pages/BeforeAfter/BeforAftertUpdate';
+import BeforAftertUpload from './pages/BeforeAfter/BeforAftertUpload';
+import Chat from './pages/Chat/Chat';
+import ChatOtherDetail from './pages/Chat/ChatOtherDetail';
+import ChatOtherList from './pages/Chat/ChatOtherList';
+import JupjupDetail from './pages/JupJup/JupJupDetail';
+import JupjupUpdate from './pages/JupJup/JupJupUpdate';
+import JupjupWrite from './pages/JupJup/JupJupWrite';
+import Mypage from './pages/MyPage/Mypage';
+import MypageGIVE from './pages/MyPage/MypageGive';
+import MypageReceive from './pages/MyPage/MypageReceive';
+import ProfileUpdate from './pages/Profile/ProfileUpdate';
 
 export default function Example() {
-  const params = useParams();
+  // const params = useParams();
   const location = useLocation();
 
   useEffect(() => {
@@ -54,7 +53,6 @@ export default function Example() {
         <Route path='/BeforeAfter' element={<BeforeAfter />} />
         <Route path='/signin' element={<SignIn />} />
         {/* <Route path='/signUp' element={<SignUp />}></Route> */}
-        <Route path='/forgetPw' element={<ForgetPw />} />
         <Route path='/jupjupDetail' element={<JupjupDetail />} />
         <Route path='/beforAftertUpload' element={<BeforAftertUpload />} />
         <Route path='/chat' element={<Chat />} />

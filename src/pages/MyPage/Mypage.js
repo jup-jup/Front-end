@@ -12,7 +12,7 @@ function classNames(...classes) {
   return classes.filter(Boolean).join(' ');
 }
 
-export default function Example() {
+export default function Mypage() {
   const [activeTab, setActiveTab] = useState('나눔내역');
 
   //react query test
@@ -53,7 +53,7 @@ export default function Example() {
         <div>
           <div className='block'>
             <div className='border-b border-gray-200'>
-              <nav aria-label='Tabs' className='-mb-px flex space-x-8'>
+              <nav aria-label='Tabs' className='flex -mb-px space-x-8'>
                 {tabs.map((tab) => (
                   <a
                     key={tab.name}
@@ -79,25 +79,35 @@ export default function Example() {
         </div>
 
         <div className='flex mt-12 mb-12'>
-          <div className="mt-2 mx-auto w-[30rem] relative">
+          <div className='mt-2 mx-auto w-[30rem] relative'>
             <input
-              id="text"
-              name="text"
-              type="text"
-              className="block w-full py-1.5 text-gray-900 border-b placeholder:text-gray-400 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-              placeholder="검색어를 입력하세요."
+              id='text'
+              name='text'
+              type='text'
+              className='block w-full py-1.5 text-gray-900 border-b placeholder:text-gray-400 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6'
+              placeholder='검색어를 입력하세요.'
             />
-          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" 
-          className="size-5 absolute right-0 bottom-2">
-            <path strokeLinecap="round" strokeLinejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
-          </svg>
+            <svg
+              xmlns='http://www.w3.org/2000/svg'
+              fill='none'
+              viewBox='0 0 24 24'
+              strokeWidth='1.5'
+              stroke='currentColor'
+              className='absolute right-0 size-5 bottom-2'
+            >
+              <path
+                strokeLinecap='round'
+                strokeLinejoin='round'
+                d='m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z'
+              />
+            </svg>
           </div>
         </div>
 
         {activeTab === '나눔내역' ? (
-          <div className='mx-auto max-w-7xl px-6 lg:px-8'>
+          <div className='px-6 mx-auto max-w-7xl lg:px-8'>
             <h3 className='text-lg font-semibold'>나눔내역</h3>
-            <div className='mx-auto max-w-2xl lg:max-w-4xl'>
+            <div className='max-w-2xl mx-auto lg:max-w-4xl'>
               {/* <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">From the blog</h2>
             <p className="mt-2 text-lg leading-8 text-gray-600">
               Learn how to grow your business with our expert advice.
@@ -106,7 +116,7 @@ export default function Example() {
                 {posts.map((post) => (
                   <article
                     key={post.id}
-                    className='relative isolate flex flex-col gap-8 lg:flex-row'
+                    className='relative flex flex-col gap-8 isolate lg:flex-row'
                   >
                     <Link
                       to='/MypageGIVE'
@@ -115,14 +125,14 @@ export default function Example() {
                       <img
                         alt=''
                         src={post.imageUrl}
-                        className='absolute inset-0 h-full w-full rounded-2xl bg-gray-50 object-cover'
+                        className='absolute inset-0 object-cover w-full h-full rounded-2xl bg-gray-50'
                       />
                       <div className='absolute inset-0 rounded-2xl ring-1 ring-inset ring-gray-900/10' />
                     </Link>
                     <div>
                       <Link
                         to='/MypageGIVE'
-                        className='flex items-center gap-x-4 text-xs'
+                        className='flex items-center text-xs gap-x-4'
                       >
                         <time
                           dateTime={post.datetime}
@@ -139,7 +149,7 @@ export default function Example() {
                       </Link>
                       <Link
                         to='/MypageGIVE'
-                        className='group relative max-w-xl'
+                        className='relative max-w-xl group'
                       >
                         <h3 className='mt-3 text-lg font-semibold leading-6 text-gray-900 group-hover:text-gray-600'>
                           <span className='absolute inset-0' />
@@ -149,9 +159,9 @@ export default function Example() {
                           {post.description}
                         </p>
                       </Link>
-                      <div className='mt-6 flex border-t border-gray-900/5 pt-6'>
+                      <div className='flex pt-6 mt-6 border-t border-gray-900/5'>
                         <div className='relative flex items-center gap-x-4'>
-                          {/* <img alt="" src={post.author.imageUrl} className="h-10 w-10 rounded-full bg-gray-50" /> */}
+                          {/* <img alt="" src={post.author.imageUrl} className="w-10 h-10 rounded-full bg-gray-50" /> */}
                           <div className='text-sm leading-6'>
                             <p className='font-semibold text-gray-900'>
                               <a href={post.author.href} className='flex'>
@@ -208,9 +218,9 @@ export default function Example() {
           </div>
         ) : (
           <div>
-            <div className='mx-auto max-w-7xl px-6 lg:px-8'>
-            <h3 className='text-lg font-semibold'>받음내역</h3>
-              <div className='mx-auto max-w-2xl lg:max-w-4xl'>
+            <div className='px-6 mx-auto max-w-7xl lg:px-8'>
+              <h3 className='text-lg font-semibold'>받음내역</h3>
+              <div className='max-w-2xl mx-auto lg:max-w-4xl'>
                 {/* <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">From the blog</h2>
           <p className="mt-2 text-lg leading-8 text-gray-600">
             Learn how to grow your business with our expert advice.
@@ -219,7 +229,7 @@ export default function Example() {
                   {posts.map((post) => (
                     <article
                       key={post.id}
-                      className='relative isolate flex flex-col gap-8 lg:flex-row'
+                      className='relative flex flex-col gap-8 isolate lg:flex-row'
                     >
                       <Link
                         to='/MypageReceive'
@@ -228,14 +238,14 @@ export default function Example() {
                         <img
                           alt=''
                           src={post.imageUrl}
-                          className='absolute inset-0 h-full w-full rounded-2xl bg-gray-50 object-cover'
+                          className='absolute inset-0 object-cover w-full h-full rounded-2xl bg-gray-50'
                         />
                         <div className='absolute inset-0 rounded-2xl ring-1 ring-inset ring-gray-900/10' />
                       </Link>
                       <div>
                         <Link
                           to='/MypageReceive'
-                          className='flex items-center gap-x-4 text-xs'
+                          className='flex items-center text-xs gap-x-4'
                         >
                           <time
                             dateTime={post.datetime}
@@ -252,7 +262,7 @@ export default function Example() {
                         </Link>
                         <Link
                           to='/MypageReceive'
-                          className='group relative max-w-xl'
+                          className='relative max-w-xl group'
                         >
                           <h3 className='mt-3 text-lg font-semibold leading-6 text-gray-900 group-hover:text-gray-600'>
                             <span className='absolute inset-0' />
@@ -262,9 +272,9 @@ export default function Example() {
                             {post.description}
                           </p>
                         </Link>
-                        <div className='mt-6 flex border-t border-gray-900/5 pt-6'>
+                        <div className='flex pt-6 mt-6 border-t border-gray-900/5'>
                           <div className='relative flex items-center gap-x-4'>
-                            {/* <img alt="" src={post.author.imageUrl} className="h-10 w-10 rounded-full bg-gray-50" /> */}
+                            {/* <img alt="" src={post.author.imageUrl} className="w-10 h-10 rounded-full bg-gray-50" /> */}
                             <div className='text-sm leading-6'>
                               <p className='font-semibold text-gray-900'>
                                 <a href={post.author.href} className='flex'>
