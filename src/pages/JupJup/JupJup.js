@@ -1,9 +1,9 @@
 import { posts } from 'components/dummydata/chat';
 import { Link } from 'react-router-dom';
 
-export default function Example() {
+export default function JupJup() {
   return (
-    <div className='bg-white py-2 sm:py-12 mx-auto max-w-7xl w-full px-12 sm:px-0'>
+    <div className='w-full px-12 py-2 mx-auto bg-white sm:py-12 max-w-7xl sm:px-0'>
       <div className='flex'>
         <div className='mt-2 mx-auto w-[30rem] relative'>
           <input
@@ -19,7 +19,7 @@ export default function Example() {
             viewBox='0 0 24 24'
             strokeWidth='1.5'
             stroke='currentColor'
-            className='size-5 absolute right-0 bottom-2'
+            className='absolute right-0 size-5 bottom-2'
           >
             <path
               strokeLinecap='round'
@@ -39,12 +39,12 @@ export default function Example() {
       </div>
 
       <div className='mx-auto max-w-7xl px-6 lg:px-8 pt-4 pb-20 xl:w-[45%] sm:w-[60%]'>
-        <div className='mx-auto max-w-2xl lg:max-w-4xl'>
+        <div className='max-w-2xl mx-auto lg:max-w-4xl'>
           <div className='mt-16 space-y-20 lg:mt-20 lg:space-y-20'>
             {posts.map((post) => (
               <article
                 key={post.id}
-                className='relative isolate flex flex-col gap-8 lg:flex-row'
+                className='relative flex flex-col gap-8 isolate lg:flex-row'
               >
                 <Link
                   to='/jupjupDetail'
@@ -53,14 +53,14 @@ export default function Example() {
                   <img
                     alt=''
                     src={post.imageUrl}
-                    className='absolute inset-0 h-full w-full rounded-2xl bg-gray-50 object-cover'
+                    className='absolute inset-0 object-cover w-full h-full rounded-2xl bg-gray-50'
                   />
                   <div className='absolute inset-0 rounded-2xl ring-1 ring-inset ring-gray-900/10' />
                 </Link>
                 <div>
                   <Link
                     to='/jupjupDetail'
-                    className='flex items-center gap-x-4 text-xs'
+                    className='flex items-center text-xs gap-x-4'
                   >
                     <time dateTime={post.datetime} className='text-gray-500'>
                       {post.date}
@@ -72,7 +72,7 @@ export default function Example() {
                       {post.category.title}
                     </a>
                   </Link>
-                  <Link to='/jupjupDetail' className='group relative max-w-xl'>
+                  <Link to='/jupjupDetail' className='relative max-w-xl group'>
                     <h3 className='mt-3 text-lg font-semibold leading-6 text-gray-900 group-hover:text-gray-600'>
                       <span className='absolute inset-0' />
                       {post.title}
@@ -81,9 +81,9 @@ export default function Example() {
                       {post.description}
                     </p>
                   </Link>
-                  <div className='mt-6 flex border-t border-gray-900/5 pt-6'>
+                  <div className='flex pt-6 mt-6 border-t border-gray-900/5'>
                     <div className='relative flex items-center gap-x-4'>
-                      {/* <img alt="" src={post.author.imageUrl} className="h-10 w-10 rounded-full bg-gray-50" /> */}
+                      {/* <img alt="" src={post.author.imageUrl} className="w-10 h-10 rounded-full bg-gray-50" /> */}
                       <div className='text-sm leading-6'>
                         <p className='font-semibold text-gray-900'>
                           <a href={post.author.href} className='flex'>

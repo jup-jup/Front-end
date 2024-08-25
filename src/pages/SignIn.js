@@ -1,6 +1,6 @@
 import instance from '../api/axios';
 
-export default function Example() {
+export default function SignIn() {
   const baseURL = instance.defaults.baseURL;
   const validProviders = ['google', 'kakao', 'naver'];
 
@@ -16,29 +16,29 @@ export default function Example() {
 
   return (
     <>
-      <div className='flex min-h-full flex-1 flex-col justify-center py-12 sm:px-6 lg:px-8'>
+      <div className='flex flex-col justify-center flex-1 min-h-full py-12 sm:px-6 lg:px-8'>
         <div className='sm:mx-auto sm:w-full sm:max-w-md'>
-          <h2 className='mt-6 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900'>
+          <h2 className='mt-6 text-2xl font-bold leading-9 tracking-tight text-center text-gray-900'>
             로그인
           </h2>
         </div>
 
         <div className='mt-10 sm:mx-auto sm:w-full sm:max-w-[480px]'>
-          <div className='bg-white px-6 py-12 shadow sm:rounded-lg sm:px-12'>
+          <div className='px-6 py-12 bg-white shadow sm:rounded-lg sm:px-12'>
             <form action='#' method='POST' className='space-y-6'>
               <div className='m-auto'>
                 {['google', 'kakao', 'naver'].map((provider) => (
                   <img
                     key={provider}
                     src={`/login/${provider}.png`}
-                    className='h-20 w-full mt-2 cursor-pointer'
+                    className='w-full h-20 mt-2 cursor-pointer'
                     onClick={() => handleLogin(provider)}
                     alt={`${provider} 로그인`}
                   />
                 ))}
               </div>
               {/* <div className="flex justify-between">
-                <div className="text-sm leading-6 ml-auto">
+                <div className="ml-auto text-sm leading-6">
                     <Link to ="/forgetPw" className="font-semibold text-[#4EC0DE] hover:text-[#4EC0DE]">
                       비밀번호 찾기
                     </Link>
@@ -57,16 +57,16 @@ export default function Example() {
                     <div className="w-full border-t border-gray-200" />
                   </div>
                   <div className="relative flex justify-center text-sm font-medium leading-6">
-                    <span className="bg-white px-6 text-gray-900">Or continue with</span>
+                    <span className="px-6 text-gray-900 bg-white">Or continue with</span>
                   </div>
                 </div>
 
-                <div className="mt-6 grid grid-cols-2 gap-4">
+                <div className="grid grid-cols-2 gap-4 mt-6">
                   <a
                     href="#"
-                    className="flex w-full items-center justify-center gap-3 rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus-visible:ring-transparent"
+                    className="flex items-center justify-center w-full gap-3 px-3 py-2 text-sm font-semibold text-gray-900 bg-white rounded-md shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus-visible:ring-transparent"
                   >
-                    <svg viewBox="0 0 24 24" aria-hidden="true" className="h-5 w-5">
+                    <svg viewBox="0 0 24 24" aria-hidden="true" className="w-5 h-5">
                       <path
                         d="M12.0003 4.75C13.7703 4.75 15.3553 5.36002 16.6053 6.54998L20.0303 3.125C17.9502 1.19 15.2353 0 12.0003 0C7.31028 0 3.25527 2.69 1.28027 6.60998L5.27028 9.70498C6.21525 6.86002 8.87028 4.75 12.0003 4.75Z"
                         fill="#EA4335"
@@ -89,7 +89,7 @@ export default function Example() {
 
                   <a
                     href="#"
-                    className="flex w-full items-center justify-center gap-3 rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus-visible:ring-transparent"
+                    className="flex items-center justify-center w-full gap-3 px-3 py-2 text-sm font-semibold text-gray-900 bg-white rounded-md shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus-visible:ring-transparent"
                   >
                     <svg fill="currentColor" viewBox="0 0 20 20" aria-hidden="true" className="h-5 w-5 fill-[#24292F]">
                       <path
@@ -104,7 +104,7 @@ export default function Example() {
             </div>
           </div>
 
-          {/* <p className="mt-10 text-center text-sm text-gray-500">
+          {/* <p className="mt-10 text-sm text-center text-gray-500">
               Not a member?{' '}
               <a href="#" className="font-semibold leading-6 text-indigo-600 hover:text-indigo-500">
                 Start a 14 day free trial
