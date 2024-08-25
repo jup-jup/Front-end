@@ -1,0 +1,45 @@
+$content-max-width: 1180px;
+
+$breakpoints-tablet: 1023;
+$breakpoints-mobile: 767;
+
+
+@mixin media-mo() {
+  @media (max-width: ($breakpoints-mobile+'px')) {
+    @content;
+  }
+}
+
+@mixin media-ta() {
+  @media (max-width: ($breakpoints-tablet+'px')) {
+    @content;
+  }
+}
+
+// @mixin font($value) {
+//   @if($value =='cc') {
+//     font-family: 'ChosunCentennial';
+//   }
+
+//   @if($value =='cc') {
+//     font-family: 'ChosunCentennial';
+//   }
+// }
+
+@mixin dotdotdot($font-size, $lines-to-show, $line-height: 1.5) {
+  display: block;
+  /* Fallback for non-webkit */
+  display: -webkit-box;
+  // box-orient: vertical;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: $lines-to-show;
+  // display: box;
+  // max-width: 400px;
+  max-width: 100%;
+  max-height: $font-size*$line-height*$lines-to-show;
+  /* Fallback for non-webkit */
+  font-size: $font-size;
+  line-height: $line-height;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
