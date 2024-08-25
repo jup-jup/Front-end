@@ -152,7 +152,14 @@ const Header = () => {
                   to ="/chatOtherList"
                   className="block px-3 py-2 -mx-3 text-base font-semibold leading-7 text-gray-900 rounded-lg hover:bg-gray-50"
                 >
-                  채팅
+                  <span>채팅</span>
+                  <span class="ml-4 inline-flex items-center gap-x-1.5 rounded-full bg-pink-100 px-1.5 py-0.5 text-xs font-medium text-pink-700">
+                    <svg class="h-1.5 w-1.5 fill-pink-500" viewBox="0 0 6 6" aria-hidden="true">
+                      <circle cx="3" cy="3" r="3" />
+                    </svg>
+                    10
+                  </span>
+
                 </Link>
                 <Link
                   to ="/ProfileUpdate"
