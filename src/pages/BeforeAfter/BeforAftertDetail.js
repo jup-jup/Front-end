@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 
-export default function Example() {
+export default function BeforAftertDetail() {
   const [comments, setComments] = useState([
     { id: 1, author: '사용자1', content: '멋진 before/after 사진이네요!' },
     { id: 2, author: '사용자2', content: '정말 대단한 변화입니다.' },
@@ -41,7 +41,7 @@ export default function Example() {
 
   return (
     <>
-    <div className="bg-white py-2 sm:py-12 relative mx-auto max-w-7xl">
+    <div className="relative py-2 mx-auto bg-white sm:py-12 max-w-7xl">
       <div className="flex">
       </div>
       <div className="flex gap-4">
@@ -49,7 +49,7 @@ export default function Example() {
           <img
             alt=""
             src={'https://images.unsplash.com/photo-1496128858413-b36217c2ce36?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=3603&q=80'}
-            className="absolute inset-0 h-full w-full rounded-2xl bg-gray-50 object-cover"
+            className="absolute inset-0 object-cover w-full h-full rounded-2xl bg-gray-50"
           />
           <div className="absolute inset-0 rounded-2xl ring-1 ring-inset ring-gray-900/10" />
           <p className="absolute text-white left-4 top-4">BEFORE</p>
@@ -58,7 +58,7 @@ export default function Example() {
           <img
             alt=""
             src={'https://images.unsplash.com/photo-1496128858413-b36217c2ce36?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=3603&q=80'}
-            className="absolute inset-0 h-full w-full rounded-2xl bg-gray-50 object-cover"
+            className="absolute inset-0 object-cover w-full h-full rounded-2xl bg-gray-50"
           />
           <div className="absolute inset-0 rounded-2xl ring-1 ring-inset ring-gray-900/10" />
           <p className="absolute text-white left-4 top-4">BEFORE</p>
@@ -71,7 +71,7 @@ export default function Example() {
         <img
           alt=""
           src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
-          className="inline-block h-8 w-8 rounded-full"
+          className="inline-block w-8 h-8 rounded-full"
         />
         <h1 className='mt-1 ml-2'>닉네임</h1>
 
@@ -82,7 +82,7 @@ export default function Example() {
         >
           수정하기
         </Link>
-      <p className='mb-12 mt-6'>블라블라 설명</p>
+      <p className='mt-6 mb-12'>블라블라 설명</p>
 
       <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="size-6">
         <path strokeLinecap="round" strokeLinejoin="round" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z" />
@@ -90,13 +90,13 @@ export default function Example() {
 
 
       <div className="mt-8">
-        <h2 className="text-2xl font-bold mb-4">댓글</h2>
+        <h2 className="mb-4 text-2xl font-bold">댓글</h2>
         <div className="space-y-4">
           {currentComments.map((comment) => (
-            <div key={comment.id} className="bg-gray-100 p-4 rounded-lg">
+            <div key={comment.id} className="p-4 bg-gray-100 rounded-lg">
               <p className="font-semibold">{comment.author}</p>
               <p>{comment.content}</p>
-              <div className='mt-2 flex gap-4'>
+              <div className='flex gap-4 mt-2'>
                 <p className='text-xs'>신고하기</p>
                 <p className='text-xs'>수정하기</p>
                 <p className='text-xs'>삭제하기</p>
@@ -104,7 +104,7 @@ export default function Example() {
             </div>
           ))}
         </div>
-        <div className="mt-4 flex justify-center">
+        <div className="flex justify-center mt-4">
           {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
             <button
               key={page}
@@ -127,7 +127,7 @@ export default function Example() {
           ></textarea>
           <button
             type="submit"
-            className="mt-2 px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600"
+            className="px-4 py-2 mt-2 text-white bg-blue-500 rounded-lg hover:bg-blue-600"
           >
             댓글 작성
           </button>
