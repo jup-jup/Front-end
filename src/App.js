@@ -47,26 +47,26 @@ export default function Example() {
 
   return (
     <Routes>
-      <Route path='/' element={<PageLayout />}>
+      <Route path="/" element={<PageLayout />}>
         <Route index element={<Main />} />
-        <Route path='/JupJup' element={<JupJup />} />
-        <Route path='/BeforeAfter' element={<BeforeAfter />} />
-        <Route path='/signin' element={<SignIn />} />
+        <Route path="/JupJup" element={<JupJup />} />
+        <Route path="/BeforeAfter" element={<BeforeAfter />} />
+        <Route path="/signin" element={<SignIn />} />
         {/* <Route path='/signUp' element={<SignUp />}></Route> */}
-        <Route path='/jupjupDetail' element={<JupjupDetail />} />
-        <Route path='/beforAftertUpload' element={<BeforAftertUpload />} />
-        <Route path='/chat' element={<Chat />} />
-        <Route path='/beforAftertDetail' element={<BeforAftertDetail />} />
-        <Route path='/jupjupWrite' element={<JupjupWrite />} />
-        <Route path='/chatOtherList' element={<ChatOtherList />} />
-        <Route path='/chatOtherDetail' element={<ChatOtherDetail />} />
-        <Route path='/Mypage' element={<Mypage />} />
-        <Route path='/MypageGIVE' element={<MypageGIVE />} />
-        <Route path='/MypageReceive' element={<MypageReceive />} />
-        <Route path='/jupjupUpdate' element={<JupjupUpdate />} />
-        <Route path='/ProfileUpdate' element={<ProfileUpdate />} />
-        <Route path='/beforAftertUpdate' element={<BeforAftertUpdate />} />
-        <Route path='/modal' element={<ModalView />} />
+        <Route path="/jupjupDetail" element={<JupjupDetail />} />
+        <Route path="/beforAftertUpload" element={<BeforAftertUpload />} />
+        <Route path="/chat" element={<Chat />} />
+        <Route path="/beforAftertDetail" element={<BeforAftertDetail />} />
+        <Route path="/jupjupWrite" element={<JupjupWrite />} />
+        <Route path="/chatOtherList" element={<ChatOtherList />} />
+        <Route path="/chatOtherDetail/:postId" element={<ChatOtherDetail />} />
+        <Route path="/Mypage" element={<Mypage />} />
+        <Route path="/MypageGIVE" element={<MypageGIVE />} />
+        <Route path="/MypageReceive" element={<MypageReceive />} />
+        <Route path="/jupjupUpdate" element={<JupjupUpdate />} />
+        <Route path="/ProfileUpdate" element={<ProfileUpdate />} />
+        <Route path="/beforAftertUpdate" element={<BeforAftertUpdate />} />
+        <Route path="/modal" element={<ModalView />} />
       </Route>
     </Routes>
   );
