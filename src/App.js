@@ -1,15 +1,11 @@
 import { useEffect } from 'react';
 import { Route, Routes, useLocation } from 'react-router-dom';
-import BeforeAfter from './pages/BeforeAfter/BeforeAfter';
 import JupJup from './pages/JupJup/JupJup';
 import SignIn from './pages/SignIn';
 // import SignUp from './pages/signUp';
 import { PageLayout } from 'Outlet';
 import Main from 'pages/Main';
 import ModalView from 'pages/ModalView';
-import BeforAftertDetail from './pages/BeforeAfter/BeforAftertDetail';
-import BeforAftertUpdate from './pages/BeforeAfter/BeforAftertUpdate';
-import BeforAftertUpload from './pages/BeforeAfter/BeforAftertUpload';
 import Chat from './pages/Chat/Chat';
 import ChatOtherDetail from './pages/Chat/ChatOtherDetail';
 import ChatOtherList from './pages/Chat/ChatOtherList';
@@ -50,13 +46,10 @@ export default function Example() {
       <Route path="/" element={<PageLayout />}>
         <Route index element={<Main />} />
         <Route path="/JupJup" element={<JupJup />} />
-        <Route path="/BeforeAfter" element={<BeforeAfter />} />
         <Route path="/signin" element={<SignIn />} />
         {/* <Route path='/signUp' element={<SignUp />}></Route> */}
         <Route path="/jupjupDetail" element={<JupjupDetail />} />
-        <Route path="/beforAftertUpload" element={<BeforAftertUpload />} />
         <Route path="/chat" element={<Chat />} />
-        <Route path="/beforAftertDetail" element={<BeforAftertDetail />} />
         <Route path="/jupjupWrite" element={<JupjupWrite />} />
         <Route path="/chatOtherList" element={<ChatOtherList />} />
         <Route path="/chatOtherDetail/:postId" element={<ChatOtherDetail />} />
@@ -65,7 +58,6 @@ export default function Example() {
         <Route path="/MypageReceive" element={<MypageReceive />} />
         <Route path="/jupjupUpdate" element={<JupjupUpdate />} />
         <Route path="/ProfileUpdate" element={<ProfileUpdate />} />
-        <Route path="/beforAftertUpdate" element={<BeforAftertUpdate />} />
         <Route path="/modal" element={<ModalView />} />
       </Route>
     </Routes>
