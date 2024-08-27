@@ -1,3 +1,9 @@
+@mixin media-mo {
+  @media (max-width: 768px) {
+    @content;
+  }
+}
+
 .footer {
   background: #4ec0de;
 
