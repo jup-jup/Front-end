@@ -1,0 +1,270 @@
+.container {
+    width: 100%;
+    padding: 0.5rem 3rem;
+    margin: 0 auto;
+    background-color: white;
+    max-width: 80rem;
+  
+    @media (min-width: 640px) {
+      padding: 3rem 0;
+    }
+  }
+  
+  .searchContainer {
+    display: flex;
+  }
+  
+  .searchInputWrapper {
+    margin-top: 0.5rem;
+    margin-left: auto;
+    margin-right: auto;
+    width: 30rem;
+    position: relative;
+  }
+  
+  .searchInput {
+    display: block;
+    width: 100%;
+    padding: 0.375rem 0;
+    color: #111827;
+    border-bottom: 1px solid #d1d5db;
+    font-size: 0.875rem;
+    line-height: 1.5rem;
+  
+    &::placeholder {
+      color: #9ca3af;
+    }
+  
+    &:focus {
+      outline: none;
+      border-color: #4f46e5;
+    }
+  }
+  
+  .searchIcon {
+    position: absolute;
+    right: 0;
+    bottom: 0.5rem;
+    width: 1.25rem;
+    height: 1.25rem;
+  }
+  
+  .writeButtonContainer {
+    margin-top: 1rem;
+    margin-left: auto;
+    margin-right: auto;
+    max-width: 80rem;
+  
+    @media (min-width: 1280px) {
+      width: 37%;
+    }
+  
+    @media (min-width: 640px) {
+      width: 60%;
+    }
+  }
+  
+  .writeButton {
+    float: right;
+    border-radius: 0.375rem;
+    background-color: #4f46e5;
+    padding: 0.625rem 0.875rem;
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: white;
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  
+    &:hover {
+      background-color: #4338ca;
+    }
+  
+    &:focus {
+      outline: 2px solid transparent;
+      outline-offset: 2px;
+      box-shadow: 0 0 0 2px #c7d2fe;
+    }
+  }
+  
+  .postsContainer {
+    margin-left: auto;
+    margin-right: auto;
+    max-width: 80rem;
+    padding: 1rem 1.5rem 5rem;
+  
+    @media (min-width: 1280px) {
+      width: 45%;
+    }
+  
+    @media (min-width: 640px) {
+      width: 60%;
+    }
+  
+    @media (min-width: 1024px) {
+      padding-left: 2rem;
+      padding-right: 2rem;
+    }
+  }
+  
+  .postsWrapper {
+    max-width: 42rem;
+    margin-left: auto;
+    margin-right: auto;
+  
+    @media (min-width: 1024px) {
+      max-width: 56rem;
+    }
+  }
+  
+  .postsList {
+    margin-top: 4rem;
+    display: flex;
+    flex-direction: column;
+    gap: 5rem;
+  
+    @media (min-width: 1024px) {
+      margin-top: 5rem;
+      gap: 5rem;
+    }
+  }
+  
+  .postItem {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    isolation: isolate;
+  
+    @media (min-width: 1024px) {
+      flex-direction: row;
+    }
+  }
+  
+  .postImageLink {
+    position: relative;
+    aspect-ratio: 16 / 9;
+  
+    @media (min-width: 640px) {
+      aspect-ratio: 2 / 1;
+    }
+  
+    @media (min-width: 1024px) {
+      aspect-ratio: 1 / 1;
+      width: 16rem;
+      flex-shrink: 0;
+    }
+  }
+  
+  .postImage {
+    position: absolute;
+    inset: 0;
+    object-fit: cover;
+    width: 100%;
+    height: 100%;
+    border-radius: 1rem;
+    background-color: #f9fafb;
+  }
+  
+  .postImageOverlay {
+    position: absolute;
+    inset: 0;
+    border-radius: 1rem;
+    box-shadow: inset 0 0 0 1px rgba(17, 24, 39, 0.1);
+  }
+  
+  .postContent {
+    flex: 1;
+  }
+  
+  .postMetadata {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    font-size: 0.75rem;
+  }
+  
+  .postDate {
+    color: #6b7280;
+  }
+  
+  .postCategory {
+    position: relative;
+    z-index: 10;
+    border-radius: 9999px;
+    background-color: #f9fafb;
+    padding: 0.375rem 0.75rem;
+    font-weight: 500;
+    color: #4b5563;
+  
+    &:hover {
+      background-color: #f3f4f6;
+    }
+  }
+  
+  .postTitleLink {
+    position: relative;
+    max-width: 36rem;
+  }
+  
+  .postTitle {
+    margin-top: 0.75rem;
+    font-size: 1.125rem;
+    font-weight: 600;
+    line-height: 1.5rem;
+    color: #111827;
+  
+    .postTitleLink:hover & {
+      color: #4b5563;
+    }
+  }
+  
+  .postDescription {
+    margin-top: 1.25rem;
+    font-size: 0.875rem;
+    line-height: 1.5rem;
+    color: #4b5563;
+  }
+  
+  .postFooter {
+    display: flex;
+    padding-top: 1.5rem;
+    margin-top: 1.5rem;
+    border-top: 1px solid rgba(17, 24, 39, 0.05);
+  }
+  
+  .authorInfo {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+  
+  .authorName {
+    font-size: 0.875rem;
+    line-height: 1.5rem;
+    font-weight: 600;
+    color: #111827;
+  }
+  
+  .authorNameLink {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  
+  .commentIcon, .viewIcon {
+    width: 1.5rem;
+    height: 1.5rem;
+  }
+  
+  .viewCount {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    margin-top: 0.25rem;
+  }
+  
+  .viewCountText {
+    color: #4b5563;
+    font-size: 0.875rem;
+    line-height: 1.5rem;
+  }

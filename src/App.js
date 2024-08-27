@@ -10,7 +10,7 @@ import Chat from './pages/Chat/Chat';
 import ChatOtherDetail from './pages/Chat/ChatOtherDetail';
 import ChatOtherList from './pages/Chat/ChatOtherList';
 import JupjupDetail from './pages/JupJup/JupJupDetail';
-import JupjupUpdate from './pages/JupJup/JupJupUpdate';
+import JupjupUpdate from './pages/MyPage/JupJupUpdate';
 import JupjupWrite from './pages/JupJup/JupJupWrite';
 import Mypage from './pages/MyPage/Mypage';
 import MypageGIVE from './pages/MyPage/MypageGive';

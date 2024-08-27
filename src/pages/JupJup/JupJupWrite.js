@@ -1,121 +1,71 @@
 import { PhotoIcon, UserCircleIcon } from '@heroicons/react/24/solid';
+import jw from './JupJupWrite.module.scss';
 
 export default function JupJupWrite() {
   return (
-    <form className='mx-auto max-w-7xl w-[50%]'>
-      <div className='space-y-12'>
-        <div className='pb-12 border-b border-gray-900/10'>
-          <h2 className='text-base font-semibold leading-7 text-gray-900'>
-            글쓰기
-          </h2>
-          <div className='grid grid-cols-1 mt-10 gap-x-6 gap-y-8 sm:grid-cols-6'>
-            <div className='col-span-full'>
-              <label
-                htmlFor='about'
-                className='block text-sm font-medium leading-6 text-gray-900'
-              >
-                제목
-              </label>
-              <div className='mt-2'>
+    <form className={jw.form}>
+      <div className={jw.formContent}>
+        <div className={jw.section}>
+          <h2 className={jw.sectionTitle}>글쓰기</h2>
+          <div className={jw.inputGrid}>
+            <div className={jw.fullWidth}>
+              <label htmlFor="title" className={jw.label}>제목</label>
+              <div className={jw.inputWrapper}>
                 <textarea
-                  id='about'
-                  name='about'
+                  id="title"
+                  name="title"
                   rows={3}
-                  className='block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6'
+                  className={jw.textarea}
                   defaultValue={''}
                 />
               </div>
-              {/* <p className="mt-3 text-sm leading-6 text-gray-600">Write a few sentences about yourself.</p> */}
             </div>
-            <div className='col-span-full'>
-              <label
-                htmlFor='about'
-                className='block text-sm font-medium leading-6 text-gray-900'
-              >
-                설명
-              </label>
-              <div className='mt-2'>
+            <div className={jw.fullWidth}>
+              <label htmlFor="description" className={jw.label}>설명</label>
+              <div className={jw.inputWrapper}>
                 <textarea
-                  id='about'
-                  name='about'
+                  id="description"
+                  name="description"
                   rows={3}
-                  className='block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6'
+                  className={jw.textarea}
                   defaultValue={''}
                 />
               </div>
-              {/* <p className="mt-3 text-sm leading-6 text-gray-600">Write a few sentences about yourself.</p> */}
             </div>
-            <div className='col-span-full'>
-              <label
-                htmlFor='about'
-                className='block text-sm font-medium leading-6 text-gray-900'
-              >
-                거래위치장소
-              </label>
-              <div className='mt-2'>
+            <div className={jw.fullWidth}>
+              <label htmlFor="location" className={jw.label}>거래위치장소</label>
+              <div className={jw.inputWrapper}>
                 <textarea
-                  id='about'
-                  name='about'
+                  id="location"
+                  name="location"
                   rows={3}
-                  className='block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6'
+                  className={jw.textarea}
                   defaultValue={''}
                 />
-              </div>
-              {/* <p className="mt-3 text-sm leading-6 text-gray-600">Write a few sentences about yourself.</p> */}
-            </div>
-
-            <div className='col-span-full'>
-              <label
-                htmlFor='photo'
-                className='block text-sm font-medium leading-6 text-gray-900'
-              >
-                Photo
-              </label>
-              <div className='flex items-center mt-2 gap-x-3'>
-                <UserCircleIcon
-                  aria-hidden='true'
-                  className='w-12 h-12 text-gray-300'
-                />
-                <button
-                  type='button'
-                  className='rounded-md bg-white px-2.5 py-1.5 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50'
-                >
-                  Change
-                </button>
               </div>
             </div>
 
-            <div className='col-span-full'>
-              <label
-                htmlFor='cover-photo'
-                className='block text-sm font-medium leading-6 text-gray-900'
-              >
-                Cover photo
-              </label>
-              <div className='flex justify-center px-6 py-10 mt-2 border border-dashed rounded-lg border-gray-900/25'>
-                <div className='text-center'>
-                  <PhotoIcon
-                    aria-hidden='true'
-                    className='w-12 h-12 mx-auto text-gray-300'
-                  />
-                  <div className='flex mt-4 text-sm leading-6 text-gray-600'>
-                    <label
-                      htmlFor='file-upload'
-                      className='relative font-semibold text-indigo-600 bg-white rounded-md cursor-pointer focus-within:outline-none focus-within:ring-2 focus-within:ring-indigo-600 focus-within:ring-offset-2 hover:text-indigo-500'
-                    >
+            <div className={jw.fullWidth}>
+              <label htmlFor="photo" className={jw.label}>Photo</label>
+              <div className={jw.photoUpload}>
+                <UserCircleIcon className={jw.userIcon} aria-hidden="true" />
+                <button type="button" className={jw.changeButton}>Change</button>
+              </div>
+            </div>
+
+            <div className={jw.fullWidth}>
+              <label htmlFor="cover-photo" className={jw.label}>Cover photo</label>
+              <div className={jw.coverPhotoUpload}>
+                <div className={jw.uploadContent}>
+                  <PhotoIcon className={jw.photoIcon} aria-hidden="true" />
+                  <div className={jw.uploadText}>
+                    <label htmlFor="file-upload" className={jw.uploadLabel}>
                       <span>Upload a file</span>
-                      <input
-                        id='file-upload'
-                        name='file-upload'
-                        type='file'
-                        className='sr-only'
-                      />
+                      <input id="file-upload" name="file-upload" type="file" className={jw.srOnly} />
                     </label>
-                    <p className='pl-1'>or drag and drop</p>
+                    <p className={jw.dragDropText}>or drag and drop</p>
                   </div>
-                  <p className='text-xs leading-5 text-gray-600'>
-                    PNG, JPG, GIF up to 10MB
-                  </p>
+                  <p className={jw.fileTypeText}>PNG, JPG, GIF up to 10MB</p>
                 </div>
               </div>
             </div>
@@ -123,19 +73,9 @@ export default function JupJupWrite() {
         </div>
       </div>
 
-      <div className='flex items-center justify-end mt-6 gap-x-6'>
-        <button
-          type='button'
-          className='text-sm font-semibold leading-6 text-gray-900'
-        >
-          Cancel
-        </button>
-        <button
-          type='submit'
-          className='px-3 py-2 text-sm font-semibold text-white bg-indigo-600 rounded-md shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600'
-        >
-          Save
-        </button>
+      <div className={jw.formActions}>
+        <button type="button" className={jw.cancelButton}>Cancel</button>
+        <button type="submit" className={jw.saveButton}>Save</button>
       </div>
     </form>
   );

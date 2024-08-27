@@ -1,16 +1,17 @@
 import { posts } from 'components/dummydata/chat';
 import { Link } from 'react-router-dom';
+import jup from './JupJup.module.scss';
 
 export default function JupJup() {
   return (
-    <div className='w-full px-12 py-2 mx-auto bg-white sm:py-12 max-w-7xl sm:px-0'>
-      <div className='flex'>
-        <div className='mt-2 mx-auto w-[30rem] relative'>
+    <div className={jup.container}>
+      <div className={jup.searchContainer}>
+        <div className={jup.searchInputWrapper}>
           <input
             id='text'
             name='text'
             type='text'
-            className='block w-full py-1.5 text-gray-900 border-b placeholder:text-gray-400 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6'
+            className={jup.searchInput}
             placeholder='검색어를 입력하세요.'
           />
           <svg
@@ -19,7 +20,7 @@ export default function JupJup() {
             viewBox='0 0 24 24'
             strokeWidth='1.5'
             stroke='currentColor'
-            className='absolute right-0 size-5 bottom-2'
+            className={jup.searchIcon}
           >
             <path
               strokeLinecap='round'
@@ -29,105 +30,99 @@ export default function JupJup() {
           </svg>
         </div>
       </div>
-      <div className='mt-4 mx-auto max-w-7xl xl:w-[37%] sm:w-[60%]'>
+      <div className={jup.writeButtonContainer}>
         <Link
           to='/jupjupWrite'
-          className='float-right rounded-md bg-indigo-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600'
+          className={jup.writeButton}
         >
           글쓰기
         </Link>
       </div>
 
-      <div className='mx-auto max-w-7xl px-6 lg:px-8 pt-4 pb-20 xl:w-[45%] sm:w-[60%]'>
-        <div className='max-w-2xl mx-auto lg:max-w-4xl'>
-          <div className='mt-16 space-y-20 lg:mt-20 lg:space-y-20'>
+      <div className={jup.postsContainer}>
+        <div className={jup.postsWrapper}>
+          <div className={jup.postsList}>
             {posts.map((post) => (
               <article
                 key={post.id}
-                className='relative flex flex-col gap-8 isolate lg:flex-row'
+                className={jup.postItem}
               >
                 <Link
                   to='/jupjupDetail'
-                  className='relative aspect-[16/9] sm:aspect-[2/1] lg:aspect-square lg:w-64 lg:shrink-0'
+                  className={jup.postImageLink}
                 >
                   <img
                     alt=''
                     src={post.imageUrl}
-                    className='absolute inset-0 object-cover w-full h-full rounded-2xl bg-gray-50'
+                    className={jup.postImage}
                   />
-                  <div className='absolute inset-0 rounded-2xl ring-1 ring-inset ring-gray-900/10' />
+                  <div className={jup.postImageOverlay} />
                 </Link>
-                <div>
+                <div className={jup.postContent}>
                   <Link
                     to='/jupjupDetail'
-                    className='flex items-center text-xs gap-x-4'
+                    className={jup.postMetadata}
                   >
-                    <time dateTime={post.datetime} className='text-gray-500'>
+                    <time dateTime={post.datetime} className={jup.postDate}>
                       {post.date}
                     </time>
                     <a
                       href={post.category.href}
-                      className='relative z-10 rounded-full bg-gray-50 px-3 py-1.5 font-medium text-gray-600 hover:bg-gray-100'
+                      className={jup.postCategory}
                     >
                       {post.category.title}
                     </a>
                   </Link>
-                  <Link to='/jupjupDetail' className='relative max-w-xl group'>
-                    <h3 className='mt-3 text-lg font-semibold leading-6 text-gray-900 group-hover:text-gray-600'>
-                      <span className='absolute inset-0' />
+                  <Link to='/jupjupDetail' className={jup.postTitleLink}>
+                    <h3 className={jup.postTitle}>
                       {post.title}
                     </h3>
-                    <p className='mt-5 text-sm leading-6 text-gray-600'>
+                    <p className={jup.postDescription}>
                       {post.description}
                     </p>
                   </Link>
-                  <div className='flex pt-6 mt-6 border-t border-gray-900/5'>
-                    <div className='relative flex items-center gap-x-4'>
-                      {/* <img alt="" src={post.author.imageUrl} className="w-10 h-10 rounded-full bg-gray-50" /> */}
-                      <div className='text-sm leading-6'>
-                        <p className='font-semibold text-gray-900'>
-                          <a href={post.author.href} className='flex'>
-                            <span className='absolute inset-0' />
-                            <svg
-                              xmlns='http://www.w3.org/2000/svg'
-                              fill='none'
-                              viewBox='0 0 24 24'
-                              strokeWidth='1.5'
-                              stroke='currentColor'
-                              className='size-6'
-                            >
-                              <path
-                                strokeLinecap='round'
-                                strokeLinejoin='round'
-                                d='M8.625 12a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0 0H8.25m4.125 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0 0H12m4.125 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0 0h-.375M21 12c0 4.556-4.03 8.25-9 8.25a9.764 9.764 0 0 1-2.555-.337A5.972 5.972 0 0 1 5.41 20.97a5.969 5.969 0 0 1-.474-.065 4.48 4.48 0 0 0 .978-2.025c.09-.457-.133-.901-.467-1.226C3.93 16.178 3 14.189 3 12c0-4.556 4.03-8.25 9-8.25s9 3.694 9 8.25Z'
-                              />
-                            </svg>
-                            {post.author.name}
-                          </a>
-                        </p>
-                        <div className='flex mt-1'>
+                  <div className={jup.postFooter}>
+                    <div className={jup.authorInfo}>
+                      <div className={jup.authorName}>
+                        <a href={post.author.href} className={jup.authorNameLink}>
                           <svg
                             xmlns='http://www.w3.org/2000/svg'
                             fill='none'
                             viewBox='0 0 24 24'
                             strokeWidth='1.5'
                             stroke='currentColor'
-                            className='size-6'
+                            className={jup.commentIcon}
                           >
                             <path
                               strokeLinecap='round'
                               strokeLinejoin='round'
-                              d='M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178Z'
-                            />
-                            <path
-                              strokeLinecap='round'
-                              strokeLinejoin='round'
-                              d='M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z'
+                              d='M8.625 12a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0 0H8.25m4.125 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0 0H12m4.125 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0 0h-.375M21 12c0 4.556-4.03 8.25-9 8.25a9.764 9.764 0 0 1-2.555-.337A5.972 5.972 0 0 1 5.41 20.97a5.969 5.969 0 0 1-.474-.065 4.48 4.48 0 0 0 .978-2.025c.09-.457-.133-.901-.467-1.226C3.93 16.178 3 14.189 3 12c0-4.556 4.03-8.25 9-8.25s9 3.694 9 8.25Z'
                             />
                           </svg>
-
-                          <p className='text-gray-600'>{post.author.role}</p>
-                        </div>
+                          {post.author.name}
+                        </a>
+                      </div>
+                      <div className={jup.viewCount}>
+                        <svg
+                          xmlns='http://www.w3.org/2000/svg'
+                          fill='none'
+                          viewBox='0 0 24 24'
+                          strokeWidth='1.5'
+                          stroke='currentColor'
+                          className={jup.viewIcon}
+                        >
+                          <path
+                            strokeLinecap='round'
+                            strokeLinejoin='round'
+                            d='M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178Z'
+                          />
+                          <path
+                            strokeLinecap='round'
+                            strokeLinejoin='round'
+                            d='M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z'
+                          />
+                        </svg>
+                        <p className={jup.viewCountText}>{post.author.role}</p>
                       </div>
                     </div>
                   </div>
@@ -137,7 +132,6 @@ export default function JupJup() {
           </div>
         </div>
       </div>
-      {/* 무한스크롤로 만들기 */}
     </div>
   );
 }
