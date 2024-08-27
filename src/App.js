@@ -14,7 +14,6 @@ import JupjupUpdate from './pages/MyPage/JupJupUpdate';
 import JupjupWrite from './pages/JupJup/JupJupWrite';
 import Mypage from './pages/MyPage/Mypage';
 import MypageGiveReceive from './pages/MyPage/MypageGiveReceive';
-import MypageReceive from './pages/MyPage/MypageReceive';
 import ProfileUpdate from './pages/Profile/ProfileUpdate';
 
 export default function Example() {
@@ -55,7 +54,6 @@ export default function Example() {
         <Route path="/chatOtherDetail/:postId" element={<ChatOtherDetail />} />
         <Route path="/Mypage" element={<Mypage />} />
         <Route path="/MypageGiveReceive" element={<MypageGiveReceive />} />
-        <Route path="/MypageReceive" element={<MypageReceive />} />
         <Route path="/jupjupUpdate" element={<JupjupUpdate />} />
         <Route path="/ProfileUpdate" element={<ProfileUpdate />} />
         <Route path="/modal" element={<ModalView />} />

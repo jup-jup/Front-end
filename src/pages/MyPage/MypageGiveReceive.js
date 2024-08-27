@@ -1,6 +1,6 @@
 import { posts } from 'components/dummydata/chat';
 import { Link } from 'react-router-dom';
-import styles from './MypageGive.module.scss';
+import styles from './MypageGiveReceive.module.scss';
 import { useLocation } from 'react-router-dom';
 
 export default function MypageGive() {
