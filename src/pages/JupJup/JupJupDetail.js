@@ -5,6 +5,13 @@ import CommentIcon from 'components/icons/CommentIcon';
 import ViewIcon from 'components/icons/ViewIcon';
 import Heart from 'components/icons/Heart';
 import UnHeart from 'components/icons/UnHeart';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { Pagination, Navigation } from 'swiper/modules';
+
+// Import Swiper styles
+import 'swiper/css';
+import 'swiper/css/pagination';
+import 'swiper/css/navigation';
 
 const posts = [
   {
@@ -13,8 +20,13 @@ const posts = [
     href: '#',
     state: '예약중',
     description: '블라블라 설명',
-    imageUrl:
+    images: [
       'https://images.unsplash.com/photo-1496128858413-b36217c2ce36?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=3603&q=80',
+      'https://images.unsplash.com/photo-1523800503107-5bc3ba2a6f81?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2560&q=80',
+      'https://images.unsplash.com/photo-1526925712774-2833a7ecd0d4?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2560&q=80',
+      'https://images.unsplash.com/photo-1526925712774-2833a7ecd0d4?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2560&q=80',
+      'https://images.unsplash.com/photo-1526925712774-2833a7ecd0d4?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2560&q=80'
+    ],
     date: '2024.07.11',
     datetime: '2020-03-16',
     category: { title: '인현동', href: '#' },
@@ -28,7 +40,6 @@ const posts = [
   },
   // More posts...
 ];
-
 
 export default function JupJupDetail() {
   const [isFilled, setIsFilled] = useState(false);
@@ -45,16 +56,39 @@ export default function JupJupDetail() {
             {posts.map((post) => (
               <article key={post.id} className={jd.postItem}>
                 <div className={jd.imageGallery}>
-                  {[1, 2, 3].map((index) => (
-                    <div key={index} className={jd.imageWrapper}>
-                      <img
-                        alt=''
-                        src={post.imageUrl}
-                        className={jd.image}
-                      />
-                      <div className={jd.imageOverlay} />
-                    </div>
-                  ))}
+                  <Swiper
+                    modules={[Pagination, Navigation]}
+                    spaceBetween={10}
+                    slidesPerView={1}
+                    pagination={{ clickable: true }}
+                    navigation
+                    breakpoints={{
+                      // when window width is >= 640px
+                      640: {
+                        slidesPerView: 2,
+                        spaceBetween: 20
+                      },
+                      // when window width is >= 1024px
+                      1024: {
+                        slidesPerView: 3,
+                        spaceBetween: 30
+                      }
+                    }}
+                    className={jd.swiper}
+                  >
+                    {post.images.map((image, index) => (
+                      <SwiperSlide key={index} className={jd.swiperSlide}>
+                        <div className={jd.imageWrapper}>
+                          <img
+                            alt=''
+                            src={image}
+                            className={jd.image}
+                          />
+                          <div className={jd.imageOverlay} />
+                        </div>
+                      </SwiperSlide>
+                    ))}
+                  </Swiper>
                 </div>
                 <div className={jd.postContent}>
                   <div className={jd.postMeta}>
