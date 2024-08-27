@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { Route, Routes, useLocation } from 'react-router-dom';
 import JupJup from './pages/JupJup/JupJup';
-import SignIn from './pages/SignIn';
+import SignIn from './pages/SignIn/SignIn';
 // import SignUp from './pages/signUp';
 import { PageLayout } from 'Outlet';
 import Main from 'pages/Main/Main';
