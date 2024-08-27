@@ -13,7 +13,7 @@ import JupjupDetail from './pages/JupJup/JupJupDetail';
 import JupjupUpdate from './pages/MyPage/JupJupUpdate';
 import JupjupWrite from './pages/JupJup/JupJupWrite';
 import Mypage from './pages/MyPage/Mypage';
-import MypageGIVE from './pages/MyPage/MypageGive';
+import MypageGiveReceive from './pages/MyPage/MypageGiveReceive';
 import MypageReceive from './pages/MyPage/MypageReceive';
 import ProfileUpdate from './pages/Profile/ProfileUpdate';
 
@@ -54,7 +54,7 @@ export default function Example() {
         <Route path="/chatOtherList" element={<ChatOtherList />} />
         <Route path="/chatOtherDetail/:postId" element={<ChatOtherDetail />} />
         <Route path="/Mypage" element={<Mypage />} />
-        <Route path="/MypageGIVE" element={<MypageGIVE />} />
+        <Route path="/MypageGiveReceive" element={<MypageGiveReceive />} />
         <Route path="/MypageReceive" element={<MypageReceive />} />
         <Route path="/jupjupUpdate" element={<JupjupUpdate />} />
         <Route path="/ProfileUpdate" element={<ProfileUpdate />} />

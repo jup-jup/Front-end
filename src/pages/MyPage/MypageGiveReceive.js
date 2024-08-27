@@ -1,8 +1,12 @@
 import { posts } from 'components/dummydata/chat';
 import { Link } from 'react-router-dom';
 import styles from './MypageGive.module.scss';
+import { useLocation } from 'react-router-dom';
 
 export default function MypageGive() {
+  const location = useLocation();
+  const { type } = location.state || { type: 'give' };  // 기본값으로 'give' 사용
+  
   return (
     <div className={styles.container}>
       <div className={styles.innerContainer}>
@@ -62,6 +66,8 @@ export default function MypageGive() {
                 </div>
               </article>
             ))}
+
+            {type === 'give' ? (
             <div className={styles.actionButtons}>
               <Link to='/chatOtherDetail' className={styles.button}>
                 대화중인 채팅 방
@@ -70,6 +76,9 @@ export default function MypageGive() {
                 수정하기
               </Link>
             </div>
+            ): (
+              <></>
+            )}
           </div>
         </div>
       </div>

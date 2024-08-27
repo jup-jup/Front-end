@@ -106,7 +106,8 @@ export default function Mypage() {
           {posts.map((post) => (
             <article key={post.id} className={mp.postItem}>
               <Link
-                to={activeTab === '나눔내역' ? '/MypageGIVE' : '/MypageReceive'}
+                to="/MypageGiveReceive"
+                state={{ type: activeTab === '나눔내역' ? 'give' : 'receive' }}
                 className={mp.postImageLink}
               >
                 <img
