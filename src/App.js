@@ -4,7 +4,7 @@ import JupJup from './pages/JupJup/JupJup';
 import SignIn from './pages/SignIn';
 // import SignUp from './pages/signUp';
 import { PageLayout } from 'Outlet';
-import Main from 'pages/Main';
+import Main from 'pages/Main/Main';
 import ModalView from 'pages/ModalView';
 import Chat from './pages/Chat/Chat';
 import ChatOtherDetail from './pages/Chat/ChatOtherDetail';
