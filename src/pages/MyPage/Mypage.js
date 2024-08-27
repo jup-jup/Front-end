@@ -120,6 +120,7 @@ export default function Mypage() {
               <div className={mp.postContent}>
                 <Link
                   to={activeTab === '나눔내역' ? '/MypageGIVE' : '/MypageReceive'}
+                  state={{ type: activeTab === '나눔내역' ? 'give' : 'receive' }}
                   className={mp.postMeta}
                 >
                   <time dateTime={post.datetime} className={mp.postDate}>
@@ -131,6 +132,7 @@ export default function Mypage() {
                 </Link>
                 <Link
                   to={activeTab === '나눔내역' ? '/MypageGIVE' : '/MypageReceive'}
+                  state={{ type: activeTab === '나눔내역' ? 'give' : 'receive' }}
                   className={mp.postTitleLink}
                 >
                   <h3 className={mp.postTitle}>{post.title}</h3>

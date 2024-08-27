@@ -1,12 +1,24 @@
 import { PhotoIcon, UserCircleIcon } from '@heroicons/react/24/solid';
-import jw from './JupJupWrite.module.scss';
+import jw from './WriteUpdate.module.scss';
+import { useLocation } from 'react-router-dom';
+import { useEffect, useState } from 'react';
 
 export default function JupJupWrite() {
+  const location = useLocation();
+  const [isEdit, setIsEdit] = useState(false);
+
+  useEffect(() => {
+    // location.state가 null이 아니고, type이 'edit'인 경우에만 true로 설정
+    setIsEdit(location.state?.type === 'edit');
+  }, [location]);
+
   return (
     <form className={jw.form}>
       <div className={jw.formContent}>
         <div className={jw.section}>
-          <h2 className={jw.sectionTitle}>글쓰기</h2>
+        <h2 className={jw.sectionTitle}>
+            {isEdit ? '수정하기' : '글쓰기'}
+          </h2>
           <div className={jw.inputGrid}>
             <div className={jw.fullWidth}>
               <label htmlFor="title" className={jw.label}>제목</label>

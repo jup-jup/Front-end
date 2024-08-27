@@ -10,8 +10,7 @@ import Chat from './pages/Chat/Chat';
 import ChatOtherDetail from './pages/Chat/ChatOtherDetail';
 import ChatOtherList from './pages/Chat/ChatOtherList';
 import JupjupDetail from './pages/JupJup/JupJupDetail';
-import JupjupUpdate from './pages/MyPage/JupJupUpdate';
-import JupjupWrite from './pages/JupJup/JupJupWrite';
+import WriteUpdate from './pages/WriteOrUpdate/WriteUpdate';
 import Mypage from './pages/MyPage/Mypage';
 import MypageGiveReceive from './pages/MyPage/MypageGiveReceive';
 import ProfileUpdate from './pages/Profile/ProfileUpdate';
@@ -49,12 +48,11 @@ export default function Example() {
         {/* <Route path='/signUp' element={<SignUp />}></Route> */}
         <Route path="/jupjupDetail" element={<JupjupDetail />} />
         <Route path="/chat" element={<Chat />} />
-        <Route path="/jupjupWrite" element={<JupjupWrite />} />
+        <Route path="/WriteUpdate" element={<WriteUpdate />} />
         <Route path="/chatOtherList" element={<ChatOtherList />} />
         <Route path="/chatOtherDetail/:postId" element={<ChatOtherDetail />} />
         <Route path="/Mypage" element={<Mypage />} />
         <Route path="/MypageGiveReceive" element={<MypageGiveReceive />} />
-        <Route path="/jupjupUpdate" element={<JupjupUpdate />} />
         <Route path="/ProfileUpdate" element={<ProfileUpdate />} />
         <Route path="/modal" element={<ModalView />} />
       </Route>
