@@ -1,12 +1,5 @@
-@mixin media-mo {
-  @media (max-width: 768px) {
-    @content;
-  }
-}
-
-$font-size-small: 15px;
-
 .footer {
+  margin-top: 80px;
   background: #4ec0de;
 
   .container {
