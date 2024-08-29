@@ -1,4 +1,4 @@
-import { posts } from "components/dummydata/chat";
+import { mainPosts } from "components/dummydata/main";
 import { Link } from "react-router-dom";
 import m from './Main.module.scss';
 
@@ -40,13 +40,12 @@ const Main = () => {
             <p className={m.featuresSubtitle}>물건은 줄이고, 행복은 늘리고</p>
           </div>
           <div className={m.featuresList}>
-            {posts.map((post) => (
+            {mainPosts.map((post) => (
               <article key={post.id} className={m.featureItem}>
                 <img alt="" src={post.imageUrl} className={m.featureImage} />
                 <div className={m.featureOverlay} />
                 <h3 className={m.featureTitle}>
-                  <a href={post.href}>
-                    <span className={m.featureLink} />
+                  <a>
                     {post.title}
                   </a>
                 </h3>
