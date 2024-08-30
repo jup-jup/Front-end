@@ -14,7 +14,7 @@
   .links {
     display: flex;
     justify-content: space-between;
-    font-size: $font-size-small;
+    // font-size: $font-size-small;
     color: white;
     .links_right {
       display: flex;
@@ -28,6 +28,6 @@
   .copyright {
     margin-top: 128px;
     color: #94a3b8;
-    font-size: $font-size-small;
+    // font-size: $font-size-small;
   }
 }
