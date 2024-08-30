@@ -1,8 +1,13 @@
 import { mainPosts } from "components/dummydata/main";
 import { Link } from "react-router-dom";
 import m from './Main.module.scss';
+import { useEffect } from "react";
 
 const Main = () => {
+
+  useEffect(()=>{
+    console.log(document.cookie, '????');
+  })
   return (
     <>
       <div className={m.hero}>
