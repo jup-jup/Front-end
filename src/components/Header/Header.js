@@ -1,5 +1,5 @@
 'use client';
-import React, { useEffect, useState, Fragment } from 'react';
+import React, { useEffect, useState, Fragment, useCallback } from 'react';
 import h from './header.module.scss';
 import {
   Dialog,
@@ -49,28 +49,25 @@ const Header = () => {
     };
   }, []);
 
-  const { data, isLoading, error, refetch } = useLogout();
+  const { refetch } = useLogout();
 
-  if (isLoading) {
-    return <div className='loading'>로그아웃 중...</div>;
-  }
+  const handleLogout = useCallback(() => {
+    refetch()
+      .then(() => {
+        sessionStorage.removeItem('accessToken');
+        setIsLoggedIn(false);
+        window.dispatchEvent(new Event('loginStateChange'));
+        setMobileMenuOpen(false);
+      })
+      .catch((error) => {
+        setErrorMessage('로그아웃 중 문제가 발생했습니다.');
+        setOpenErrorModal(true);
+      });
+  }, [refetch]);
 
-  if (error) {
-    setErrorMessage('로그아웃 중 문제가 발생했습니다.');
-    setOpenErrorModal(true);
-  }
-
-  const handleLogout = () => {
-    sessionStorage.removeItem('accessToken');
-    setIsLoggedIn(false);
-    window.dispatchEvent(new Event('loginStateChange'));
-    refetch();
+  const handleLinkClick = useCallback(() => {
     setMobileMenuOpen(false);
-  };
-
-  const handleLinkClick = () => {
-    setMobileMenuOpen(false);
-  };
+  }, []);
 
   return (
     <header className={h.header}>
