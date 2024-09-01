@@ -3,7 +3,7 @@ import axios from 'axios';
 const accessToken = sessionStorage.getItem('accessToken');
 
 const instance = axios.create({
-  baseURL: `${process.env.REACT_APP_ROOT_API}`,
+  baseURL: `${process.env.REACT_APP_ROOT_API}` || 'https://jupjup.store',
   timeout: 5000,
   headers: {
     'Content-Type': 'application/json',
