@@ -1,54 +1,56 @@
-import { useEffect } from 'react';
-import { Route, Routes, useLocation } from 'react-router-dom';
-import JupJup from './pages/JupJup/JupJup';
-import SignIn from './pages/SignIn/SignIn';
+import { useEffect } from "react";
+import { Route, Routes, useLocation } from "react-router-dom";
+import JupJup from "./pages/JupJup/JupJup";
+import SignIn from "./pages/SignIn/SignIn";
 // import SignUp from './pages/signUp';
-import { PageLayout } from 'Outlet';
-import Main from 'pages/Main/Main';
-import ModalView from 'pages/ModalView';
-import Chat from './pages/Chat/Chat';
-import ChatOtherDetail from './pages/Chat/ChatOtherDetail';
-import ChatOtherList from './pages/Chat/ChatOtherList';
-import JupjupDetail from './pages/JupJup/JupJupDetail';
-import WriteUpdate from './pages/WriteOrUpdate/WriteUpdate';
-import Mypage from './pages/MyPage/Mypage';
-import MypageGiveReceive from './pages/MyPage/MypageGiveReceive';
-import ProfileUpdate from './pages/Profile/ProfileUpdate';
-import { jwtDecode } from 'jwt-decode';
+import { PageLayout } from "Outlet";
+import Main from "pages/Main/Main";
+import ModalView from "pages/ModalView";
+import Chat from "./pages/Chat/Chat";
+import ChatOtherDetail from "./pages/Chat/ChatOtherDetail";
+import ChatOtherList from "./pages/Chat/ChatOtherList";
+import JupjupDetail from "./pages/JupJup/JupJupDetail";
+import WriteUpdate from "./pages/WriteOrUpdate/WriteUpdate";
+import Mypage from "./pages/MyPage/Mypage";
+import MypageGiveReceive from "./pages/MyPage/MypageGiveReceive";
+import ProfileUpdate from "./pages/Profile/ProfileUpdate";
+import { jwtDecode } from "jwt-decode";
+import { parseJwt } from "hooks/useParseJwt";
+import { useAtom } from "jotai";
+import { userAtom } from "store/User";
 
-export default function Example() {
+export default function App() {
   const location = useLocation();
+  const [, setName] = useAtom(userAtom);
 
   useEffect(() => {
     // URL의 쿼리 파라미터를 파싱합니다.
     const searchParams = new URLSearchParams(location.search);
-    const accessToken = searchParams.get('accessToken');
-    const refreshToken = searchParams.get('refreshToken');
+    const accessToken = searchParams.get("accessToken");
+    const refreshToken = searchParams.get("refreshToken");
 
     if (accessToken) {
       try {
         // JWT 토큰 디코딩
         const decodedToken = jwtDecode(accessToken);
-        
+
         // 디코딩된 토큰에서 필요한 정보 추출
-        const { userId, userName, userEmail, exp } = decodedToken;
+        const { userName, exp } = decodedToken;
 
         // sessionStorage에 저장
-        sessionStorage.setItem('accessToken', accessToken);
-        sessionStorage.setItem('refreshToken', refreshToken);
-        sessionStorage.setItem('userId', userId);
-        sessionStorage.setItem('userName', userName);
-        sessionStorage.setItem('userEmail', userEmail);
-        
+        sessionStorage.setItem("accessToken", accessToken);
+        sessionStorage.setItem("refreshToken", refreshToken);
+        setName(userName);
+
         // 토큰 만료 시간 저장 (밀리초 단위)
-        sessionStorage.setItem('tokenExpiration', exp * 1000);
+        sessionStorage.setItem("tokenExpiration", exp * 1000);
 
         // 로그인 상태 변경 이벤트 발생
-        window.dispatchEvent(new Event('loginStateChange'));
+        window.dispatchEvent(new Event("loginStateChange"));
 
-        console.log('Token decoded and stored successfully');
+        console.log("Token decoded and stored successfully");
       } catch (error) {
-        console.error('Error decoding token:', error);
+        console.error("Error decoding token:", error);
       }
     }
   }, [location]);
@@ -60,11 +62,11 @@ export default function Example() {
         <Route path="/JupJup" element={<JupJup />} />
         <Route path="/signin" element={<SignIn />} />
         {/* <Route path='/signUp' element={<SignUp />}></Route> */}
-        <Route path="/jupjupDetail" element={<JupjupDetail />} />
+        <Route path="/jupjupDetail/:id" element={<JupjupDetail />} />
         <Route path="/chat" element={<Chat />} />
         <Route path="/WriteUpdate" element={<WriteUpdate />} />
         <Route path="/chatOtherList" element={<ChatOtherList />} />
-        <Route path="/chatOtherDetail/:postId" element={<ChatOtherDetail />} />
+        <Route path="/chatOtherDetail/:id" element={<ChatOtherDetail />} />
         <Route path="/Mypage" element={<Mypage />} />
         <Route path="/MypageGiveReceive" element={<MypageGiveReceive />} />
         <Route path="/ProfileUpdate" element={<ProfileUpdate />} />

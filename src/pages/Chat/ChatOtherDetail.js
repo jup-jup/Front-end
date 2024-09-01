@@ -9,7 +9,8 @@ import {
 import { useParams } from 'react-router-dom';
 
 export default function ChatOtherDetail() {
-  const { postId } = useParams();
+
+  const { id } = useParams();
   const [messages, setMessages] = useState([]);
   const [inputMessage, setInputMessage] = useState('');
   const [location, setLocation] = useState(null);
