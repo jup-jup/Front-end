@@ -57,11 +57,13 @@ const Header = () => {
         sessionStorage.removeItem('accessToken');
         setIsLoggedIn(false);
         window.dispatchEvent(new Event('loginStateChange'));
-        setMobileMenuOpen(false);
       })
       .catch((error) => {
         setErrorMessage('로그아웃 중 문제가 발생했습니다.');
         setOpenErrorModal(true);
+      })
+      .finally(() => {
+        setMobileMenuOpen(false);
       });
   }, [refetch]);
 
@@ -253,15 +255,13 @@ const Header = () => {
       {/* 에러 발생 시 모달 표시 */}
       {openErrorModal && (
         <BasicModal
-          className='error-modal'
           setOnModal={setOpenErrorModal}
-          onClose
+          className='error-modal'
           isDim
+          onClose
           dimClick={() => setOpenErrorModal(false)}
         >
-          <div className='error-modal-content'>
-            <p>{errorMessage}</p>
-          </div>
+          {errorMessage}
         </BasicModal>
       )}
     </header>
