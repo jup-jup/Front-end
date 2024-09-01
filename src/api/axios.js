@@ -8,24 +8,15 @@ const instance = axios.create({
     'Content-Type': 'application/json',
   },
 });
-// 요청 인터셉터
-instance.interceptors.request.use(
-  (config) => {
-    const token = sessionStorage.getItem('accessToken');
-    if (token) {
-      config.headers['Authorization'] = `Bearer ${token}`;
-    }
-    return config;
-  },
-  (error) => {
-    return Promise.reject(error);
-  }
-);
 
 // 요청 인터셉터
 instance.interceptors.request.use(
   (config) => {
     // 요청 전에 수행할 작업
+    const token = sessionStorage.getItem('accessToken');
+    if (token) {
+      config.headers['Authorization'] = `Bearer ${token}`;
+    }
     return config;
   },
   (error) => {
