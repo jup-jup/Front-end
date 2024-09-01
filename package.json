@@ -24,7 +24,7 @@
     "tailwind-merge": "^2.5.2",
     "web-vitals": "^2.1.4"
   },
-  "homepage": "https://jupjup.netlify.app",
+  "homepage": "https://jupjup.shop",
   "scripts": {
     "start": "craco start",
     "build": "CI=false craco build",

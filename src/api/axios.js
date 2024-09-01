@@ -1,14 +1,13 @@
 import axios from 'axios';
 
 const instance = axios.create({
-  baseURL: process.env.REACT_APP_ROOT_API || 'https://jupjup.store/api',
+  baseURL: process.env.REACT_APP_ROOT_API,
   timeout: 5000,
-  withCredentials: true, // 이 부분을 옮겼습니다
+  withCredentials: true,
   headers: {
     'Content-Type': 'application/json',
   },
 });
-
 // 요청 인터셉터
 instance.interceptors.request.use(
   (config) => {
