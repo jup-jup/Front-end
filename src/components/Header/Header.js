@@ -16,6 +16,7 @@ import {
 } from '@headlessui/react';
 import { MinusSmallIcon, PlusSmallIcon } from '@heroicons/react/24/outline';
 import { useLogout } from 'hooks/useAuthApi';
+import BasicModal from 'components/portalModal/basicmodal/BasicModal';
 
 const faqs = [
   {
@@ -29,6 +30,8 @@ const faqs = [
 const Header = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [openErrorModal, setOpenErrorModal] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
 
   useEffect(() => {
     const accessToken = sessionStorage.getItem('accessToken');
@@ -53,14 +56,14 @@ const Header = () => {
   }
 
   if (error) {
-    return <div className='error'>로그아웃 중 문제가 발생했습니다.</div>;
+    setErrorMessage('로그아웃 중 문제가 발생했습니다.');
+    setOpenErrorModal(true);
   }
 
   const handleLogout = () => {
     sessionStorage.removeItem('accessToken');
     setIsLoggedIn(false);
     window.dispatchEvent(new Event('loginStateChange'));
-    // 로그아웃 api 연결 하기
     refetch();
     setMobileMenuOpen(false);
   };
@@ -90,6 +93,7 @@ const Header = () => {
           </button>
         </div>
       </nav>
+
       <Transition.Root show={mobileMenuOpen} as={Fragment}>
         <Dialog
           as='div'
@@ -249,6 +253,20 @@ const Header = () => {
           </Transition.Child>
         </Dialog>
       </Transition.Root>
+      {/* 에러 발생 시 모달 표시 */}
+      {openErrorModal && (
+        <BasicModal
+          className='error-modal'
+          setOnModal={setOpenErrorModal}
+          onClose
+          isDim
+          dimClick={() => setOpenErrorModal(false)}
+        >
+          <div className='error-modal-content'>
+            <p>{errorMessage}</p>
+          </div>
+        </BasicModal>
+      )}
     </header>
   );
 };
