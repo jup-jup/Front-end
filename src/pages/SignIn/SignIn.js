@@ -11,7 +11,7 @@ export default function SignIn() {
       return;
     }
     window.location.href = `${baseURL}/v1/user/login?provider=${provider}`;
-    sessionStorage.setItem('access_token', provider);
+    sessionStorage.setItem('accessToken', provider);
     window.dispatchEvent(new Event('loginStateChange'));
   };
 

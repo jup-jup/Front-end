@@ -14,29 +14,43 @@ import WriteUpdate from './pages/WriteOrUpdate/WriteUpdate';
 import Mypage from './pages/MyPage/Mypage';
 import MypageGiveReceive from './pages/MyPage/MypageGiveReceive';
 import ProfileUpdate from './pages/Profile/ProfileUpdate';
+import { jwtDecode } from 'jwt-decode';
 
 export default function Example() {
-  // const params = useParams();
   const location = useLocation();
 
   useEffect(() => {
     // URL의 쿼리 파라미터를 파싱합니다.
     const searchParams = new URLSearchParams(location.search);
-    const accessToken = searchParams.get('access_token');
-    const userEmail = searchParams.get('userEmail');
-    const userName = searchParams.get('userName');
+    const accessToken = searchParams.get('accessToken');
+    const refreshToken = searchParams.get('refreshToken');
 
-    // sessionStorage에 저장
     if (accessToken) {
-      sessionStorage.setItem('access_token', accessToken);
-    }
-    if (userEmail) {
-      sessionStorage.setItem('userEmail', userEmail);
-      window.dispatchEvent(new Event('loginStateChange'));
-    }
-    if (userName) sessionStorage.setItem('userName', userName);
+      try {
+        // JWT 토큰 디코딩
+        const decodedToken = jwtDecode(accessToken);
+        
+        // 디코딩된 토큰에서 필요한 정보 추출
+        const { userId, userName, userEmail, exp } = decodedToken;
 
-    // ... 나머지 코드는 그대로 유지
+        // sessionStorage에 저장
+        sessionStorage.setItem('accessToken', accessToken);
+        sessionStorage.setItem('refreshToken', refreshToken);
+        sessionStorage.setItem('userId', userId);
+        sessionStorage.setItem('userName', userName);
+        sessionStorage.setItem('userEmail', userEmail);
+        
+        // 토큰 만료 시간 저장 (밀리초 단위)
+        sessionStorage.setItem('tokenExpiration', exp * 1000);
+
+        // 로그인 상태 변경 이벤트 발생
+        window.dispatchEvent(new Event('loginStateChange'));
+
+        console.log('Token decoded and stored successfully');
+      } catch (error) {
+        console.error('Error decoding token:', error);
+      }
+    }
   }, [location]);
 
   return (

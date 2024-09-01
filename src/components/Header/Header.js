@@ -29,11 +29,11 @@ const Header = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   useEffect(() => {
-    const accessToken = sessionStorage.getItem('userEmail');
+    const accessToken = sessionStorage.getItem('accessToken');
     setIsLoggedIn(!!accessToken);
 
     const handleLoginStateChange = () => {
-      const newAccessToken = sessionStorage.getItem('userEmail');
+      const newAccessToken = sessionStorage.getItem('accessToken');
       setIsLoggedIn(!!newAccessToken);
     };
 
@@ -45,9 +45,7 @@ const Header = () => {
   }, []);
 
   const handleLogout = () => {
-    sessionStorage.removeItem('access_token');
-    sessionStorage.removeItem('userEmail');
-    sessionStorage.removeItem('userName');
+    sessionStorage.removeItem('accessToken');
     setIsLoggedIn(false);
     window.dispatchEvent(new Event('loginStateChange'));
     // 로그아웃 api 연결 하기
