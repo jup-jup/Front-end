@@ -31,11 +31,11 @@ const Header = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   useEffect(() => {
-    const accessToken = sessionStorage.getItem('accessToken');
+    const accessToken = sessionStorage.getItem('userEmail');
     setIsLoggedIn(!!accessToken);
 
     const handleLoginStateChange = () => {
-      const newAccessToken = sessionStorage.getItem('accessToken');
+      const newAccessToken = sessionStorage.getItem('userEmail');
       setIsLoggedIn(!!newAccessToken);
     };
 
