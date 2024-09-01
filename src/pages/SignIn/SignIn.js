@@ -10,7 +10,7 @@ export default function SignIn() {
       alert(`지원되지 않는 로그인 방식입니다: ${provider}`);
       return;
     }
-    window.location.href = `${baseURL}v1/user/login?provider=${provider}`;
+    window.location.href = `${baseURL}/v1/user/login?provider=${provider}`;
     sessionStorage.setItem('access_token', provider);
     window.dispatchEvent(new Event('loginStateChange'));
   };
