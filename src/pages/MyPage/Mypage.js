@@ -6,7 +6,7 @@ import mp from './Mypage.module.scss';
 import SearchIcon from 'components/icons/SearchIcon';
 import CommentIcon from 'components/icons/CommentIcon';
 import ViewIcon from 'components/icons/ViewIcon';
-import { useGetMyPageSharing } from 'hooks/useMyPageApi';
+import { useGetMyPageSharing, useGetMyPageReceive } from 'hooks/useMyPageApi';
 
 const tabs = [
   { name: '나눔내역', href: '#', current: false },
@@ -21,10 +21,18 @@ export default function Mypage() {
   const [activeTab, setActiveTab] = useState('나눔내역');
 
   const getMyPageSharingMutation = useGetMyPageSharing();
+  const getMyPageReceiveMutation = useGetMyPageReceive();
 
   useEffect(() => {
-    getMyPageSharingMutation.mutate();
-  }, []);
+    console.log(activeTab);
+    if (activeTab === '나눔내역') {
+      getMyPageSharingMutation.mutate();
+    } else {
+      getMyPageReceiveMutation.mutate();
+    }
+  }, [activeTab]);
+
+  
   //react query test
   // const { data, isLoading, error, refetch } = useTodos({
   //   // 옵션 예시
