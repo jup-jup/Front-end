@@ -1,13 +1,19 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import * as api from '../api/myPageApi';
+import { myPageSharingGet, myPageReceiveGet } from "api/myPageApi";
 
 // MyPage 관련 API 훅
 // 아래는 예시
 
-export const useTodos = () => {
-  return useQuery({
-    queryKey: ['todos'],
-    queryFn: api.getTodos,
+export const useGetMyPageSharing = () => {
+  return useMutation({
+    mutationFn: myPageSharingGet,
+  });
+};
+
+export const useGetMyPageReceive = () => {
+  return useMutation({
+    mutationFn: myPageReceiveGet,
   });
 };
 

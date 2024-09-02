@@ -4,7 +4,6 @@ import { redirect, useLocation, useNavigate } from "react-router-dom";
 import { useCallback, useEffect, useState } from "react";
 import { usePostSharing } from "hooks/useSharingApi";
 import { useForm } from "react-hook-form";
-import { useDropzone } from "react-dropzone";
 import FileUpload from "components/fileUpload/FileUpload";
 
 export default function JupJupWrite() {
@@ -18,7 +17,6 @@ export default function JupJupWrite() {
   } = useForm({ mode: "onChange" });
 
   const [isEdit, setIsEdit] = useState(false);
-
   const { mutate: post, isSuccess } = usePostSharing();
 
   useEffect(() => {
@@ -37,7 +35,7 @@ export default function JupJupWrite() {
     post(sample);
   };
 
-  isSuccess && navigate('/jupjup');
+  if(isSuccess) return navigate('/jupjup');
 
   return (
     <>

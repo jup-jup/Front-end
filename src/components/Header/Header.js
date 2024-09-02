@@ -39,7 +39,7 @@ const Header = () => {
     setIsLoggedIn(!!accessToken);
 
     const handleLoginStateChange = () => {
-      const newAccessToken = localStorage.getItem("userEmail");
+      const newAccessToken = localStorage.getItem("accessToken");
       setIsLoggedIn(!!newAccessToken);
     };
 
@@ -57,6 +57,12 @@ const Header = () => {
     instance.post(`${process.env.PUBLIC_URL}/v1/user/logout`)
       .then(() => {
         localStorage.removeItem('accessToken');
+        // 세션 다 비워주기
+        // sessionStorage.removeItem('accessToken');
+        // sessionStorage.removeItem('refreshToken');
+        // sessionStorage.removeItem('tokenExpiration');
+        document.cookie = "JSESSIONID=; max-age=0; path=/;";
+        
         setIsLoggedIn(false);
         window.dispatchEvent(new Event('loginStateChange'));
       })
