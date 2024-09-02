@@ -37,13 +37,13 @@ export default function App() {
         // 디코딩된 토큰에서 필요한 정보 추출
         const { userName, exp } = decodedToken;
 
-        // sessionStorage에 저장
-        sessionStorage.setItem("accessToken", accessToken);
-        sessionStorage.setItem("refreshToken", refreshToken);
+        // localStorage 저장
+        localStorage.setItem("accessToken", accessToken);
+        localStorage.setItem("refreshToken", refreshToken);
         setName(userName);
 
         // 토큰 만료 시간 저장 (밀리초 단위)
-        sessionStorage.setItem("tokenExpiration", exp * 1000);
+        // localStorage.setItem("tokenExpiration", exp * 1000);
 
         // 로그인 상태 변경 이벤트 발생
         window.dispatchEvent(new Event("loginStateChange"));

@@ -17,6 +17,7 @@ import {
 import { MinusSmallIcon, PlusSmallIcon } from '@heroicons/react/24/outline';
 import { useLogout } from 'hooks/useAuthApi';
 import BasicModal from 'components/portalModal/basicmodal/BasicModal';
+import instance from 'api/axios';
 
 const faqs = [
   {
@@ -34,11 +35,11 @@ const Header = () => {
   const [errorMessage, setErrorMessage] = useState('');
 
   useEffect(() => {
-    const accessToken = sessionStorage.getItem('userEmail');
+    const accessToken = localStorage.getItem('accessToken');
     setIsLoggedIn(!!accessToken);
 
     const handleLoginStateChange = () => {
-      const newAccessToken = sessionStorage.getItem('userEmail');
+      const newAccessToken = localStorage.getItem("userEmail");
       setIsLoggedIn(!!newAccessToken);
     };
 
@@ -52,9 +53,10 @@ const Header = () => {
   const { refetch } = useLogout();
 
   const handleLogout = useCallback(() => {
-    refetch()
+    // refetch()
+    instance.post(`${process.env.PUBLIC_URL}/v1/user/logout`)
       .then(() => {
-        sessionStorage.removeItem('accessToken');
+        localStorage.removeItem('accessToken');
         setIsLoggedIn(false);
         window.dispatchEvent(new Event('loginStateChange'));
       })

@@ -15,7 +15,9 @@ instance.interceptors.request.use(
     // 요청 전에 수행할 작업
     const token = sessionStorage.getItem('accessToken');
     if (token) {
+      console.log('1');
       config.headers['Authorization'] = `Bearer ${token}`;
+      console.log('2')
     }
     return config;
   },

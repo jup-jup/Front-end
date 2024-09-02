@@ -12,12 +12,13 @@ export async function sharingListApi(page, size = 10) {
 }
 
 // 글쓰기
-export async function sharingPostApi(title, description, location, image_ids = []) {
+export async function sharingPostApi(data) {
+  // console.log('dd', data);
   const res = await instance.post(`${process.env.PUBLIC_URL}/v1/giveaways`, {
-    title: title,
-    description: description,
-    location: location,
-    image_ids: image_ids,
+    title: data?.title,
+    description: data?.description,
+    location: data?.location,
+    image_ids: data?.image_ids,
   });
   return res;
 }

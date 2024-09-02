@@ -15,9 +15,13 @@ export const useGetSharingList = () => {
 export const usePostSharing = () => {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: sharingPostApi,
+    mutationFn: (data) => sharingPostApi(data),
     onSuccess: () => {
+      console.log("성공");
       queryClient.invalidateQueries(["shareList"]);
+    },
+    onError: (error) => {
+      console.error("업로드 실패:", error);
     },
   });
 };
