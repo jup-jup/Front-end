@@ -1,6 +1,6 @@
 import { PhotoIcon, UserCircleIcon } from "@heroicons/react/24/solid";
 import jw from "./WriteUpdate.module.scss";
-import { useLocation } from "react-router-dom";
+import { redirect, useLocation, useNavigate } from "react-router-dom";
 import { useCallback, useEffect, useState } from "react";
 import { usePostSharing } from "hooks/useSharingApi";
 import { useForm } from "react-hook-form";
@@ -8,6 +8,7 @@ import { useDropzone } from "react-dropzone";
 import FileUpload from "components/fileUpload/FileUpload";
 
 export default function JupJupWrite() {
+  const navigate = useNavigate();
   const location = useLocation();
   const {
     register,
@@ -18,7 +19,7 @@ export default function JupJupWrite() {
 
   const [isEdit, setIsEdit] = useState(false);
 
-  const { mutate: post } = usePostSharing();
+  const { mutate: post, isSuccess } = usePostSharing();
 
   useEffect(() => {
     // location.state가 null이 아니고, type이 'edit'인 경우에만 true로 설정
@@ -27,7 +28,6 @@ export default function JupJupWrite() {
 
   // const Save = () => {
   const onSubmit = () => {
-    console.log("저장");
     const sample = {
       title: "125번째 물건",
       description: "디테일",
@@ -36,6 +36,8 @@ export default function JupJupWrite() {
     };
     post(sample);
   };
+
+  isSuccess && navigate('/jupjup');
 
   return (
     <>
@@ -115,15 +117,15 @@ export default function JupJupWrite() {
                 </label>
                 <FileUpload
                   accept={"image"}
-                  formDataEvent={(event) => {
-                    console.log("get formData", event);
-                  }}
-                  uploadEvent={(event) => {
-                    console.log("uplaod event", event);
-                  }}
-                  setPreviewUrl={(url) => {
-                    console.log("get preview url", url);
-                  }}
+                  // formDataEvent={(event) => {
+                  //   console.log("get formData", event);
+                  // }}
+                  // uploadEvent={(event) => {
+                  //   console.log("uplaod event", event);
+                  // }}
+                  // setPreviewUrl={(url) => {
+                  //   console.log("get preview url", url);
+                  // }}
                 />
                 {/* <div className={jw.coverPhotoUpload}>
                   <div className={jw.uploadContent}>

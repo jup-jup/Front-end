@@ -17,8 +17,8 @@ export const usePostSharing = () => {
   return useMutation({
     mutationFn: (data) => sharingPostApi(data),
     onSuccess: () => {
-      console.log("성공");
       queryClient.invalidateQueries(["shareList"]);
+      
     },
     onError: (error) => {
       console.error("업로드 실패:", error);

@@ -13,13 +13,7 @@ export async function sharingListApi(page, size = 10) {
 
 // 글쓰기
 export async function sharingPostApi(data) {
-  // console.log('dd', data);
-  const res = await instance.post(`${process.env.PUBLIC_URL}/v1/giveaways`, {
-    title: data?.title,
-    description: data?.description,
-    location: data?.location,
-    image_ids: data?.image_ids,
-  });
+  const res = await instance.post(`${process.env.PUBLIC_URL}/v1/giveaways`, data);
   return res;
 }
 

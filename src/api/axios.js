@@ -13,11 +13,9 @@ const instance = axios.create({
 instance.interceptors.request.use(
   (config) => {
     // 요청 전에 수행할 작업
-    const token = sessionStorage.getItem('accessToken');
+    const token = localStorage.getItem('accessToken');
     if (token) {
-      console.log('1');
       config.headers['Authorization'] = `Bearer ${token}`;
-      console.log('2')
     }
     return config;
   },
