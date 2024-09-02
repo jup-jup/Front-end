@@ -75,6 +75,11 @@ export default function MypageGive() {
               >
                 수정하기
               </Link>
+              <Link to='/WriteUpdate' 
+              className={styles.deleteButton}
+              >
+                삭제하기
+              </Link>
             </div>
             ): (
               <></>
