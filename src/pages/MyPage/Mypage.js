@@ -1,11 +1,12 @@
 import { Link } from 'react-router-dom';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { posts } from 'components/dummydata/chat';
 // import { useTodos } from '../hooks/useApi';
 import mp from './Mypage.module.scss';
 import SearchIcon from 'components/icons/SearchIcon';
 import CommentIcon from 'components/icons/CommentIcon';
 import ViewIcon from 'components/icons/ViewIcon';
+import { useGetMyPageSharing } from 'hooks/useMyPageApi';
 
 const tabs = [
   { name: '나눔내역', href: '#', current: false },
@@ -19,6 +20,11 @@ function classNames(...classes) {
 export default function Mypage() {
   const [activeTab, setActiveTab] = useState('나눔내역');
 
+  const getMyPageSharingMutation = useGetMyPageSharing();
+
+  useEffect(() => {
+    getMyPageSharingMutation.mutate();
+  }, []);
   //react query test
   // const { data, isLoading, error, refetch } = useTodos({
   //   // 옵션 예시
