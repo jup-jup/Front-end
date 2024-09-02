@@ -54,7 +54,12 @@ const Header = () => {
   const handleLogout = useCallback(() => {
     refetch()
       .then(() => {
+        // 세션 다 비워주기
         sessionStorage.removeItem('accessToken');
+        sessionStorage.removeItem('refreshToken');
+        sessionStorage.removeItem('tokenExpiration');
+        document.cookie = "JSESSIONID=; max-age=0; path=/;";
+        
         setIsLoggedIn(false);
         window.dispatchEvent(new Event('loginStateChange'));
       })
