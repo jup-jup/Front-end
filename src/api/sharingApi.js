@@ -13,6 +13,7 @@ export async function sharingListApi(page, size = 10) {
 
 // 글쓰기
 export async function sharingPostApi(title, description, location, image_ids = []) {
+  console.log(title, description, location, image_ids,  '???')
   const res = await instance.post(`${process.env.PUBLIC_URL}/v1/giveaways`, {
     title: title,
     description: description,

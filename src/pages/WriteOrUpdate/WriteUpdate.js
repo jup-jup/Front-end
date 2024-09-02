@@ -1,22 +1,93 @@
 import { PhotoIcon, UserCircleIcon } from '@heroicons/react/24/solid';
 import jw from './WriteUpdate.module.scss';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
+import { usePostSharing } from 'hooks/useSharingApi';
 
 export default function JupJupWrite() {
   const location = useLocation();
+  const navigate = useNavigate();
   const [isEdit, setIsEdit] = useState(false);
+  const { mutate: postSharing, isLoading, isError, error } = usePostSharing();
+
+  const [formData, setFormData] = useState({
+    title: '',
+    description: '',
+    location: '',
+    image_ids: []
+  });
+
+  const [selectedFiles, setSelectedFiles] = useState([]);
+  const [previews, setPreviews] = useState([]);
 
   useEffect(() => {
-    // location.state가 null이 아니고, type이 'edit'인 경우에만 true로 설정
     setIsEdit(location.state?.type === 'edit');
   }, [location]);
 
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({ ...prev, [name]: value }));
+  };
+
+  const handleFileChange = (e) => {
+    const files = Array.from(e.target.files);
+    setSelectedFiles(prevFiles => [...prevFiles, ...files]);
+
+    // 미리보기 생성
+    const newPreviews = files.map(file => URL.createObjectURL(file));
+    setPreviews(prevPreviews => [...prevPreviews, ...newPreviews]);
+  };
+
+  const handleRemoveImage = (index) => {
+    setSelectedFiles(prevFiles => prevFiles.filter((_, i) => i !== index));
+    setPreviews(prevPreviews => prevPreviews.filter((_, i) => i !== index));
+    setFormData(prev => ({
+      ...prev,
+      image_ids: prev.image_ids.filter((_, i) => i !== index)
+    }));
+  };
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    
+    // 이미지 업로드 로직 (실제 구현은 서버 API에 따라 다를 수 있습니다)
+    const uploadedImageIds = await Promise.all(
+      selectedFiles.map(async file => {
+        const formData = new FormData();
+        formData.append('image', file);
+        // 이미지 업로드 API 호출
+        const response = await fetch('/api/upload-image', { method: 'POST', body: formData });
+        const data = await response.json();
+        return data.image_id;
+      })
+    );
+
+    try {
+      postSharing({
+        ...formData,
+        image_ids: uploadedImageIds
+      }, {
+        onSuccess: () => {
+          console.log('글 저장 성공');
+          navigate('/');
+        },
+        onError: (error) => {
+          console.error('글 저장 중 오류 발생:', error);
+        }
+      });
+    } catch (error) {
+      console.error('글 저장 중 오류 발생:', error);
+    }
+  };
+
+  if (isLoading) return <div>저장 중...</div>;
+  if (isError) return <div>에러 발생: {error.message}</div>;
+
   return (
-    <form className={jw.form}>
+    <form className={jw.form} onSubmit={handleSubmit}>
       <div className={jw.formContent}>
         <div className={jw.section}>
-        <h2 className={jw.sectionTitle}>
+          <h2 className={jw.sectionTitle}>
             {isEdit ? '수정하기' : '글쓰기'}
           </h2>
           <div className={jw.inputGrid}>
@@ -28,7 +99,8 @@ export default function JupJupWrite() {
                   name="title"
                   rows={3}
                   className={jw.textarea}
-                  defaultValue={''}
+                  value={formData.title}
+                  onChange={handleInputChange}
                 />
               </div>
             </div>
@@ -40,7 +112,8 @@ export default function JupJupWrite() {
                   name="description"
                   rows={3}
                   className={jw.textarea}
-                  defaultValue={''}
+                  value={formData.description}
+                  onChange={handleInputChange}
                 />
               </div>
             </div>
@@ -52,7 +125,8 @@ export default function JupJupWrite() {
                   name="location"
                   rows={3}
                   className={jw.textarea}
-                  defaultValue={''}
+                  value={formData.location}
+                  onChange={handleInputChange}
                 />
               </div>
             </div>

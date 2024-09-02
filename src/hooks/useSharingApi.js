@@ -15,7 +15,8 @@ export const useGetSharingList = () => {
 export const usePostSharing = () => {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: sharingPostApi,
+    mutationFn: ({ title, description, location, image_ids }) => 
+      sharingPostApi(title, description, location, image_ids),
     onSuccess: () => {
       queryClient.invalidateQueries(["shareList"]);
     },
