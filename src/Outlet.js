@@ -1,8 +1,20 @@
 import Footer from "components/footer/Footer";
 import Header from "components/Header/Header";
-import { Outlet } from "react-router-dom";
+import { useAtom } from "jotai";
+import { useEffect } from "react";
+import { Outlet, useLocation } from "react-router-dom";
+import { LocationUrlAtom } from "store/Location";
 
 export const PageLayout = () => {
+  const location = useLocation();
+  const [, setLocation] = useAtom(LocationUrlAtom);
+
+  useEffect(() => {
+    if(location.state?.type === 'edit') {
+      setLocation(true);
+    }
+  }, [location]);
+
   return (
     <div className="flex flex-col min-h-screen">
       <Header />

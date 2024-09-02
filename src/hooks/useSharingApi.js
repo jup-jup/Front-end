@@ -1,15 +1,16 @@
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useInfiniteQuery, useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { sharingDeleteApi, sharingDetailApi, sharingListApi, sharingPostApi, sharingUpdateApi } from "api/sharingApi";
 
 // 나눔하기 관련 API 훅
 
 // 전체 리스트
-export const useGetSharingList = () => {
-  return useQuery({
-    queryKey: ["shareList"],
-    queryFn: sharingListApi,
-  });
-};
+// export const useGetSharingList = () => {
+//   return useQuery({
+//     queryKey: ["shareList"],
+//     queryFn: (page) => sharingListApi(page),
+//   });
+// };
+
 
 // 글쓰기
 export const usePostSharing = () => {

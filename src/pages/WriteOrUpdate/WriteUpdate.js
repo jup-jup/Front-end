@@ -5,10 +5,13 @@ import { useCallback, useEffect, useState } from "react";
 import { usePostSharing } from "hooks/useSharingApi";
 import { useForm } from "react-hook-form";
 import FileUpload from "components/fileUpload/FileUpload";
+import { useAtom } from "jotai";
+import { LocationUrlAtom } from "store/Location";
 
 export default function JupJupWrite() {
   const navigate = useNavigate();
-  const location = useLocation();
+  const [isEdit] = useAtom(LocationUrlAtom);
+  const [tempImgUrl, setTempImgUrl] = useState([]) // 이미지 경로 임시 저장소
   const {
     register,
     handleSubmit,
@@ -16,26 +19,26 @@ export default function JupJupWrite() {
     formState: { errors, isSubmitting },
   } = useForm({ mode: "onChange" });
 
-  const [isEdit, setIsEdit] = useState(false);
+  console.log('isEdit: ', isEdit);
+
   const { mutate: post, isSuccess } = usePostSharing();
+  // 이미지 업로드 hook
 
-  useEffect(() => {
-    // location.state가 null이 아니고, type이 'edit'인 경우에만 true로 설정
-    setIsEdit(location.state?.type === "edit");
-  }, [location]);
-
-  // const Save = () => {
   const onSubmit = () => {
+    // 이미지가 있을때 이미지 업로드 먼저
+    if(tempImgUrl.length !== 0) {
+      // 이미지 업로드 api 
+    }
     const sample = {
-      title: "125번째 물건",
-      description: "디테일",
-      location: "부산",
-      image_ids: [],
+      title: watch().title,
+      description: watch().description,
+      location: watch().location,
+      image_ids: tempImgUrl,
     };
     post(sample);
   };
 
-  if(isSuccess) return navigate('/jupjup');
+  if (isSuccess) return navigate("/jupjup");
 
   return (
     <>

@@ -5,57 +5,35 @@ import ViewIcon from "components/icons/ViewIcon";
 import { Link } from "react-router-dom";
 import jup from "./JupJup.module.scss";
 import { useEffect, useRef, useState } from "react";
-
-const fetchMoreData = async (page) => {
-  // 여기에 실제 데이터 요청을 넣어주세요.
-  // 예를 들어, 페이지 번호를 포함한 API 호출
-  const response = await fetch(`https://jsonplaceholder.typicode.com/photos?_page=${page}&_limit=10`);
-  const data = await response.json();
-  return data;
-};
+import JupjupItem from "components/jupjup/JupjupItem";
+import { useGetSharingList } from "hooks/useSharingApi";
+import { useInfiniteQuery } from "@tanstack/react-query";
+import { useInView } from "react-intersection-observer";
+import { getPoketmonListAll } from "api/sharingApi";
+import axios from "axios";
 
 export default function JupJup() {
-  const [data, setData] = useState([]);
-  const [page, setPage] = useState(1);
-  const [loading, setLoading] = useState(false);
-  const [hasMore, setHasMore] = useState(true);
+  const [ref, isView] = useInView();
+  const search = '검색어';
 
-  const observerRef = useRef(null);
-  const lastElementRef = useRef(null);
+  const {
+    data: pokemonListAll,
+    fetchNextPage: pokemonListAllFetchNextPage,
+    hasNextPage: pokemonListAllHasNextPage,
+    status: pokemonListAllStatus,
+  } = useInfiniteQuery({
+    queryKey: ["pokemonList"],
+    // queryKey: ["pokemonList", search],
+    queryFn: async ({ pageParam }) => getPoketmonListAll(pageParam, search),
+    getNextPageParam: (_lastPage, allPages) => allPages.length + 1,
+    initialPageParam: 1,
+  });
 
   useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting && !loading && hasMore) {
-          setLoading(true);
-          fetchMoreData(page)
-            .then((newData) => {
-              console.log('cc', newData);
-              setData((prevData) => [...prevData, ...newData]);
-              setPage((prevPage) => prevPage + 1);
-              setLoading(false);
-              if (newData.length === 0) {
-                setHasMore(false);
-              }
-            })
-            .catch(() => {
-              setLoading(false);
-            });
-        }
-      },
-      { threshold: 1.0 }
-    );
+    if (isView && pokemonListAllHasNextPage) pokemonListAllFetchNextPage();
+  }, [isView]);
 
-    if (lastElementRef.current) {
-      observer.observe(lastElementRef.current);
-    }
-
-    return () => {
-      if (lastElementRef.current) {
-        observer.unobserve(lastElementRef.current);
-      }
-    };
-  }, [loading, hasMore, page]);
+  console.log("pokemonListAll", pokemonListAll?.pages);
 
   return (
     <div className={jup.container}>
@@ -83,54 +61,24 @@ export default function JupJup() {
 
       <div className={jup.postsContainer}>
         <div className={jup.postsWrapper}>
-          {/* <div className={jup.postsList}>
+          <div className={jup.postsList}>
             {posts.map((post) => (
-              <article key={post.id} className={jup.postItem}>
-                <Link to={`/jupjupDetail/${post.id}`} className={jup.content}>
-                  <div className={jup.postImageLink}>
-                    <img alt="" src={post.imageUrl} className={jup.postImage} />
-                    <div className={jup.postImageOverlay} />
-                  </div>
-                  <div className={jup.postContent}>
-                    <time dateTime={post.datetime} className={jup.postDate}>
-                      {post.date}
-                    </time>
-                    <span className={jup.postCategory}>
-                      {post.category.title}
-                    </span>
-                    <h3 className={jup.postTitle}>{post.title}</h3>
-                    <p className={jup.postDescription}>{post.description}</p>
-                    <div className={jup.postFooter}>
-                      <div className={jup.authorInfo}>
-                        <div className={jup.authorName}>
-                          <span
-                            href={post.author.href}
-                            className={jup.authorNameLink}
-                          >
-                            <CommentIcon className={jup.commentIcon} />
-                            {post.author.name}
-                          </span>
-                        </div>
-                        <div className={jup.viewCount}>
-                          <ViewIcon className={jup.viewIcon} />
-                          <p className={jup.viewCountText}>
-                            {post.author.role}
-                          </p>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </Link>
-              </article>
+              <JupjupItem data={post} />
             ))}
-          </div> */}
+          </div>
+          1111
           <ul>
-            {data.map((item, index) => (
-              <li key={index}>{item.title}</li>
+            {pokemonListAll?.pages.map((item, index) => (
+              <li key={index} style={{ height: "250px" }}>
+                {item.next}
+              </li>
             ))}
           </ul>
-          {loading && <p>Loading more items...</p>}
-          <div ref={lastElementRef} style={{ height: "200px", border: '1px solid black' }} />
+          {pokemonListAllStatus === "loading" && <p>Loading more items...</p>}
+          <div
+            ref={ref}
+            style={{ height: "200px", border: "1px solid black" }}
+          />
         </div>
       </div>
     </div>
