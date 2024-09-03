@@ -10,7 +10,7 @@ export default function SignIn() {
       alert(`지원되지 않는 로그인 방식입니다: ${provider}`);
       return;
     }
-    window.location.href = `https://jupjup.store/api/v1/user/login?provider=${provider}`;
+    window.location.href = `https://jupjup.store/api/v1/auth/login?provider=${provider}`;
     sessionStorage.setItem('accessToken', provider);
     window.dispatchEvent(new Event('loginStateChange'));
   };

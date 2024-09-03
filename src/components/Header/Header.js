@@ -54,13 +54,11 @@ const Header = () => {
 
   const handleLogout = useCallback(() => {
     // refetch()
-    instance.post(`${process.env.PUBLIC_URL}/v1/user/logout`)
+    instance.post(`${process.env.PUBLIC_URL}/v1/auth/logout`)
       .then(() => {
         localStorage.removeItem('accessToken');
-        // 세션 다 비워주기
-        // sessionStorage.removeItem('accessToken');
-        // sessionStorage.removeItem('refreshToken');
-        // sessionStorage.removeItem('tokenExpiration');
+        localStorage.removeItem('refreshToken');
+        sessionStorage.removeItem('accessToken');
         document.cookie = "JSESSIONID=; max-age=0; path=/;";
         
         setIsLoggedIn(false);
