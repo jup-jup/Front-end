@@ -102,7 +102,7 @@ export default function JupJupWrite() {
                 </div>
               </div>
 
-              <div className={jw.fullWidth}>
+              {/* <div className={jw.fullWidth}>
                 <label htmlFor="photo" className={jw.label}>
                   Photo
                 </label>
@@ -112,7 +112,7 @@ export default function JupJupWrite() {
                     Change
                   </button>
                 </div>
-              </div>
+              </div> */}
 
               <div className={jw.fullWidth}>
                 <label htmlFor="cover-photo" className={jw.label}>
