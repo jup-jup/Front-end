@@ -11,21 +11,39 @@ import instance from "./axios";
 //   });
 //   return res.data;
 // }
-export async function getPoketmonListAll(pageParam = 0, offset = 21, search) {
+// export async function getPoketmonListAll(pageParam = 0, offset = 21, search) {
+//   const res = await axios
+//     .get(`https://pokeapi.co/api/v2/pokemon`, {
+//       params: { limit: offset, offset: pageParam },
+//     })
+//     .then((response) => response.data)
+//     .then((pokemonAll) => pokemonAll)
+//     .catch((err) => console.log("err", err));
+//   return res;
+// }
+
+
+export async function getPoketmonListAll(pageParam, size) {
+  console.log(pageParam);
   const res = await axios
-    .get(`https://pokeapi.co/api/v2/pokemon`, {
-      params: { limit: offset, offset: pageParam },
+    .get(`${process.env.REACT_APP_API_URL}/v1/giveaways/list`, {
+      params: {
+        size: size,
+        page: pageParam
+      }
     })
     .then((response) => response.data)
-    .then((pokemonAll) => pokemonAll)
-    .catch((err) => console.log("err", err));
+    .catch((err) => {
+      console.log("err", err);
+      throw err;
+    });
   return res;
 }
 
 // 글쓰기
 export async function sharingPostApi(data) {
   const res = await instance.post(
-    `${process.env.PUBLIC_URL}/v1/giveaways`,
+    `${process.env.REACT_APP_API_URL}/v1/giveaways`,
     data
   );
   return res;
@@ -34,7 +52,7 @@ export async function sharingPostApi(data) {
 // 게시글 상세 (id)
 export async function sharingDetailApi(id) {
   const res = await instance.get(
-    `${process.env.PUBLIC_URL}/v1/giveaways/${id}`,
+    `${process.env.REACT_APP_API_URL}/v1/giveaways/${id}`,
     {
       id: id,
     }
@@ -45,7 +63,7 @@ export async function sharingDetailApi(id) {
 // 삭제
 export async function sharingDeleteApi(id) {
   const res = await instance.delete(
-    `${process.env.PUBLIC_URL}/v1/giveaways/${id}`,
+    `${process.env.REACT_APP_API_URL}/v1/giveaways/${id}`,
     {
       id: id,
     }
