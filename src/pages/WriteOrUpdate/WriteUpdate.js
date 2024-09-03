@@ -30,9 +30,9 @@ export default function JupJupWrite() {
       // 이미지 업로드 api 
     }
     const sample = {
-      title: watch().title,
-      description: watch().description,
-      location: watch().location,
+      title: watch("title"),
+      description: watch("description"),
+      location: watch("location"),
       image_ids: tempImgUrl,
     };
     post(sample);
@@ -84,6 +84,7 @@ export default function JupJupWrite() {
                     rows={3}
                     className={jw.textarea}
                     defaultValue={""}
+                    {...register("description")}
                   />
                 </div>
               </div>
@@ -96,6 +97,7 @@ export default function JupJupWrite() {
                     id="location"
                     name="location"
                     className={jw.textarea}
+                    {...register("location")}
                   />
                 </div>
               </div>
