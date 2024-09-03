@@ -28,8 +28,8 @@ const JupjupItem = ({ data, postIndex }) => {
           <div className={jup.postImageOverlay} />
         </div>
         <div className={jup.postContent}>
-          <time dateTime={data.datetime} className={jup.postDate}>
-            {data.date}
+          <time dateTime={data.createdAt} className={jup.postDate}>
+            {data.createdAt.split('T')[0]}
           </time>
           <span className={jup.postCategory}>{data.location}</span>
           <h3 className={jup.postTitle}>{data.title}</h3>
