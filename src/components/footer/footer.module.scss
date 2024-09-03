@@ -3,12 +3,12 @@
   background: #4ec0de;
 
   .container {
-    padding: 128px 24px 32px 24px;
+    padding: 40px 24px 32px 24px;
     margin: 0 auto;
     max-width: 1200px;
     @include media-mo {
-      background: red;
-      padding: 96px 32px 32px 32px;
+      // background: red;
+      padding: 20px 32px 20px 32px;
     }
   }
 
@@ -27,8 +27,8 @@
   }
   
   .copyright {
-    margin-top: 128px;
-    color: #94a3b8;
+    margin-top: 50px;
+    color: #ffffff;
     font-size: $font-size-small;
   }
 }

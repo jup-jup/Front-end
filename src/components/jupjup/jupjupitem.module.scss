@@ -7,8 +7,10 @@
 }
 
 .content {
-  display: flex;
-  gap: 30px;
+  @media (min-width: 640px) {
+    display: flex;
+    gap: 30px;
+  }
 }
 
 .postImageLink {
@@ -27,13 +29,16 @@
 }
 
 .postImage {
-  position: absolute;
-  inset: 0;
-  object-fit: cover;
-  width: 100%;
-  height: 100%;
-  border-radius: 1rem;
-  background-color: #f9fafb;
+
+  @media (min-width: 640px) {
+    position: absolute;
+    inset: 0;
+    object-fit: cover;
+    width: 100%;
+    height: 100%;
+    border-radius: 1rem;
+    background-color: #f9fafb;
+  }
 }
 
 .postImageOverlay {
