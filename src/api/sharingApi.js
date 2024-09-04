@@ -52,7 +52,7 @@ export async function sharingPostApi(data) {
 // 게시글 상세 (id)
 export async function sharingDetailApi(id) {
   const res = await instance.get(
-    `${process.env.REACT_APP_API_URL}/v1/giveaways/${id}`,
+    `${process.env.REACT_APP_API_URL}/v1/giveaways/detail/${id}`,
     {
       id: id,
     }

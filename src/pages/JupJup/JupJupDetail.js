@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import jd from './JupJupDetail.module.scss';
 import CommentIcon from 'components/icons/CommentIcon';
@@ -7,11 +7,13 @@ import Heart from 'components/icons/Heart';
 import UnHeart from 'components/icons/UnHeart';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Pagination, Navigation } from 'swiper/modules';
-
+import { useParams } from 'react-router-dom';
+import { sharingDetailApi } from "api/sharingApi";
 // Import Swiper styles
 import 'swiper/css';
 import 'swiper/css/pagination';
 import 'swiper/css/navigation';
+import JupJupDetailCompo from 'components/jupjup/JupJupDetailCompo';
 
 const posts = [
   {
@@ -43,98 +45,41 @@ const posts = [
 
 export default function JupJupDetail() {
   const [isFilled, setIsFilled] = useState(false);
-
+  const [detailData, setDetailData] = useState(null);
+  const { id } = useParams();
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
   const toggleHeart = () => {
     setIsFilled(!isFilled);
   };
+
+  useEffect(() => {
+    const fetchDetailData = async () => {
+      try {
+        setLoading(true);
+        const response = await sharingDetailApi(id);
+        setDetailData(response.data); // API 응답 구조에 따라 .data가 필요할 수 있습니다
+      } catch (err) {
+        setError(err.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchDetailData();
+    console.log(detailData)
+  }, [id]);
+
+  if (loading) return <div>로딩 중...</div>;
+  if (error) return <div>에러 발생: {error}</div>;
+  if (!detailData) return <div>데이터가 없습니다.</div>;
 
   return (
     <div className={jd.container}>
       <div className={jd.innerContainer}>
         <div className={jd.content}>
           <div className={jd.postList}>
-            {posts.map((post) => (
-              <article key={post.id} className={jd.postItem}>
-                <div className={jd.imageGallery}>
-                  <Swiper
-                    modules={[Pagination, Navigation]}
-                    spaceBetween={10}
-                    slidesPerView={1}
-                    pagination={{ clickable: true }}
-                    navigation
-                    breakpoints={{
-                      // when window width is >= 640px
-                      640: {
-                        slidesPerView: 2,
-                        spaceBetween: 20
-                      },
-                      // when window width is >= 1024px
-                      1024: {
-                        slidesPerView: 3,
-                        spaceBetween: 30
-                      }
-                    }}
-                    className={jd.swiper}
-                  >
-                    {post.images.map((image, index) => (
-                      <SwiperSlide key={index} className={jd.swiperSlide}>
-                        <div className={jd.imageWrapper}>
-                          <img
-                            alt=''
-                            src={image}
-                            className={jd.image}
-                          />
-                          <div className={jd.imageOverlay} />
-                        </div>
-                      </SwiperSlide>
-                    ))}
-                  </Swiper>
-                </div>
-                <div className={jd.postContent}>
-                  <div className={jd.postMeta}>
-                    <time dateTime={post.datetime} className={jd.postDate}>
-                      {post.date}
-                    </time>
-                    <a href={post.category.href} className={jd.postCategory}>
-                      {post.category.title}
-                    </a>
-                    <div onClick={toggleHeart} className={jd.heartButton}>
-                      {!isFilled ? (
-                        <UnHeart className={jd.heartIcon} />
-                      ) : (
-                        <Heart className={jd.heartIcon} />
-                      )}
-                      <span className={jd.heartText}>찜</span>
-                    </div>
-                  </div>
-                  <div className={jd.postTitle}>
-                    <h3>
-                      <a href={post.href}>
-                        <span className={jd.postTitleLink} />
-                        {post.title}
-                      </a>
-                    </h3>
-                  </div>
-                  <p className={jd.postState}>{post.state}</p>
-                  <p className={jd.postDescription}>{post.description}</p>
-                  <div className={jd.postFooter}>
-                    <div className={jd.authorInfo}>
-                      <div className={jd.authorName}>
-                        <a href={post.author.href} className={jd.authorLink}>
-                          <span className={jd.authorLinkOverlay} />
-                          <CommentIcon className={jd.commentIcon} />
-                          {post.author.name}
-                        </a>
-                      </div>
-                      <div className={jd.viewCount}>
-                        <ViewIcon className={jd.viewIcon} />
-                        <p>{post.author.role}</p>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </article>
-            ))}
+            <JupJupDetailCompo data={detailData}/>
             <div className={jd.chatButtonContainer}>
               <Link to='/chat' className={jd.chatButton}>
                 채팅하기
