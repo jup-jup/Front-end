@@ -1,13 +1,32 @@
 import { mainPosts } from "components/dummydata/main";
 import { Link } from "react-router-dom";
 import m from './Main.module.scss';
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import { useNavigate } from 'react-router-dom';
 
 const Main = () => {
+  const navigate = useNavigate();
+  const [shouldRedirect, setShouldRedirect] = useState(false);
 
-  useEffect(()=>{
-    console.log(document.cookie, '????');
-  })
+  useEffect(() => {
+    const checkLoginStatus = () => {
+      const accessToken = sessionStorage.getItem('accessToken');
+      if (accessToken) {
+        setShouldRedirect(true);
+      }
+    };
+
+    checkLoginStatus();
+  }, []);
+
+  useEffect(() => {
+    if (shouldRedirect) {
+      navigate('/', { replace: true });
+      // window.location.reload();
+    }
+  }, [shouldRedirect, navigate]);
+
+
   return (
     <>
       <div className={m.hero}>
