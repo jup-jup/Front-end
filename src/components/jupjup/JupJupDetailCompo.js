@@ -87,7 +87,7 @@ export default function JupJupDetailCompo ({ data }) {
                         {data.createdAt.split('T')[0]}
                       </time>
                       <a className={jd.postCategory}>
-                        {data.title}
+                        {data.location}
                       </a>
                       <div onClick={toggleHeart} className={jd.heartButton}>
                         {!isFilled ? (
@@ -110,12 +110,9 @@ export default function JupJupDetailCompo ({ data }) {
                     <p className={jd.postDescription}>{data.description}</p>
                     <div className={jd.postFooter}>
                       <div className={jd.authorInfo}>
-                        <div className={jd.authorName}>
-                          <a className={jd.authorLink}>
-                            <span className={jd.authorLinkOverlay} />
+                        <div className={jd.viewCount}>
                             <CommentIcon className={jd.commentIcon} />
                             {data.chatCnt == null ? 0 : data.chatCnt}
-                          </a>
                         </div>
                         <div className={jd.viewCount}>
                           <ViewIcon className={jd.viewIcon} />
