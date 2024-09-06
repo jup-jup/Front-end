@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import s from "./chat.module.scss";
 
 export default function ChatOtherList() {
+  
   return (
     <ul className={s.chat_list}>
       {people.map((person) => (

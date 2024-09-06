@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import SockJS from "sockjs-client";
 import Stomp from "stompjs";
-import { INIT_MESSAGE, SEND_MESSAGE } from "store/ChatStore";
 import ChatInput from "./ChatInput";
 
 const Chat = ({ postId, upText, setUpText }) => {
@@ -10,10 +9,12 @@ const Chat = ({ postId, upText, setUpText }) => {
 
   //socket 연결
   const headers = {
-    // "X-AUTH-TOKEN": auth.accessToken,
+    "Authorization": `Bearer ${localStorage.getItem("accessToken")}`,
   };
+  console.log("xhzms", localStorage.getItem("accessToken"));
 
-  const socket = new SockJS(`${process.env.REACT_APP_ROOT_API}`);
+  const socket = new SockJS(`https://jupjup.store/ws`);
+  // const socket = new SockJS(`https://localhost:8080/ws`);
   const stomp = new Stomp.over(socket);
 
   useEffect(() => {
@@ -23,7 +24,7 @@ const Chat = ({ postId, upText, setUpText }) => {
 
       //이벤트 구독
       stomp.subscribe(
-        `/sub/rooms/${postId}`,
+        `/sub/room/${postId}`,
         (body) => {
           console.log("메시지 받음: ", JSON.parse(body.body));
           // dispatch(SEND_MESSAGE(JSON.parse(body.body)));
@@ -33,27 +34,28 @@ const Chat = ({ postId, upText, setUpText }) => {
     });
   }, []);
 
-  useEffect(() => {
-    return () => {
-      //연결 끊기
-      stomp.disconnect(() => {
-        console.log("socket연결 해제");
-        // NOTE: 소켓 끊어질때 store에 있는거 다 제거하기
-        // dispatch(INIT_MESSAGE());
-      });
-    };
-  }, []);
+  // useEffect(() => {
+  //   return () => {
+  //     //연결 끊기
+  //     stomp.disconnect(() => {
+  //       console.log("socket연결 해제");
+  //     });
+  //   };
+  // }, []);
 
   const click = async (e, text) => {
     e.preventDefault();
 
     stomp.send(
-      `/pub/rooms/${postId}`,
+      `/pub/room/${postId}/chat`,
       {
-        // "X-AUTH-TOKEN": auth.accessToken,
+        Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
       },
-      JSON.stringify(text)
-    );
+      // JSON.stringify(text)
+      // text
+       JSON.stringify({ content: text }));
+      // {"content": `${text}`}
+      // {text}
   };
 
   return (
