@@ -9,7 +9,7 @@ const Chat = ({ postId, upText, setUpText }) => {
 
   //socket 연결
   const headers = {
-    "Authorization": `Bearer ${localStorage.getItem("accessToken")}`,
+    Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
   };
   console.log("xhzms", localStorage.getItem("accessToken"));
 
@@ -51,11 +51,10 @@ const Chat = ({ postId, upText, setUpText }) => {
       {
         Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
       },
-      // JSON.stringify(text)
+      // JSON.stringify(text) )
       // text
        JSON.stringify({ content: text }));
-      // {"content": `${text}`}
-      // {text}
+      // { content: text }); 
   };
 
   return (

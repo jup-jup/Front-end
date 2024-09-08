@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { Route, Routes, useLocation } from "react-router-dom";
+import { Route, Routes, useLocation, useNavigate } from "react-router-dom";
 import JupJup from "./pages/JupJup/JupJup";
 import SignIn from "./pages/SignIn/SignIn";
 // import SignUp from './pages/signUp';
@@ -18,8 +18,11 @@ import { jwtDecode } from "jwt-decode";
 import { parseJwt } from "hooks/useParseJwt";
 import { useAtom } from "jotai";
 import { userAtom } from "store/User";
+import { isDev } from "util/Util";
+import PrivateRoute from "components/privateRoute/PrivateRoute";
 
 export default function App() {
+  const navigate = useNavigate();
   const location = useLocation();
   const [, setName] = useAtom(userAtom);
 
@@ -49,6 +52,8 @@ export default function App() {
         window.dispatchEvent(new Event("loginStateChange"));
 
         console.log("Token decoded and stored successfully");
+
+        navigate("/");
       } catch (error) {
         console.error("Error decoding token:", error);
       }
@@ -65,7 +70,10 @@ export default function App() {
         <Route path="/jupjupDetail/:id" element={<JupjupDetail />} />
         <Route path="/chat" element={<Chat />} />
         <Route path="/WriteUpdate" element={<WriteUpdate />} />
-        <Route path="/chatOtherList" element={<ChatOtherList />} />
+        <Route
+          path="/chatOtherList"
+          element={<PrivateRoute element={<ChatOtherList />} />}
+        />
         <Route path="/chatOtherDetail/:id" element={<ChatOtherDetail />} />
         <Route path="/Mypage" element={<Mypage />} />
         <Route path="/MypageGiveReceive" element={<MypageGiveReceive />} />
