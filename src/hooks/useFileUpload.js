@@ -31,7 +31,7 @@ export default function useFileUpload({ uploadEvent, formDataEvent, accept }) {
     files.forEach((file, index) => {
       formData.append(`files[${index}]`, file);
     });
-    mutation.mutate(formData);
+    mutation.mutate(files);
     if (formDataEvent) formDataEvent(formData);
   }, [mutation, formDataEvent]);
 
