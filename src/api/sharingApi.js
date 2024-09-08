@@ -27,7 +27,12 @@ export async function sharingPostIMGApi(formData) {
   console.log(formData, '???');
   const res = await instance.post(
     `${process.env.REACT_APP_API_URL}/v1/images`,
-    formData
+    formData,
+    {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    }
   );
   return res;
 }
