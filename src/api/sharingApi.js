@@ -28,11 +28,6 @@ export async function sharingPostIMGApi(formData) {
   const res = await instance.post(
     `${process.env.REACT_APP_API_URL}/v1/images`,
     formData,
-    {
-      headers: {
-        'Content-Type': 'multipart/form-data',
-      },
-    }
   );
   return res;
 }
