@@ -24,10 +24,10 @@ import instance from "./axios";
 
 // 이미지 post
 export async function sharingPostIMGApi(files) {
-  console.log(files[0].path, '???')
+  console.log(files[0], '???')
   const res = await instance.post(
     `${process.env.REACT_APP_API_URL}/v1/images`,
-    files[0].path
+    files[0]
   );
   return res;
 }
