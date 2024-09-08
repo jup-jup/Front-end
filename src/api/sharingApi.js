@@ -1,7 +1,7 @@
 // 나눔하기 관련 API 엔드포인트
 
-import axios from "axios";
-import instance from "./axios";
+import axios from 'axios';
+import instance from './axios';
 
 // 목록보기
 // export async function sharingListApi(page, size = 10) {
@@ -23,15 +23,14 @@ import instance from "./axios";
 // }
 
 // 이미지 post
-export async function sharingPostIMGApi(files) {
-  console.log(files.path, '???')
+export async function sharingPostIMGApi(formData) {
+  console.log(formData, '???');
   const res = await instance.post(
     `${process.env.REACT_APP_API_URL}/v1/images`,
-    files.path
+    formData
   );
   return res;
 }
-
 
 export async function getPoketmonListAll(pageParam, size) {
   console.log(pageParam);
@@ -39,12 +38,12 @@ export async function getPoketmonListAll(pageParam, size) {
     .get(`${process.env.REACT_APP_API_URL}/v1/giveaways/list`, {
       params: {
         size: size,
-        page: pageParam
-      }
+        page: pageParam,
+      },
     })
     .then((response) => response.data)
     .catch((err) => {
-      console.log("err", err);
+      console.log('err', err);
       throw err;
     });
   return res;
