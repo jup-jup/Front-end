@@ -1,8 +1,8 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { Accept, useDropzone } from "react-dropzone";
 import { useIMGPostSharing } from "hooks/useFileUpload";
 import {sharingPostIMGApi} from 'api/sharingApi';
-
+import { useMutation } from "@tanstack/react-query";
 const acceptDefault = {
   image: {
     "image/jpeg": [],
@@ -14,6 +14,19 @@ export default function useFileUpload({ uploadEvent, formDataEvent, accept }) {
   const [files, setFiles] = useState([]);
   const [previewUrls, setPreviewUrls] = useState([]);
 
+
+  const mutation = useMutation({
+    mutationFn: (files) => sharingPostIMGApi(files),
+    onSuccess: (data) => {
+      console.log("Image upload successful:", data);
+      // Handle successful upload here
+    },
+    onError: (error) => {
+      console.error("Image upload failed:", error);
+      // Handle upload error here
+    }
+  });
+
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     accept: acceptDefault[accept],
     onDrop: (acceptedFiles) => {
@@ -24,19 +37,19 @@ export default function useFileUpload({ uploadEvent, formDataEvent, accept }) {
       setPreviewUrls(tempUrls);
       if (formDataEvent) imageUpload(acceptedFiles);
       setFiles(files.concat(acceptedFiles));
-
-      sharingPostIMGApi(files);
     },
   });
 
-  const imageUpload = (files) => {
+  const imageUpload = useCallback((files) => {
     const formDataTemp = new FormData();
     for (const file of files) {
       formDataTemp.append("files", file);
 
     }
+    
+    mutation.mutate(files);
     if (formDataEvent) formDataEvent(formDataTemp);
-  };
+  }, [mutation, formDataEvent]);
 
   useEffect(() => {
     if (uploadEvent) {
