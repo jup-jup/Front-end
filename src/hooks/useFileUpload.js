@@ -30,8 +30,8 @@ export default function useFileUpload({ uploadEvent, formDataEvent, accept }) {
     const formData = new FormData();
     files.forEach((file, index) => {
       formData.append(`files[${index}]`, file);
+      mutation.mutate(file);
     });
-    mutation.mutate(files);
     if (formDataEvent) formDataEvent(formData);
   }, [mutation, formDataEvent]);
 
