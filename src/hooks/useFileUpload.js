@@ -1,12 +1,12 @@
-/* eslint-disable react-hooks/exhaustive-deps */
-import { useEffect, useState, useCallback } from 'react';
-import { Accept, useDropzone } from 'react-dropzone';
+import { useEffect, useState, useCallback } from "react";
+import { Accept, useDropzone } from "react-dropzone";
+import { useMutation } from "@tanstack/react-query";
 import { sharingPostIMGApi } from 'api/sharingApi';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
+
 const acceptDefault = {
   image: {
-    'image/jpeg': [],
-    'image/png': [],
+    "image/jpeg": [],
+    "image/png": [],
   },
 };
 
@@ -14,50 +14,40 @@ export default function useFileUpload({ uploadEvent, formDataEvent, accept }) {
   const [files, setFiles] = useState([]);
   const [previewUrls, setPreviewUrls] = useState([]);
 
-  // 변경: useUploadImage 훅 제거하고 직접 useMutation 사용
-  const queryClient = useQueryClient();
-  const uploadImageMutation = useMutation({
-    mutationFn: (files) => sharingPostIMGApi(files),
-    onSuccess: () => {
-      queryClient.invalidateQueries(['uploadImage']);
+  const mutation = useMutation({
+    mutationFn: (formData) => sharingPostIMGApi(formData),
+    onSuccess: (data) => {
+      console.log("이미지 업로드 성공:", data);
+      // 여기에서 성공적인 업로드 후의 처리를 할 수 있습니다.
     },
     onError: (error) => {
-      console.error('업로드 실패:', error);
-    },
+      console.error("이미지 업로드 실패:", error);
+      // 여기에서 업로드 실패 시의 처리를 할 수 있습니다.
+    }
   });
 
-  // 변경: onDrop 함수를 useCallback으로 분리
-  const onDrop = useCallback(
-    (acceptedFiles) => {
-      const tempPreview = acceptedFiles.map((file) =>
-        URL.createObjectURL(file)
-      );
-      const tempUrls = previewUrls.concat(tempPreview);
-      setPreviewUrls(tempUrls);
-      if (formDataEvent) imageUpload(acceptedFiles);
-      setFiles((prevFiles) => prevFiles.concat(acceptedFiles)); // 변경: 함수형 업데이트
-      uploadImageMutation.mutate(acceptedFiles); // 변경: mutation 호출
-    },
-    [previewUrls, formDataEvent, uploadImageMutation]
-  );
+  const imageUpload = useCallback((files) => {
+    const formData = new FormData();
+    files.forEach((file, index) => {
+      formData.append(`files[${index}]`, file);
+    });
+    mutation.mutate(formData);
+    if (formDataEvent) formDataEvent(formData);
+  }, [mutation, formDataEvent]);
 
-  // 변경: useDropzone에 분리된 onDrop 함수 전달
+  const onDrop = useCallback((acceptedFiles) => {
+    const tempPreview = acceptedFiles.map((file) =>
+      URL.createObjectURL(file)
+    );
+    setPreviewUrls((prev) => [...prev, ...tempPreview]);
+    setFiles((prev) => [...prev, ...acceptedFiles]);
+    imageUpload(acceptedFiles);
+  }, [imageUpload]);
+
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     accept: acceptDefault[accept],
-    onDrop,
+    onDrop
   });
-
-  // 변경: imageUpload를 useCallback으로 메모이제이션
-  const imageUpload = useCallback(
-    (files) => {
-      const formDataTemp = new FormData();
-      for (const file of files) {
-        formDataTemp.append('files', file);
-      }
-      if (formDataEvent) formDataEvent(formDataTemp);
-    },
-    [formDataEvent]
-  );
 
   useEffect(() => {
     if (uploadEvent) {
@@ -66,7 +56,7 @@ export default function useFileUpload({ uploadEvent, formDataEvent, accept }) {
         previewUrls,
       });
     }
-  }, [previewUrls, files, uploadEvent]);
+  }, [files, previewUrls, uploadEvent]);
 
   useEffect(() => {
     return () => {
@@ -74,15 +64,11 @@ export default function useFileUpload({ uploadEvent, formDataEvent, accept }) {
     };
   }, [previewUrls]);
 
-  // 변경: removeEvent를 useCallback으로 메모이제이션
-  const removeEvent = useCallback(
-    (index) => {
-      setFiles((prevFiles) => prevFiles.filter((_, i) => i !== index));
-      URL.revokeObjectURL(previewUrls[index]);
-      setPreviewUrls((prevUrls) => prevUrls.filter((_, i) => i !== index));
-    },
-    [previewUrls]
-  );
+  const removeEvent = useCallback((index) => {
+    setFiles((prev) => prev.filter((_, i) => i !== index));
+    URL.revokeObjectURL(previewUrls[index]);
+    setPreviewUrls((prev) => prev.filter((_, i) => i !== index));
+  }, [previewUrls]);
 
   return {
     getRootProps,
@@ -91,5 +77,7 @@ export default function useFileUpload({ uploadEvent, formDataEvent, accept }) {
     files,
     isDragActive,
     removeEvent,
+    isUploading: mutation.isLoading,
+    uploadError: mutation.error
   };
 }
