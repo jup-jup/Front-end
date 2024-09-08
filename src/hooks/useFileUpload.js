@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
 import { Accept, useDropzone } from "react-dropzone";
+import { useIMGPostSharing } from "hooks/useFileUpload";
+import {sharingPostIMGApi} from 'api/sharingApi';
 
 const acceptDefault = {
   image: {
@@ -22,6 +24,8 @@ export default function useFileUpload({ uploadEvent, formDataEvent, accept }) {
       setPreviewUrls(tempUrls);
       if (formDataEvent) imageUpload(acceptedFiles);
       setFiles(files.concat(acceptedFiles));
+
+      sharingPostIMGApi(files);
     },
   });
 
@@ -29,6 +33,7 @@ export default function useFileUpload({ uploadEvent, formDataEvent, accept }) {
     const formDataTemp = new FormData();
     for (const file of files) {
       formDataTemp.append("files", file);
+
     }
     if (formDataEvent) formDataEvent(formDataTemp);
   };

@@ -22,6 +22,15 @@ import instance from "./axios";
 //   return res;
 // }
 
+// 이미지 post
+export async function sharingPostIMGApi(files) {
+  const res = await instance.post(
+    `${process.env.REACT_APP_API_URL}/v1/images`,
+    files
+  );
+  return res;
+}
+
 
 export async function getPoketmonListAll(pageParam, size) {
   console.log(pageParam);
