@@ -1,69 +1,54 @@
+import React, { useEffect, useRef, useState } from "react";
+import { useParams } from "react-router-dom";
 import { posts } from 'components/dummydata/chat';
 import { Link } from 'react-router-dom';
 import styles from './MypageGiveReceive.module.scss';
 import { useLocation } from 'react-router-dom';
 import CommentIcon from 'components/icons/CommentIcon';
 import ViewIcon from 'components/icons/ViewIcon';
+import JupJupDetailCompo from 'components/jupjup/JupJupDetailCompo';
+import { MypgeDetailApi } from "api/myPageApi";
 
 export default function MypageGive() {
   const location = useLocation();
   const { type } = location.state || { type: 'give' };  // 기본값으로 'give' 사용
-  
+  const [isFilled, setIsFilled] = useState(false);
+  const [detailData, setDetailData] = useState(null);
+  const { id } = useParams();
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const toggleHeart = () => {
+    setIsFilled(!isFilled);
+  };
+
+  useEffect(() => {
+    const fetchDetailData = async () => {
+      try {
+        setLoading(true);
+          const response = await MypgeDetailApi(id);
+          setDetailData(response.data);
+          console.log('give')
+      } catch (err) {
+        setError(err.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchDetailData();
+    console.log(detailData)
+  }, [id]);
+
+  if (loading) return <div>로딩 중...</div>;
+  if (error) return <div>에러 발생: {error}</div>;
+  if (!detailData) return <div>데이터가 없습니다.</div>;
+
   return (
     <div className={styles.container}>
       <div className={styles.innerContainer}>
         <div className={styles.content}>
           <div className={styles.postList}>
-            {posts.map((post) => (
-              <article key={post.id} className={styles.postItem}>
-                <div className={styles.imageContainer}>
-                  <div className={styles.imageWrapper}>
-                    <img
-                      alt=''
-                      src={post.imageUrl}
-                      className={styles.image}
-                    />
-                    <div className={styles.imageOverlay} />
-                  </div>
-                </div>
-                <div className={styles.postContent}>
-                  <div className={styles.postMeta}>
-                    <time dateTime={post.datetime} className={styles.postDate}>
-                      {post.date}
-                    </time>
-                    <a href={post.category.href} className={styles.postCategory}>
-                      {post.category.title}
-                    </a>
-                  </div>
-                  <div className={styles.postTitle}>
-                    <h3>
-                      <a href={post.href}>
-                        <span className={styles.postTitleLink} />
-                        {post.title}
-                      </a>
-                    </h3>
-                  </div>
-                  <p className={styles.postState}>{post.state}</p>
-                  <p className={styles.postDescription}>{post.description}</p>
-                  <div className={styles.postFooter}>
-                    <div className={styles.authorInfo}>
-                      <p className={styles.authorName}>
-                        <a href={post.author.href} className={styles.authorLink}>
-                          <span className={styles.authorLinkOverlay} />
-                          <CommentIcon className={styles.commentIcon} />
-                          {post.author.name}
-                        </a>
-                      </p>
-                      <div className={styles.viewCount}>
-                        <ViewIcon className={styles.viewIcon} />
-                        <p className={styles.viewCountText}>{post.author.role}</p>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </article>
-            ))}
-
+          <JupJupDetailCompo data={detailData}/>
             {type === 'give' ? (
             <div className={styles.actionButtons}>
               <Link to='/chatOtherDetail' className={styles.button}>

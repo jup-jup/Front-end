@@ -18,7 +18,16 @@ export async function myPageSharingGet(pageParam, size) {
   }
 
 
-export const getTodoById = (id) => instance.get(`/todos/${id}`);
+// 나눔&받음 디테일 
+
+export async function MypgeDetailApi(id) {
+  const res = await instance.get(
+    `${process.env.REACT_APP_API_URL}/v1/mypage/${id}/detail`,
+  );
+  return res.data;
+}
+
+
 export const createTodo = (data) => instance.post('/todos', data);
 export const updateTodo = (id, data) => instance.put(`/todos/${id}`, data);
 export const deleteTodo = (id) => instance.delete(`/todos/${id}`);
@@ -30,3 +39,4 @@ export async function myPageReceiveGet(pageParam, size) {
     );
     return res.data;
 }
+
