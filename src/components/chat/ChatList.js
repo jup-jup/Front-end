@@ -3,32 +3,32 @@ import React, { useEffect, useRef, useState } from "react";
 import classNames from "classnames";
 import { dayChat } from "util/day";
 import "./chat.scss";
+import { userAuth } from "hooks/useAuth";
 
-const ChatList = ({ postId, upText }) => {
+const ChatList = ({ postId, upText, otherUserId }) => {
   const message = {
     data: [
       {
-        sender: 1,
-        createDate: "Image 1",
-        message: "https://example.com/image1.jpg",
+        createDate: "2024-09-09T11:58:08.822233",
+        message: "비밀대화",
       },
       {
-        sender: 2,
-        createDate: "Image 2",
+        createDate: "2024-09-09T11:58:08.822233",
         message: "https://example.com/image2.jpg",
       },
       {
-        sender: 3,
-        createDate: "Image 3",
+        createDate: "2024-09-09T11:58:08.822233",
         message: "https://example.com/image3.jpg",
       },
     ],
   };
   const scroll = useRef();
-  const nickname = "ㅇㅇ"; // 토큰에서 추출하기
+  const { userId: myid } = userAuth(localStorage.getItem("accessToken"));
+
   const [dataPage, setDataPage] = useState(0);
   const [dataSize, setDataSize] = useState(20);
   const [atBottom, setAtBottom] = useState(false);
+  console.log("토큰 ", myid);
 
   async function getChatList() {
     const { data } = await axios.get(`https://jupjup.store/api//chats`, {
@@ -132,10 +132,10 @@ const ChatList = ({ postId, upText }) => {
                 <div
                   key={i}
                   className={classNames("chat-item", {
-                    "is-my": nickname === item.sender,
+                    "is-my": otherUserId !== myid,
                   })}
                 >
-                  {nickname === item.sender ? (
+                  {otherUserId !== myid ? (
                     <>
                       <span className="createDate">
                         {dayChat(item.createDate)}
@@ -144,7 +144,6 @@ const ChatList = ({ postId, upText }) => {
                     </>
                   ) : (
                     <>
-                      <span className="sender">{item.sender}</span>
                       <span className="message">{item.message}</span>
                       <span className="createDate">
                         {dayChat(item.createDate)}

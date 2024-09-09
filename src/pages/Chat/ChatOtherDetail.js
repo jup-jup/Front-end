@@ -90,6 +90,7 @@ export default function ChatOtherDetail() {
         <p>채팅걸어오신 분의 닉네임</p>
       </div>
       <div className="flex flex-col h-[40rem] w-[30rem] bg-gray-100">
+        {/* 채팅 */}
         <ChatList postId={id} upText={upText} />
         <Chat postId={id} setUpText={setUpText} upText={upText} />
 
