@@ -126,9 +126,9 @@ export default function Mypage() {
                 </Link>
                 <div className={mp.postContent}>
                   <Link
-                    to={activeTab === '나눔내역' ? '/MypageGIVE' : '/MypageReceive'}
-                    state={{ type: activeTab === '나눔내역' ? 'give' : 'receive' }}
-                    className={mp.postMeta}
+                     to={`/MypageGiveReceive/${post.giveawayId}`}
+                     state={{ type: activeTab === '나눔내역' ? 'give' : 'receive' }}
+                     className={mp.postImageLink}
                   >
                     <time dateTime={post.createdAt} className={mp.postDate}>
                         {post.createdAt.split('T')[0]}
@@ -138,9 +138,9 @@ export default function Mypage() {
                     </span>
                   </Link>
                   <Link
-                    to={activeTab === '나눔내역' ? '/MypageGIVE' : '/MypageReceive'}
-                    state={{ type: activeTab === '나눔내역' ? 'give' : 'receive' }}
-                    className={mp.postTitleLink}
+                     to={`/MypageGiveReceive/${post.giveawayId}`}
+                     state={{ type: activeTab === '나눔내역' ? 'give' : 'receive' }}
+                     className={mp.postImageLink}
                   >
                     <h3 className={mp.postTitle}>{post.title}</h3>
                     {/* <p className={mp.postDescription}>{post.description}</p> */}

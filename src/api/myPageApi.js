@@ -27,10 +27,16 @@ export async function MypgeDetailApi(id) {
   return res.data;
 }
 
+// 나눔&받음 삭제 
+export async function MypgeDeleteApi(id) {
+  const res = await instance.delete(
+    `${process.env.REACT_APP_API_URL}/v1/giveaways/${id}`,
+  );
+  return res.data;
+}
 
 export const createTodo = (data) => instance.post('/todos', data);
 export const updateTodo = (id, data) => instance.put(`/todos/${id}`, data);
-export const deleteTodo = (id) => instance.delete(`/todos/${id}`);
 
 //받음내역
 export async function myPageReceiveGet(pageParam, size) {
