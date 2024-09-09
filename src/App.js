@@ -76,7 +76,7 @@ export default function App() {
         />
         <Route path="/chatOtherDetail/:id" element={<ChatOtherDetail />} />
         <Route path="/Mypage" element={<Mypage />} />
-        <Route path="/MypageGiveReceive" element={<MypageGiveReceive />} />
+        <Route path="/MypageGiveReceive/:id" element={<MypageGiveReceive />} />
         <Route path="/ProfileUpdate" element={<ProfileUpdate />} />
         <Route path="/modal" element={<ModalView />} />
       </Route>

@@ -61,7 +61,7 @@ export default function Mypage() {
       post.description.toLowerCase().includes(searchTerm.toLowerCase())
     );
   };
-
+  console.log(data, 'data')
   const filteredPosts = getFilteredPosts();
 
   if (isLoading) return <div>로딩 중...</div>;
@@ -113,7 +113,7 @@ export default function Mypage() {
             filteredPosts.map((post) => (
               <article key={post.id} className={mp.postItem}>
                 <Link
-                  to="/MypageGiveReceive"
+                  to={`/MypageGiveReceive/${post.giveawayId}`}
                   state={{ type: activeTab === '나눔내역' ? 'give' : 'receive' }}
                   className={mp.postImageLink}
                 >
@@ -130,11 +130,11 @@ export default function Mypage() {
                     state={{ type: activeTab === '나눔내역' ? 'give' : 'receive' }}
                     className={mp.postMeta}
                   >
-                    <time dateTime={post.datetime} className={mp.postDate}>
-                      {post.date}
-                    </time>
+                    <time dateTime={post.createdAt} className={mp.postDate}>
+                        {post.createdAt.split('T')[0]}
+                      </time>
                     <span className={mp.postCategory}>
-                      {post.category}
+                    {post.location}
                     </span>
                   </Link>
                   <Link
@@ -143,19 +143,18 @@ export default function Mypage() {
                     className={mp.postTitleLink}
                   >
                     <h3 className={mp.postTitle}>{post.title}</h3>
-                    <p className={mp.postDescription}>{post.description}</p>
+                    {/* <p className={mp.postDescription}>{post.description}</p> */}
                   </Link>
                   <div className={mp.postFooter}>
                     <div className={mp.authorInfo}>
-                      <p className={mp.authorName}>
-                        <span className={mp.authorLink}>
-                          <CommentIcon className={mp.commentIcon} />
-                          {post.author}
+                      <div className={mp.authorName}>
+                        <span href={data.location} className={mp.authorNameLink}>
+                          <CommentIcon className={mp.commentIcon} />{data.chatCnt == null ? 0 : data.chatCnt}
                         </span>
-                      </p>
+                      </div>
                       <div className={mp.viewCount}>
                         <ViewIcon className={mp.viewIcon} />
-                        <p className={mp.viewCountText}>{post.views}</p>
+                        <p className={mp.viewCountText}>{data.viewCnt == null ? 0 : data.viewCnt}</p>
                       </div>
                     </div>
                   </div>
