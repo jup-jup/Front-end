@@ -1,19 +1,20 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import * as api from '../api/myPageApi';
 import { myPageSharingGet, myPageReceiveGet } from "api/myPageApi";
+import { type } from '@testing-library/user-event/dist/type';
 
 // MyPage 관련 API 훅
 // 아래는 예시
 
-export const useGetMyPageSharing = () => {
+export const useGetMyPageSharing = (type) => {
   return useMutation({
-    mutationFn: myPageSharingGet,
+    mutationFn: myPageSharingGet(type),
   });
 };
 
-export const useGetMyPageReceive = () => {
+export const useGetMyPageReceive = (type) => {
   return useMutation({
-    mutationFn: myPageReceiveGet,
+    mutationFn: myPageReceiveGet(type),
   });
 };
 
