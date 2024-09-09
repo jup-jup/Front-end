@@ -56,7 +56,7 @@ export default function JupJup() {
       </div>
       <div className={jup.writeButtonContainer}>
         <Link
-          to="/WriteUpdate"
+          to={"/WriteUpdate/new"}
           state={{ type: "write" }}
           className={jup.writeButton}
         >

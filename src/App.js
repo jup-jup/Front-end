@@ -69,7 +69,7 @@ export default function App() {
         {/* <Route path='/signUp' element={<SignUp />}></Route> */}
         <Route path="/jupjupDetail/:id" element={<JupjupDetail />} />
         <Route path="/chat" element={<Chat />} />
-        <Route path="/WriteUpdate" element={<WriteUpdate />} />
+        <Route path="/WriteUpdate/:id" element={<WriteUpdate />} />
         <Route
           path="/chatOtherList"
           element={<PrivateRoute element={<ChatOtherList />} />}

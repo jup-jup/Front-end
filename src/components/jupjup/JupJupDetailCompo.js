@@ -36,6 +36,7 @@ const posts = [
 
 export default function JupJupDetailCompo ({ data }) {
   const [isFilled, setIsFilled] = useState(false);
+  console.log(data, 'dataaaa')
   const toggleHeart = () => {
     setIsFilled(!isFilled);
   };

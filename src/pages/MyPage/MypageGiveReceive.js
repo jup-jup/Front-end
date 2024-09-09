@@ -70,7 +70,7 @@ export default function MypageGive() {
                 <Link to='/chatOtherDetail' className={styles.button}>
                   대화중인 채팅 방
                 </Link>
-                <Link to='/WriteUpdate' state={{ type: 'edit' }} className={styles.button}>
+                <Link to={`/WriteUpdate/${id}`} state={{ type: 'edit' }} className={styles.button}>
                   수정하기
                 </Link>
                 <div onClick={deleteButton} className={styles.deleteButton}>
