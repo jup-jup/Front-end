@@ -9,12 +9,14 @@ import {
 import { useParams } from "react-router-dom";
 import MapModal from "components/portalModal/mapModal/MapModal";
 import Chat from "components/chat/Chat";
+import ChatList from "components/chat/ChatList";
 
 export default function ChatOtherDetail() {
   const { id } = useParams();
   const [messages, setMessages] = useState([]);
   const [inputMessage, setInputMessage] = useState("");
   const [address, setAddress] = useState("");
+  const [upText, setUpText] = useState([{}]);
 
   const [showMap, setShowMap] = useState(false);
   const chatContainerRef = useRef(null);
@@ -88,9 +90,8 @@ export default function ChatOtherDetail() {
         <p>채팅걸어오신 분의 닉네임</p>
       </div>
       <div className="flex flex-col h-[40rem] w-[30rem] bg-gray-100">
-
-        <Chat postId={id} />
-        
+        <ChatList postId={id} upText={upText} />
+        <Chat postId={id} setUpText={setUpText} upText={upText} />
 
         <div className="flex justify-around">
           <button className="p-2 transition bg-gray-200 rounded-full hover:bg-gray-300">

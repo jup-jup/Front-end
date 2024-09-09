@@ -3,6 +3,7 @@ import SockJS from "sockjs-client";
 import Stomp from "stompjs";
 import ChatInput from "./ChatInput";
 
+
 const Chat = ({ postId, upText, setUpText }) => {
   const [text, setText] = useState("");
   const [temps, setTemp] = useState([{}]);
@@ -26,7 +27,8 @@ const Chat = ({ postId, upText, setUpText }) => {
       stomp.subscribe(
         `/sub/room/${postId}`,
         (body) => {
-          console.log("메시지 받음: ", JSON.parse(body.body));
+          // console.log("메시지 받음: ", JSON.parse(body.body));
+          console.log("메시지 받음: ", body);
           // dispatch(SEND_MESSAGE(JSON.parse(body.body)));
         },
         headers
@@ -52,9 +54,10 @@ const Chat = ({ postId, upText, setUpText }) => {
         Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
       },
       // JSON.stringify(text) )
-      // text
+      // text)
        JSON.stringify({ content: text }));
-      // { content: text }); 
+      // { content: text });
+      // { content: JSON.stringify(text) }); 
   };
 
   return (

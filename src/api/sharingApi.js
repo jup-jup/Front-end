@@ -32,7 +32,9 @@ export async function sharingPostIMGApi(formData) {
   return res;
 }
 
-export async function getPoketmonListAll(pageParam, size) {
+// 목록보기
+// export async function getPoketmonListAll(pageParam, size) {
+export async function sharingListApi(pageParam, size) {
   console.log(pageParam);
   const res = await axios
     .get(`${process.env.REACT_APP_API_URL}/v1/giveaways/list`, {
@@ -43,7 +45,7 @@ export async function getPoketmonListAll(pageParam, size) {
     })
     .then((response) => response.data)
     .catch((err) => {
-      console.log('err', err);
+      console.log("err", err);
       throw err;
     });
   return res;

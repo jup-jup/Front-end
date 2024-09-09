@@ -1,31 +1,26 @@
-import React, { useEffect, useRef, useState } from "react";
-import { posts } from "components/dummydata/chat";
-import CommentIcon from "components/icons/CommentIcon";
+import { useInfiniteQuery } from "@tanstack/react-query";
+import { sharingListApi } from "api/sharingApi";
 import SearchIcon from "components/icons/SearchIcon";
-import ViewIcon from "components/icons/ViewIcon";
+import JupjupItem from "components/jupjup/JupjupItem";
+import React, { useEffect } from "react";
+import { useInView } from "react-intersection-observer";
 import { Link } from "react-router-dom";
 import jup from "./JupJup.module.scss";
-import JupjupItem from "components/jupjup/JupjupItem";
-import { useGetSharingList } from "hooks/useSharingApi";
-import { useInfiniteQuery } from "@tanstack/react-query";
-import { useInView } from "react-intersection-observer";
-import { getPoketmonListAll } from "api/sharingApi";
-import axios from "axios";
 
 export default function JupJup() {
   const [ref, isView] = useInView();
-  const search = '검색어';
+  const search = "검색어";
   const size = 3; // 한 페이지당 아이템 수
   const {
-    data: pokemonListAll,
-    fetchNextPage: pokemonListAllFetchNextPage,
-    hasNextPage: pokemonListAllHasNextPage,
-    status: pokemonListAllStatus,
-    error: pokemonListAllError,
+    data: jupjupList,
+    fetchNextPage: jupjupListFetchNextPage,
+    hasNextPage: jupjupListHasNextPage,
+    status: jupjupListStatus,
+    error: jupjupListError,
   } = useInfiniteQuery({
-    queryKey: ["pokemonList"],
+    queryKey: ["jupjupList"],
     queryFn: async ({ pageParam = 0 }) => {
-      const response = await getPoketmonListAll(pageParam, size);
+      const response = await sharingListApi(pageParam, size);
       // console.log(response, 'response')
       // console.log(response.length , 'response length')
       // console.log(pageParam, 'pageParam')
@@ -39,12 +34,11 @@ export default function JupJup() {
   });
 
   useEffect(() => {
-    if (isView && pokemonListAllHasNextPage) {
-      pokemonListAllFetchNextPage();
+    if (isView && jupjupListHasNextPage) {
+      jupjupListFetchNextPage();
     }
-    console.log(pokemonListAll, 'data')
-    
-  }, [isView, pokemonListAllHasNextPage, pokemonListAllFetchNextPage]);
+    console.log(jupjupList, "data");
+  }, [isView, jupjupListHasNextPage, jupjupListFetchNextPage]);
 
   return (
     <div className={jup.container}>
@@ -73,17 +67,25 @@ export default function JupJup() {
       <div className={jup.postsContainer}>
         <div className={jup.postsWrapper}>
           <div className={jup.postsList}>
-            {pokemonListAll?.pages.map((page, pageIndex) => (
-              <React.Fragment key={pageIndex}>
-                {page.data.map((post, postIndex) => (
-                  <JupjupItem key={`${pageIndex}-${postIndex}`} data={post} />
-                ))}
-              </React.Fragment>
-            ))}
+            {jupjupList?.pages.length > 0
+              ? jupjupList?.pages.map((page, pageIndex) => (
+                  <React.Fragment key={pageIndex}>
+                    {page.data.map((post, postIndex) => (
+                      <JupjupItem
+                        key={`${pageIndex}-${postIndex}`}
+                        data={post}
+                      />
+                    ))}
+                  </React.Fragment>
+                ))
+              : <div>데이터가 없습니다.</div>}
           </div>
-          {pokemonListAllStatus === "loading" && <p>데이터를 불러오는 중...</p>}
-          {pokemonListAllStatus === "error" && <p>오류 발생: {pokemonListAllError.message}</p>}
-          <div ref={ref} style={{ height: "20px" }} /> {/* 스크롤 감지를 위한 요소 */}
+          {jupjupListStatus === "loading" && <p>데이터를 불러오는 중...</p>}
+          {jupjupListStatus === "error" && (
+            <p>오류 발생: {jupjupListError.message}</p>
+          )}
+          <div ref={ref} style={{ height: "20px" }} />{" "}
+          {/* 스크롤 감지를 위한 요소 */}
         </div>
       </div>
     </div>

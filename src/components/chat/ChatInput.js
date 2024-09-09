@@ -1,6 +1,6 @@
 import Button from "components/button/Button";
 import { useRef, useState } from "react";
-// import "./chat.scss";
+import "./chat.scss";
 
 const ChatInput = ({ setText, onClick }) => {
   const textarea = useRef();
