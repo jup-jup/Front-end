@@ -148,13 +148,13 @@ export default function Mypage() {
                   <div className={mp.postFooter}>
                     <div className={mp.authorInfo}>
                       <div className={mp.authorName}>
-                        <span href={data.location} className={mp.authorNameLink}>
-                          <CommentIcon className={mp.commentIcon} />{data.chatCnt == null ? 0 : data.chatCnt}
+                        <span href={post.location} className={mp.authorNameLink}>
+                          <CommentIcon className={mp.commentIcon} />{post.chatCnt == null ? 0 : post.chatCnt}
                         </span>
                       </div>
                       <div className={mp.viewCount}>
                         <ViewIcon className={mp.viewIcon} />
-                        <p className={mp.viewCountText}>{data.viewCnt == null ? 0 : data.viewCnt}</p>
+                        <p className={mp.viewCountText}>{post.viewCnt == null ? 0 : post.viewCnt}</p>
                       </div>
                     </div>
                   </div>
