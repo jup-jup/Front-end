@@ -22,7 +22,7 @@ import instance from 'api/axios';
 const faqs = [
   {
     menuTitle: '마이페이지',
-    detailTitle1: '프로필수정',
+    // detailTitle1: '프로필수정',
     detailTitle2: '줍줍내역',
   },
   // More questions...
@@ -213,13 +213,13 @@ const Header = () => {
                                   as='dd'
                                   className={h.faqPanel}
                                 >
-                                  <Link
+                                  {/* <Link
                                     to='/ProfileUpdate'
                                     className={h.faqLink}
                                     onClick={handleLinkClick}
                                   >
                                     {faq.detailTitle1}
-                                  </Link>
+                                  </Link> */}
                                   <br />
                                   <Link
                                     to='/Mypage'
