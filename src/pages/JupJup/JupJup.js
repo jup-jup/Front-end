@@ -67,18 +67,16 @@ export default function JupJup() {
       <div className={jup.postsContainer}>
         <div className={jup.postsWrapper}>
           <div className={jup.postsList}>
-            {jupjupList?.pages.length > 0
-              ? jupjupList?.pages.map((page, pageIndex) => (
-                  <React.Fragment key={pageIndex}>
-                    {page.data.map((post, postIndex) => (
-                      <JupjupItem
-                        key={`${pageIndex}-${postIndex}`}
-                        data={post}
-                      />
-                    ))}
-                  </React.Fragment>
-                ))
-              : <div>데이터가 없습니다.</div>}
+            {jupjupList?.pages.map((page, pageIndex) => (
+              <React.Fragment key={pageIndex}>
+                {page.data.map((post, postIndex) => (
+                  <JupjupItem key={`${pageIndex}-${postIndex}`} data={post} />
+                ))}
+              </React.Fragment>
+            ))}
+            {jupjupListStatus !== "loading" && jupjupList?.length < 1 && (
+              <>데이터가 없습니다.</>
+            )}
           </div>
           {jupjupListStatus === "loading" && <p>데이터를 불러오는 중...</p>}
           {jupjupListStatus === "error" && (
