@@ -38,7 +38,7 @@ export default function ChatOtherDetail() {
       })
       .then((res) => {
         setRoomId(res.data.room_id);
-        console.log("res", res.data.room_id);
+        console.log("채팅방 생성", res.data.room_id);
       });
   }, []);
 
@@ -69,9 +69,13 @@ export default function ChatOtherDetail() {
       </div>
       <div className="flex flex-col h-[40rem] w-[30rem] bg-gray-100">
         {/* 채팅 */}
-        <ChatList postId={roomId} upText={upText} />
-        <Chat postId={roomId} setUpText={setUpText} upText={upText} />
-        
+        {roomId && (
+          <>
+            <ChatList postId={roomId} upText={upText} />
+            <Chat postId={roomId} setUpText={setUpText} upText={upText} />
+          </>
+        )}
+
         <div className="flex justify-around">
           <button className="p-2 transition bg-gray-200 rounded-full hover:bg-gray-300">
             <PhotoIcon className="w-6 h-6 text-gray-600" />

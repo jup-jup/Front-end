@@ -18,6 +18,7 @@ const Chat = ({ postId, upText, setUpText }) => {
   const stomp = new Stomp.over(socket);
 
   useEffect(() => {
+    console.log('소켓 안에 받은 id', postId);
     stomp.connect(headers, ({ temp }) => {
       //방 생성
 
