@@ -45,6 +45,7 @@ const Chat = ({ postId, upText, setUpText }) => {
   }, []);
 
   const click = async (e, text) => {
+    console.log('클릭');
     e.preventDefault();
 
     stomp.send(

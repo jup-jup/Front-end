@@ -57,8 +57,15 @@ $font-size-small: 15px;
         margin: auto;
         border-radius: 10vw;
         background: #10b981;
-        content:'';
+        content: "";
       }
     }
   }
+}
+
+.chat_inner {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+  overflow-y: auto;
 }

@@ -1,29 +1,30 @@
-'use client';
-import React, { useEffect, useState, Fragment, useCallback } from 'react';
-import h from './header.module.scss';
+"use client";
+import React, { useEffect, useState, Fragment, useCallback } from "react";
+import h from "./header.module.scss";
 import {
   Dialog,
   DialogPanel,
   PopoverGroup,
   Transition,
-} from '@headlessui/react';
-import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline';
-import { Link } from 'react-router-dom';
+} from "@headlessui/react";
+import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
+import { Link } from "react-router-dom";
 import {
   Disclosure,
   DisclosureButton,
   DisclosurePanel,
-} from '@headlessui/react';
-import { MinusSmallIcon, PlusSmallIcon } from '@heroicons/react/24/outline';
-import { useLogout } from 'hooks/useAuthApi';
-import BasicModal from 'components/portalModal/basicmodal/BasicModal';
-import instance from 'api/axios';
+} from "@headlessui/react";
+import { MinusSmallIcon, PlusSmallIcon } from "@heroicons/react/24/outline";
+import { useLogout } from "hooks/useAuthApi";
+import BasicModal from "components/portalModal/basicmodal/BasicModal";
+import instance from "api/axios";
+import { useGetChatList } from "hooks/useChatApi";
 
 const faqs = [
   {
-    menuTitle: '마이페이지',
+    menuTitle: "마이페이지",
     // detailTitle1: '프로필수정',
-    detailTitle2: '줍줍내역',
+    detailTitle2: "줍줍내역",
   },
   // More questions...
 ];
@@ -32,10 +33,11 @@ const Header = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [openErrorModal, setOpenErrorModal] = useState(false);
-  const [errorMessage, setErrorMessage] = useState('');
+  const [errorMessage, setErrorMessage] = useState("");
+  const { data: chatRoomCount } = useGetChatList();
 
   useEffect(() => {
-    const accessToken = localStorage.getItem('accessToken');
+    const accessToken = localStorage.getItem("accessToken");
     setIsLoggedIn(!!accessToken);
 
     const handleLoginStateChange = () => {
@@ -43,10 +45,10 @@ const Header = () => {
       setIsLoggedIn(!!newAccessToken);
     };
 
-    window.addEventListener('loginStateChange', handleLoginStateChange);
+    window.addEventListener("loginStateChange", handleLoginStateChange);
 
     return () => {
-      window.removeEventListener('loginStateChange', handleLoginStateChange);
+      window.removeEventListener("loginStateChange", handleLoginStateChange);
     };
   }, []);
 
@@ -54,18 +56,19 @@ const Header = () => {
 
   const handleLogout = useCallback(() => {
     // refetch()
-    instance.post(`${process.env.PUBLIC_URL}/v1/auth/logout`)
+    instance
+      .post(`${process.env.PUBLIC_URL}/v1/auth/logout`)
       .then(() => {
-        localStorage.removeItem('accessToken');
-        localStorage.removeItem('refreshToken');
-        sessionStorage.removeItem('accessToken');
+        localStorage.removeItem("accessToken");
+        localStorage.removeItem("refreshToken");
+        sessionStorage.removeItem("accessToken");
         document.cookie = "JSESSIONID=; max-age=0; path=/;";
-        
+
         setIsLoggedIn(false);
-        window.dispatchEvent(new Event('loginStateChange'));
+        window.dispatchEvent(new Event("loginStateChange"));
       })
       .catch((error) => {
-        setErrorMessage('로그아웃 중 문제가 발생했습니다.');
+        setErrorMessage("로그아웃 중 문제가 발생했습니다.");
         setOpenErrorModal(true);
       })
       .finally(() => {
@@ -77,31 +80,33 @@ const Header = () => {
     setMobileMenuOpen(false);
   }, []);
 
+  //
+
   return (
     <header className={h.header}>
       <nav className={h.nav}>
         <div className={h.logoContainer}>
-          <Link to='/' className={h.logoLink}>
+          <Link to="/" className={h.logoLink}>
             <span className={h.srOnly}>Your Company</span>
-            <img alt='' src={'/main/204219337.jpg'} className={h.logoImage} />
+            <img alt="" src={"/main/204219337.jpg"} className={h.logoImage} />
             <p className={h.logoText}>JUPJUP</p>
           </Link>
         </div>
         <div className={h.menuButtonContainer}>
           <button
-            type='button'
+            type="button"
             onClick={() => setMobileMenuOpen(true)}
             className={h.menuButton}
           >
             <span className={h.srOnly}>Open main menu</span>
-            <Bars3Icon aria-hidden='true' className={h.menuIcon} />
+            <Bars3Icon aria-hidden="true" className={h.menuIcon} />
           </button>
         </div>
       </nav>
 
       <Transition.Root show={mobileMenuOpen} as={Fragment}>
         <Dialog
-          as='div'
+          as="div"
           className={h.dialog}
           onClose={setMobileMenuOpen}
           static
@@ -115,7 +120,7 @@ const Header = () => {
             leaveFrom={h.overlayLeaveFrom}
             leaveTo={h.overlayLeaveTo}
           >
-            <div className={h.dialogOverlay} aria-hidden='true' />
+            <div className={h.dialogOverlay} aria-hidden="true" />
           </Transition.Child>
 
           <Transition.Child
@@ -131,39 +136,39 @@ const Header = () => {
               <Dialog.Panel className={h.dialogPanel}>
                 <div className={h.dialogHeader}>
                   <Link
-                    to='/'
+                    to="/"
                     className={h.dialogLogoLink}
                     onClick={() => setMobileMenuOpen(false)}
                   >
                     <span className={h.srOnly}>Your Company</span>
                     <img
-                      alt=''
-                      src={'/main/204219337.jpg'}
+                      alt=""
+                      src={"/main/204219337.jpg"}
                       className={h.dialogLogoImage}
                     />
                     <p className={h.dialogLogoText}>JUPJUP</p>
                   </Link>
                   <button
-                    type='button'
+                    type="button"
                     onClick={() => setMobileMenuOpen(false)}
                     className={h.closeButton}
                   >
                     <span className={h.srOnly}>Close menu</span>
-                    <XMarkIcon aria-hidden='true' className={h.closeIcon} />
+                    <XMarkIcon aria-hidden="true" className={h.closeIcon} />
                   </button>
                 </div>
                 <div className={h.menuContent}>
                   <div className={h.menuList}>
                     <div className={h.menuItems}>
                       <Link
-                        to='/jupjup'
+                        to="/jupjup"
                         className={h.menuItem}
                         onClick={handleLinkClick}
                       >
                         줍줍
                       </Link>
                       <Link
-                        to='/chatOtherList'
+                        to="/chatOtherList"
                         className={h.menuItem}
                         onClick={handleLinkClick}
                       >
@@ -171,12 +176,12 @@ const Header = () => {
                         <span className={h.badge}>
                           <svg
                             className={h.badgeIcon}
-                            viewBox='0 0 6 6'
-                            aria-hidden='true'
+                            viewBox="0 0 6 6"
+                            aria-hidden="true"
                           >
-                            <circle cx='3' cy='3' r='3' />
+                            <circle cx="3" cy="3" r="3" />
                           </svg>
-                          10
+                          {chatRoomCount?.length}
                         </span>
                       </Link>
 
@@ -184,7 +189,7 @@ const Header = () => {
                         {faqs.map((faq) => (
                           <Disclosure
                             key={faq.menuTitle}
-                            as='div'
+                            as="div"
                             className={h.faqItem}
                           >
                             {({ open }) => (
@@ -197,12 +202,12 @@ const Header = () => {
                                     <span className={h.faqIcon}>
                                       {open ? (
                                         <MinusSmallIcon
-                                          aria-hidden='true'
+                                          aria-hidden="true"
                                           className={h.minusIcon}
                                         />
                                       ) : (
                                         <PlusSmallIcon
-                                          aria-hidden='true'
+                                          aria-hidden="true"
                                           className={h.plusIcon}
                                         />
                                       )}
@@ -210,7 +215,7 @@ const Header = () => {
                                   </Disclosure.Button>
                                 </dt>
                                 <Disclosure.Panel
-                                  as='dd'
+                                  as="dd"
                                   className={h.faqPanel}
                                 >
                                   {/* <Link
@@ -222,7 +227,7 @@ const Header = () => {
                                   </Link> */}
                                   <br />
                                   <Link
-                                    to='/Mypage'
+                                    to="/Mypage"
                                     className={h.faqLink}
                                     onClick={handleLinkClick}
                                   >
@@ -243,7 +248,7 @@ const Header = () => {
                         </Link>
                       ) : (
                         <Link
-                          to='/signin'
+                          to="/signin"
                           className={h.authLink}
                           onClick={handleLinkClick}
                         >
@@ -262,7 +267,7 @@ const Header = () => {
       {openErrorModal && (
         <BasicModal
           setOnModal={setOpenErrorModal}
-          className='error-modal'
+          className="error-modal"
           isDim
           onClose
           dimClick={() => setOpenErrorModal(false)}

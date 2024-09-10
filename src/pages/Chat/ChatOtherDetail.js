@@ -10,11 +10,14 @@ import { useParams } from "react-router-dom";
 import MapModal from "components/portalModal/mapModal/MapModal";
 import Chat from "components/chat/Chat";
 import ChatList from "components/chat/ChatList";
+import { useLocation } from "react-router-dom";
 import axios from "axios";
 import instance from "api/axios";
+import s from './chat.module.scss';
 
 export default function ChatOtherDetail() {
   const { id } = useParams();
+  const location = useLocation();
   const [messages, setMessages] = useState([]);
   const [inputMessage, setInputMessage] = useState("");
   const [address, setAddress] = useState("");
@@ -32,14 +35,20 @@ export default function ChatOtherDetail() {
   }, [messages]);
 
   useEffect(() => {
-    instance
-      .post("https://jupjup.store/api/v1/chat-rooms", {
-        giveaway_id: id,
-      })
-      .then((res) => {
-        setRoomId(res.data.room_id);
-        console.log("채팅방 생성", res.data.room_id);
-      });
+    // 없던 채팅방을 요청할때 새로운 채팅방 생성
+    if (location.state.type === "new") {
+      instance
+        .post("https://jupjup.store/api/v1/chat-rooms", {
+          giveaway_id: id,
+        })
+        .then((res) => {
+          setRoomId(res.data.room_id);
+          console.log("채팅방 생성", res.data.room_id);
+        });
+    } else {
+      // 이미 있는 채팅방이면 게시글 id만 전송
+      setRoomId(id);
+    }
   }, []);
 
   const handleMapButtonClick = () => {
@@ -70,10 +79,10 @@ export default function ChatOtherDetail() {
       <div className="flex flex-col h-[40rem] w-[30rem] bg-gray-100">
         {/* 채팅 */}
         {roomId && (
-          <>
+          <div className={s.chat_inner}>
             <ChatList postId={roomId} upText={upText} />
             <Chat postId={roomId} setUpText={setUpText} upText={upText} />
-          </>
+          </div>
         )}
 
         <div className="flex justify-around">

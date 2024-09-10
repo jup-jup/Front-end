@@ -81,7 +81,7 @@ export default function JupJupDetail() {
           <div className={jd.postList}>
             <JupJupDetailCompo data={detailData} />
             <div className={jd.chatButtonContainer}>
-              <Link to={`/chatOtherDetail/${id}`} className={jd.chatButton}>
+              <Link to={`/chatOtherDetail/${id}`} state={{ type: 'new' }} className={jd.chatButton}>
                 채팅하기
               </Link>
             </div>

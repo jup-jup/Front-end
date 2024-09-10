@@ -1,30 +1,31 @@
-import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
-import { useInfiniteQuery } from '@tanstack/react-query';
-import { useInView } from 'react-intersection-observer';
+import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
+import { useInfiniteQuery } from "@tanstack/react-query";
+import { useInView } from "react-intersection-observer";
 import { myPageSharingGet, myPageReceiveGet } from "api/myPageApi";
-import mp from './Mypage.module.scss';
-import SearchIcon from 'components/icons/SearchIcon';
-import CommentIcon from 'components/icons/CommentIcon';
-import ViewIcon from 'components/icons/ViewIcon';
+import mp from "./Mypage.module.scss";
+import SearchIcon from "components/icons/SearchIcon";
+import CommentIcon from "components/icons/CommentIcon";
+import ViewIcon from "components/icons/ViewIcon";
 
 const tabs = [
-  { name: '나눔내역', href: '#', current: false },
-  { name: '받음내역', href: '#', current: false },
+  { name: "나눔내역", href: "#", current: false },
+  { name: "받음내역", href: "#", current: false },
 ];
 
 function classNames(...classes) {
-  return classes.filter(Boolean).join(' ');
+  return classes.filter(Boolean).join(" ");
 }
 
 export default function Mypage() {
-  const [activeTab, setActiveTab] = useState('나눔내역');
-  const [searchTerm, setSearchTerm] = useState('');
+  const [activeTab, setActiveTab] = useState("나눔내역");
+  const [searchTerm, setSearchTerm] = useState("");
   const [ref, inView] = useInView();
   const PAGE_SIZE = 3;
 
   const fetchPosts = async ({ pageParam = 0 }) => {
-    const apiFunction = activeTab === '나눔내역' ? myPageSharingGet : myPageReceiveGet;
+    const apiFunction =
+      activeTab === "나눔내역" ? myPageSharingGet : myPageReceiveGet;
     const response = await apiFunction(pageParam, PAGE_SIZE);
     return {
       data: response,
@@ -32,21 +33,13 @@ export default function Mypage() {
     };
   };
 
-
-  const {
-    data,
-    fetchNextPage,
-    hasNextPage,
-    isLoading,
-    isError,
-    error
-  } = useInfiniteQuery({
-    queryKey: ['myPagePosts', activeTab],
-    queryFn: fetchPosts,
-    getNextPageParam: (lastPage) => lastPage.nextPage,
-    initialPageParam: 0,
-  });
-
+  const { data, fetchNextPage, hasNextPage, isLoading, isError, error } =
+    useInfiniteQuery({
+      queryKey: ["myPagePosts", activeTab],
+      queryFn: fetchPosts,
+      getNextPageParam: (lastPage) => lastPage.nextPage,
+      initialPageParam: 0,
+    });
 
   useEffect(() => {
     if (inView && hasNextPage) {
@@ -56,17 +49,19 @@ export default function Mypage() {
 
   const getFilteredPosts = () => {
     if (!data) return [];
-    return data.pages.flatMap(page => page.data).filter(post =>
-      post.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      post.description.toLowerCase().includes(searchTerm.toLowerCase())
-    );
+    return data.pages
+      .flatMap((page) => page.data)
+      .filter(
+        (post) =>
+          post.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          post.description.toLowerCase().includes(searchTerm.toLowerCase())
+      );
   };
-  console.log(data, 'data')
+  console.log(data, "data");
   const filteredPosts = getFilteredPosts();
 
   if (isLoading) return <div>로딩 중...</div>;
   if (isError) return <div>에러 발생: {error.message}</div>;
-
 
   return (
     <div className={mp.container}>
@@ -106,41 +101,41 @@ export default function Mypage() {
 
       <div className={mp.contentContainer}>
         <h3 className={mp.contentTitle}>
-          {activeTab === '나눔내역' ? '나눔내역' : '받음내역'}
+          {activeTab === "나눔내역" ? "나눔내역" : "받음내역"}
         </h3>
         <div className={mp.postsContainer}>
           {filteredPosts.length > 0 ? (
             filteredPosts.map((post) => (
               <article key={post.id} className={mp.postItem}>
                 <Link
-                  to={`/MypageGiveReceive/${post.giveawayId}`}
-                  state={{ type: activeTab === '나눔내역' ? 'give' : 'receive' }}
+                  to={`/MypageGiveReceive/${post.giveaway_id}`}
+                  state={{
+                    type: activeTab === "나눔내역" ? "give" : "receive",
+                  }}
                   className={mp.postImageLink}
                 >
-                  <img
-                    alt=""
-                    src={post.imageUrl}
-                    className={mp.postImage}
-                  />
+                  <img alt="" src={post.imageUrl} className={mp.postImage} />
                   <div className={mp.postImageOverlay} />
                 </Link>
                 <div className={mp.postContent}>
                   <Link
-                     to={`/MypageGiveReceive/${post.giveawayId}`}
-                     state={{ type: activeTab === '나눔내역' ? 'give' : 'receive' }}
-                     className={mp.postImageLink}
+                    to={`/MypageGiveReceive/${post.giveaway_id}`}
+                    state={{
+                      type: activeTab === "나눔내역" ? "give" : "receive",
+                    }}
+                    className={mp.postImageLink}
                   >
                     <time dateTime={post.createdAt} className={mp.postDate}>
-                        {post.createdAt.split('T')[0]}
-                      </time>
-                    <span className={mp.postCategory}>
-                    {post.location}
-                    </span>
+                      {/* {post.createdAt.split('T')[0]} */}
+                    </time>
+                    <span className={mp.postCategory}>{post.location}</span>
                   </Link>
                   <Link
-                     to={`/MypageGiveReceive/${post.giveawayId}`}
-                     state={{ type: activeTab === '나눔내역' ? 'give' : 'receive' }}
-                     className={mp.postImageLink}
+                    to={`/MypageGiveReceive/${post.giveaway_id}`}
+                    state={{
+                      type: activeTab === "나눔내역" ? "give" : "receive",
+                    }}
+                    className={mp.postImageLink}
                   >
                     <h3 className={mp.postTitle}>{post.title}</h3>
                     {/* <p className={mp.postDescription}>{post.description}</p> */}
@@ -148,13 +143,19 @@ export default function Mypage() {
                   <div className={mp.postFooter}>
                     <div className={mp.authorInfo}>
                       <div className={mp.authorName}>
-                        <span href={post.location} className={mp.authorNameLink}>
-                          <CommentIcon className={mp.commentIcon} />{post.chatCnt == null ? 0 : post.chatCnt}
+                        <span
+                          href={post.location}
+                          className={mp.authorNameLink}
+                        >
+                          <CommentIcon className={mp.commentIcon} />
+                          {post.chatCnt == null ? 0 : post.chatCnt}
                         </span>
                       </div>
                       <div className={mp.viewCount}>
                         <ViewIcon className={mp.viewIcon} />
-                        <p className={mp.viewCountText}>{post.viewCnt == null ? 0 : post.viewCnt}</p>
+                        <p className={mp.viewCountText}>
+                          {post.viewCnt == null ? 0 : post.viewCnt}
+                        </p>
                       </div>
                     </div>
                   </div>
@@ -164,7 +165,8 @@ export default function Mypage() {
           ) : (
             <p>게시물을 찾을 수 없습니다.</p>
           )}
-          <div ref={ref} style={{ height: "20px" }} /> {/* 스크롤 감지를 위한 요소 */}
+          <div ref={ref} style={{ height: "20px" }} />{" "}
+          {/* 스크롤 감지를 위한 요소 */}
         </div>
       </div>
     </div>

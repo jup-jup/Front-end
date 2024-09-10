@@ -18,6 +18,7 @@ const ChatInput = ({ setText, onClick }) => {
       }, 3000);
     } else {
       onClick(e, inputText);
+      console.log(inputText);
       setText(inputText);
       setInputText("");
       textarea.current.focus();
@@ -70,6 +71,7 @@ const ChatInput = ({ setText, onClick }) => {
           onClick={(e) => {
             e.preventDefault();
             click(e, inputText);
+            console.log('zzz')
           }}
         >
           전송

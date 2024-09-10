@@ -21,6 +21,6 @@ export const dayChat = (date) => {
 };
 
 export const getRelativeTime = (dateString) => {
-  const date = dayjs(dateString);
+  const date = dayjs(dateString).add(9, "hour");
   return date.fromNow();
 };
