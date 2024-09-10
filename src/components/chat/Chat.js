@@ -12,7 +12,6 @@ const Chat = ({ postId, upText, setUpText }) => {
   const headers = {
     Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
   };
-  console.log("xhzms", localStorage.getItem("accessToken"));
 
   const socket = new SockJS(`https://jupjup.store/ws`);
   // const socket = new SockJS(`https://localhost:8080/ws`);
@@ -20,7 +19,6 @@ const Chat = ({ postId, upText, setUpText }) => {
 
   useEffect(() => {
     stomp.connect(headers, ({ temp }) => {
-      console.log("소켓 연결됨");
       //방 생성
 
       //이벤트 구독

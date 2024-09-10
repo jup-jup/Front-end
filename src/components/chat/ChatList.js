@@ -4,6 +4,7 @@ import classNames from "classnames";
 import { dayChat } from "util/day";
 import "./chat.scss";
 import { userAuth } from "hooks/useAuth";
+import { useQuery } from "@tanstack/react-query";
 
 const ChatList = ({ postId, upText, otherUserId }) => {
   const message = {
@@ -31,21 +32,25 @@ const ChatList = ({ postId, upText, otherUserId }) => {
   console.log("토큰 ", myid);
 
   async function getChatList() {
-    const { data } = await axios.get(`https://jupjup.store/api//chats`, {
-      params: { page: dataPage, size: dataSize },
-      headers: {
-        "Content-Type": "application/json",
-        "X-AUTH-TOKEN": "토큰",
-      },
-    });
+    console.log('cc', postId)
+    const { data } = await axios.get(
+      `https://jupjup.store/api/v1/chat-rooms/${postId}/chats`,
+      {
+        params: { page: dataPage, size: dataSize },
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+        },
+      }
+    );
     return data;
   }
 
   // TODO: 첫 채팅 리스트 받아오기
-  // const { data, isLoading, refetch, isSuccess } = useQuery({
-  //   queryKey: ["chatList", dataPage, dataSize],
-  //   queryFn: getChatList,
-  // });
+  const { data, isLoading, refetch, isSuccess } = useQuery({
+    queryKey: ["chatList", dataPage, dataSize],
+    queryFn: getChatList,
+  });
 
   // const reversedList = data && [...data.content].reverse();
 
@@ -90,7 +95,7 @@ const ChatList = ({ postId, upText, otherUserId }) => {
 
   // data && isSuccess && scrollToBottom();
 
-  // console.log("cc", isSuccess && data, reversedList);
+  console.log("cc", isSuccess && data);
 
   useEffect(() => {
     scrollToBottom();

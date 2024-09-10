@@ -10,6 +10,8 @@ import { useParams } from "react-router-dom";
 import MapModal from "components/portalModal/mapModal/MapModal";
 import Chat from "components/chat/Chat";
 import ChatList from "components/chat/ChatList";
+import axios from "axios";
+import instance from "api/axios";
 
 export default function ChatOtherDetail() {
   const { id } = useParams();
@@ -17,23 +19,10 @@ export default function ChatOtherDetail() {
   const [inputMessage, setInputMessage] = useState("");
   const [address, setAddress] = useState("");
   const [upText, setUpText] = useState([{}]);
+  const [roomId, setRoomId] = useState();
 
   const [showMap, setShowMap] = useState(false);
   const chatContainerRef = useRef(null);
-
-  console.log("cc", address);
-
-  const currentUser = {
-    id: "user1",
-    name: "나",
-    avatar: "https://via.placeholder.com/40",
-  };
-
-  const otherUser = {
-    id: "user2",
-    name: "상대방",
-    avatar: "https://via.placeholder.com/40",
-  };
 
   useEffect(() => {
     if (chatContainerRef.current) {
@@ -42,27 +31,16 @@ export default function ChatOtherDetail() {
     }
   }, [messages]);
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    if (inputMessage.trim() !== "") {
-      const newMessage = {
-        id: Date.now(),
-        text: inputMessage,
-        sender: currentUser,
-      };
-      setMessages([...messages, newMessage]);
-      setInputMessage("");
-
-      setTimeout(() => {
-        const replyMessage = {
-          id: Date.now() + 1,
-          text: "안녕하세요! 메시지 잘 받았습니다.",
-          sender: otherUser,
-        };
-        setMessages((prevMessages) => [...prevMessages, replyMessage]);
-      }, 1000);
-    }
-  };
+  useEffect(() => {
+    instance
+      .post("https://jupjup.store/api/v1/chat-rooms", {
+        giveaway_id: id,
+      })
+      .then((res) => {
+        setRoomId(res.data.room_id);
+        console.log("res", res.data.room_id);
+      });
+  }, []);
 
   const handleMapButtonClick = () => {
     setShowMap(true);
@@ -91,9 +69,9 @@ export default function ChatOtherDetail() {
       </div>
       <div className="flex flex-col h-[40rem] w-[30rem] bg-gray-100">
         {/* 채팅 */}
-        <ChatList postId={id} upText={upText} />
-        <Chat postId={id} setUpText={setUpText} upText={upText} />
-
+        <ChatList postId={roomId} upText={upText} />
+        <Chat postId={roomId} setUpText={setUpText} upText={upText} />
+        
         <div className="flex justify-around">
           <button className="p-2 transition bg-gray-200 rounded-full hover:bg-gray-300">
             <PhotoIcon className="w-6 h-6 text-gray-600" />

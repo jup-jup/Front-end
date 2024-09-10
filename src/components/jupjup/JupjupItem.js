@@ -23,16 +23,17 @@ const JupjupItem = ({ data, postIndex }) => {
       )} */}
 
       <article className={jup.postItem}>
-        <Link to={`/jupjupDetail/${data.giveawayId}`} className={jup.content}>
+        <Link to={`/jupjupDetail/${data.giveaway_id}`} className={jup.content}>
           <div className={jup.postImageLink}>
             <img alt="" src={data.imageUrl} className={jup.postImage} />
             <div className={jup.postImageOverlay} />
           </div>
           <div className={jup.postContent}>
             <time dateTime={data.createdAt} className={jup.postDate}>
-              {getRelativeTime(data.createdAt)}
+              {getRelativeTime(data.created_at)}
             </time>
             <span className={jup.postCategory}>{data.location}</span>
+            <span className={jup.userName}>{data.user_name}</span>
             <h3 className={jup.postTitle}>{data.title}</h3>
             <p className={jup.postDescription}>{data.description}</p>
             <div className={jup.postFooter}>

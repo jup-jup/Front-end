@@ -79,9 +79,9 @@ export default function JupJupDetail() {
       <div className={jd.innerContainer}>
         <div className={jd.content}>
           <div className={jd.postList}>
-            <JupJupDetailCompo data={detailData}/>
+            <JupJupDetailCompo data={detailData} />
             <div className={jd.chatButtonContainer}>
-              <Link to='/chat' className={jd.chatButton}>
+              <Link to={`/chatOtherDetail/${id}`} className={jd.chatButton}>
                 채팅하기
               </Link>
             </div>

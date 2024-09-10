@@ -67,7 +67,7 @@ export default function MypageGive() {
             <JupJupDetailCompo data={detailData}/>
             {type === 'give' && (
               <div className={styles.actionButtons}>
-                <Link to='/chatOtherDetail' className={styles.button}>
+                <Link to={`/chatOtherDetail/${id}`} className={styles.button}>
                   대화중인 채팅 방
                 </Link>
                 <Link to={`/WriteUpdate/${id}`} state={{ type: 'edit' }} className={styles.button}>
