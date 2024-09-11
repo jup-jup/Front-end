@@ -7,13 +7,14 @@ import { convertAddress } from "components/location/location";
 
 const { kakao } = window;
 
-const MapModal = ({ setOnModal }) => {
+const MapModal = ({ setOnModal, resultAddress }) => {
   const mapRef = useRef(null);
   const searchInputRef = useRef(null);
   const [map, setMap] = useState(null);
   const [marker, setMarker] = useState(null);
   const [address, setAddress] = useState(""); // 맵에서 위치 변경시 주소 저장
-  const [coordinates, setCoordinates] = useState({ // 맵에서 위치 변경시 위도,경도 저장
+  const [coordinates, setCoordinates] = useState({
+    // 맵에서 위치 변경시 위도,경도 저장
     lat: 0,
     lng: 0,
   });
@@ -127,7 +128,10 @@ const MapModal = ({ setOnModal }) => {
         </div>
         <div className="items-center px-4 py-3">
           <button
-            onClick={() => setOnModal(false)}
+            onClick={() => {
+              setOnModal(false);
+              resultAddress(address ? address :location.address);
+            }}
             className="w-full px-4 py-2 mb-2 text-base font-medium text-white bg-blue-500 rounded-md shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-300"
           >
             확인

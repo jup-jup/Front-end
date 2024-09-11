@@ -10,17 +10,22 @@ import { LocationUrlAtom } from "store/LocationUrl";
 import { sharingDetailApi } from "api/sharingApi";
 import { useMyPageUpdate } from "hooks/useMyPageApi";
 import { Button } from "@headlessui/react";
+import MapModal from "components/portalModal/mapModal/MapModal";
+import { LocationAtom } from "store/Location";
 
 export default function JupJupWrite() {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [isEdit] = useAtom(LocationUrlAtom);
-  const [tempImgUrl, setTempImgUrl] = useState([]) // 이미지 경로 임시 저장소
+  const [tempImgUrl, setTempImgUrl] = useState([]); // 이미지 경로 임시 저장소
   const [detailData, setDetailData] = useState(null);
   const { id } = useParams();
   const [uploadResponse, setUploadResponse] = useState(null);
   let newImageIds = [];
+  const [modal, setModal] = useState(false);
+  const [getAddress, setGetAddress] = useState("");
+  const [address] = useAtom(LocationAtom);
 
   const {
     register,
@@ -36,8 +41,8 @@ export default function JupJupWrite() {
 
   const onSubmit = (data) => {
     // 이미지가 있을때 이미지 업로드 먼저
-    if(tempImgUrl.length !== 0) {
-      // 이미지 업로드 api 
+    if (tempImgUrl.length !== 0) {
+      // 이미지 업로드 api
     }
     const sample = {
       title: data.title,
@@ -46,18 +51,16 @@ export default function JupJupWrite() {
       image_ids: tempImgUrl,
     };
 
-    if (id === 'new') {
+    if (id === "new") {
       post(sample);
     } else {
       updateMutation.mutate({ id, data: sample });
     }
   };
 
-
-
   useEffect(() => {
     const fetchData = async () => {
-      if (id !== 'new') {
+      if (id !== "new") {
         try {
           setLoading(true);
           const response = await sharingDetailApi(id);
@@ -67,7 +70,7 @@ export default function JupJupWrite() {
           setValue("description", response.data.description);
           setValue("location", response.data.location);
           // 이미지 URL 설정
-          setTempImgUrl(prevUrls => {
+          setTempImgUrl((prevUrls) => {
             // 중복 제거를 위해 Set 사용
             const uniqueIds = new Set([...prevUrls, ...newImageIds]);
             return Array.from(uniqueIds);
@@ -88,34 +91,34 @@ export default function JupJupWrite() {
   useEffect(() => {
     if (isSuccess) {
       navigate("/jupjup");
-    } 
-    if(updateMutation.isSuccess) window.location.href = '/Mypage'
-
+    }
+    if (updateMutation.isSuccess) window.location.href = "/Mypage";
   }, [isSuccess, updateMutation.isSuccess, navigate]);
 
   const handleUploadSuccess = (response) => {
     console.log("업로드 응답:", response);
     setUploadResponse(response);
     // 여기서 response를 활용하여 필요한 처리를 수행
-    if (response && typeof response === 'object') {
+    if (response && typeof response === "object") {
       if (Array.isArray(response.image_ids)) {
         newImageIds = response.image_ids;
-      } else if (typeof response.image_ids === 'string') {
+      } else if (typeof response.image_ids === "string") {
         newImageIds = [response.image_ids];
       } else if (Array.isArray(response)) {
-        newImageIds = response.map(item => item.id || item.image_id).filter(Boolean);
+        newImageIds = response
+          .map((item) => item.id || item.image_id)
+          .filter(Boolean);
       } else if (response.id || response.image_id) {
         newImageIds = [response.id || response.image_id];
       }
     }
-  
   };
 
   useEffect(() => {
     console.log("현재 tempImgUrl:", tempImgUrl);
   }, [tempImgUrl]);
 
-  console.log(uploadResponse, 'uploadResponse')
+  console.log(uploadResponse, "uploadResponse");
 
   if (loading) return <div>로딩 중...</div>;
   if (error) return <div>에러 발생: {error}</div>;
@@ -152,7 +155,9 @@ export default function JupJupWrite() {
                   maxLength={300}
                   className={jw.textarea}
                   placeholder="내용을 입력해주세요"
-                  {...register("description", { required: "내용을 입력해주세요" })}
+                  {...register("description", {
+                    required: "내용을 입력해주세요",
+                  })}
                 />
               </div>
             </div>
@@ -165,9 +170,19 @@ export default function JupJupWrite() {
                   id="location"
                   className={jw.textarea}
                   placeholder="위치를 입력해주세요"
+                  defaultValue={getAddress ? getAddress : address.address}
+                  //  defaultValue={getAddress || address.address}
+                  // value={getAddress ? getAddress : address.address}
+                  // onChange={(e) => setGetAddress(e.target.value)}
                   {...register("location", { required: "위치를 입력해주세요" })}
                 />
-                <Button>검색</Button>
+                <Button onClick={() => setModal(true)}>검색</Button>
+                {modal && (
+                  <MapModal
+                    setOnModal={setModal}
+                    resultAddress={setGetAddress}
+                  />
+                )}
               </div>
             </div>
 
@@ -182,7 +197,7 @@ export default function JupJupWrite() {
                 }}
                 uploadEvent={(imageIds) => {
                   console.log("업로드된 이미지 ID:", imageIds);
-                  setTempImgUrl(prevUrls => [...prevUrls, ...imageIds]);
+                  setTempImgUrl((prevUrls) => [...prevUrls, ...imageIds]);
                 }}
                 setPreviewUrl={(url) => {
                   console.log("선택된 프리뷰 URL", url);
