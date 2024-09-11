@@ -37,7 +37,7 @@ export default function JupJup() {
     if (isView && jupjupListHasNextPage) {
       jupjupListFetchNextPage();
     }
-    console.log(jupjupList, "data");
+    console.log(Object.getPrototypeOf(jupjupList.pages).length, "data");
   }, [isView, jupjupListHasNextPage, jupjupListFetchNextPage]);
 
   return (
@@ -67,7 +67,7 @@ export default function JupJup() {
       <div className={jup.postsContainer}>
         <div className={jup.postsWrapper}>
           <div className={jup.postsList}>
-            {jupjupList?.pages.length > 1 ? (
+            {jupjupList && Object.getPrototypeOf(jupjupList?.pages).length > 0 ? (
               jupjupList?.pages.map((page, pageIndex) => (
                 <React.Fragment key={pageIndex}>
                   {page.data.map((post, postIndex) => (

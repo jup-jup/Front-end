@@ -6,9 +6,10 @@ import { usePostSharing } from "hooks/useSharingApi";
 import { useForm } from "react-hook-form";
 import FileUpload from "components/fileUpload/FileUpload";
 import { useAtom } from "jotai";
-import { LocationUrlAtom } from "store/Location";
+import { LocationUrlAtom } from "store/LocationUrl";
 import { sharingDetailApi } from "api/sharingApi";
 import { useMyPageUpdate } from "hooks/useMyPageApi";
+import { Button } from "@headlessui/react";
 
 export default function JupJupWrite() {
   const navigate = useNavigate();
@@ -93,9 +94,7 @@ export default function JupJupWrite() {
     <form className={jw.form} onSubmit={handleSubmit(onSubmit)}>
       <div className={jw.formContent}>
         <div className={jw.section}>
-          <h2 className={jw.sectionTitle}>
-            {isEdit ? "수정하기" : "글쓰기"}
-          </h2>
+          <h2 className={jw.sectionTitle}>{isEdit ? "수정하기" : "글쓰기"}</h2>
           <div className={jw.inputGrid}>
             <div className={jw.fullWidth}>
               <span htmlFor="title" className={jw.label}>
@@ -120,8 +119,11 @@ export default function JupJupWrite() {
                 <textarea
                   id="description"
                   rows={3}
+                  maxLength={300}
                   className={jw.textarea}
-                  {...register("description")}
+                  {...register("description", {
+                    required: "내용을 입력해주세요",
+                  })}
                 />
               </div>
             </div>
@@ -129,12 +131,13 @@ export default function JupJupWrite() {
               <label htmlFor="location" className={jw.label}>
                 거래위치장소
               </label>
-              <div className={jw.inputWrapper}>
+              <div className={`${jw.inputWrapper} flex`}>
                 <input
                   id="location"
                   className={jw.textarea}
                   {...register("location")}
                 />
+                <Button>검색</Button>
               </div>
             </div>
 
@@ -161,14 +164,14 @@ export default function JupJupWrite() {
       </div>
 
       <div className={jw.formActions}>
-        <button type="button" className={jw.cancelButton} onClick={() => navigate(-1)}>
+        <button
+          type="button"
+          className={jw.cancelButton}
+          onClick={() => navigate(-1)}
+        >
           Cancel
         </button>
-        <button
-          type="submit"
-          className={jw.saveButton}
-          disabled={isSubmitting}
-        >
+        <button type="submit" className={jw.saveButton} disabled={isSubmitting}>
           Save
         </button>
       </div>
