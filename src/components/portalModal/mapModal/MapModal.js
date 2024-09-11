@@ -1,146 +1,61 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import ModalFrame from "../ModalFrame";
 import s from "./mapModal.module.scss";
+import { useLocation, addressAtom } from 'components/location/location';
+import { useAtom } from 'jotai';
 
-const MapModal = ({ setOnModal, setAddress }) => {
-  const [kakao, setKakao] = useState(null);
-  const [location, setLocation] = useState(null);
+const MapModal = ({ setOnModal }) => {
+  const { coordinates, setCoordinates, getCurrentLocation, kakaoLoaded } = useLocation();
+  const [address, setAddress] = useAtom(addressAtom);
+  const [isMapInitialized, setIsMapInitialized] = useState(false);
   const mapRef = useRef(null);
   const searchInputRef = useRef(null);
   const mapInstanceRef = useRef(null);
   const markerRef = useRef(null);
   const infowindowRef = useRef(null);
 
-  const [center, setCenter] = useState({
-    lat: 0,
-    lng: 0,
-  });
-
-  const [position, setPosition] = useState({
-    lat: 0,
-    lng: 0,
-  });
-
   useEffect(() => {
-    const script = document.createElement("script");
-    script.src =
-      "//dapi.kakao.com/v2/maps/sdk.js?appkey=f167408a014dd101fa1012319a829f76&libraries=services&autoload=false";
-    script.async = true;
-    script.onload = () => {
-      window.kakao.maps.load(() => {
-        setKakao(window.kakao);
-      });
-    };
-    document.head.appendChild(script);
-
-    return () => {
-      document.head.removeChild(script);
-    };
-  }, []);
-
-  useEffect(() => {
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(
-        (pos) => {
-          const newCenter = {
-            lat: pos.coords.latitude,
-            lng: pos.coords.longitude,
-          };
-          setCenter(newCenter);
-          setPosition(newCenter);
-        },
-        (err) => {
-          console.error("Error getting position:", err);
-        },
-        { enableHighAccuracy: true, timeout: 5000, maximumAge: 0 }
-      );
+    if (!isMapInitialized && kakaoLoaded) {
+      getCurrentLocation();
+      setIsMapInitialized(true);
     }
-  }, []);
+  }, [getCurrentLocation, isMapInitialized, kakaoLoaded]);
 
-  const initializeMap = useCallback(() => {
-    if (!kakao || !mapRef.current) return;
-
-    const options = {
-      center: new kakao.maps.LatLng(center.lat, center.lng),
-      level: 3,
-    };
-
-    const map = new kakao.maps.Map(mapRef.current, options);
-    mapInstanceRef.current = map;
-
-    const markerPosition = new kakao.maps.LatLng(position.lat, position.lng);
-    const marker = new kakao.maps.Marker({
-      position: markerPosition,
-    });
-    marker.setMap(map);
-    markerRef.current = marker;
-
-    const geocoder = new kakao.maps.services.Geocoder();
-    updateAddress(position.lat, position.lng, geocoder, map, kakao);
-
-    kakao.maps.event.addListener(map, "click", function (mouseEvent) {
-      const latlng = mouseEvent.latLng;
-      marker.setPosition(latlng);
-      updateAddress(latlng.getLat(), latlng.getLng(), geocoder, map, kakao);
-    });
-
-    const ps = new kakao.maps.services.Places();
-    const searchInput = searchInputRef.current;
-
-    if (searchInput) {
-      searchInput.addEventListener("keypress", (e) => {
-        if (e.key === "Enter") {
-          e.preventDefault();
-          ps.keywordSearch(searchInput.value, (data, status) => {
-            if (status === kakao.maps.services.Status.OK) {
-              const bounds = new kakao.maps.LatLngBounds();
-              for (let i = 0; i < data.length; i++) {
-                displayMarker(data[i], map, geocoder, kakao);
-                bounds.extend(new kakao.maps.LatLng(data[i].y, data[i].x));
-              }
-              map.setBounds(bounds);
-            }
-          });
-        }
-      });
-    }
-  }, [kakao, center, position]);
-
-  function displayMarker(place, map, geocoder, kakao) {
-    const position = new kakao.maps.LatLng(place.y, place.x);
-    if (markerRef.current) {
-      markerRef.current.setPosition(position);
-    } else {
-      markerRef.current = new kakao.maps.Marker({
+  const updateMarkerAndAddress = useCallback((lat, lng, map, updateCoordinates = false) => {
+    const position = new window.kakao.maps.LatLng(lat, lng);
+    
+    if (!markerRef.current) {
+      markerRef.current = new window.kakao.maps.Marker({
         position: position,
-        map: map,
+        map: map
       });
+    } else {
+      markerRef.current.setPosition(position);
+      markerRef.current.setMap(map);
     }
-    map.setCenter(position);
-    updateAddress(place.y, place.x, geocoder, map, kakao);
-  }
 
-  function updateAddress(lat, lng, geocoder, map, kakao) {
+    const geocoder = new window.kakao.maps.services.Geocoder();
     geocoder.coord2Address(lng, lat, (result, status) => {
-      if (status === kakao.maps.services.Status.OK) {
-        let fullAddress = "";
-        if (result[0].road_address) {
-          fullAddress = result[0].road_address.address_name;
-        } else {
-          fullAddress = result[0].address.address_name;
-        }
-
+      if (status === window.kakao.maps.services.Status.OK) {
+        let fullAddress = result[0].road_address 
+          ? result[0].road_address.address_name 
+          : result[0].address.address_name;
+        
         if (result[0].road_address && result[0].road_address.building_name) {
           fullAddress += ` (${result[0].road_address.building_name})`;
         }
 
-        setLocation(fullAddress);
+        setAddress(fullAddress);
+        
+        if (updateCoordinates) {
+          setCoordinates({ lat, lng });
+        }
 
         if (infowindowRef.current) {
           infowindowRef.current.close();
         }
 
-        const infowindow = new kakao.maps.InfoWindow({
+        const infowindow = new window.kakao.maps.InfoWindow({
           content: `<div style="padding:5px;font-size:12px;">${fullAddress}</div>`,
         });
         infowindow.open(map, markerRef.current);
@@ -148,20 +63,57 @@ const MapModal = ({ setOnModal, setAddress }) => {
         infowindowRef.current = infowindow;
       }
     });
-  }
+  }, [setAddress, setCoordinates]);
+
+  const initializeMap = useCallback(() => {
+    if (!window.kakao || !mapRef.current || !coordinates.lat || !coordinates.lng) return;
+
+    const options = {
+      center: new window.kakao.maps.LatLng(coordinates.lat, coordinates.lng),
+      level: 3,
+    };
+
+    const map = new window.kakao.maps.Map(mapRef.current, options);
+    mapInstanceRef.current = map;
+
+    updateMarkerAndAddress(coordinates.lat, coordinates.lng, map);
+
+    window.kakao.maps.event.addListener(map, "click", function (mouseEvent) {
+      const latlng = mouseEvent.latLng;
+      updateMarkerAndAddress(latlng.getLat(), latlng.getLng(), map, true);
+    });
+
+    const ps = new window.kakao.maps.services.Places();
+    const searchInput = searchInputRef.current;
+
+    if (searchInput) {
+      searchInput.addEventListener("keypress", (e) => {
+        if (e.key === "Enter") {
+          e.preventDefault();
+          ps.keywordSearch(searchInput.value, (data, status) => {
+            if (status === window.kakao.maps.services.Status.OK) {
+              const bounds = new window.kakao.maps.LatLngBounds();
+              for (let i = 0; i < data.length; i++) {
+                bounds.extend(new window.kakao.maps.LatLng(data[i].y, data[i].x));
+              }
+              map.setBounds(bounds);
+              updateMarkerAndAddress(data[0].y, data[0].x, map, true);
+            }
+          });
+        }
+      });
+    }
+  }, [coordinates, updateMarkerAndAddress]);
 
   useEffect(() => {
-    // if (showMap && kakao) {
-    initializeMap();
-    // }
-  }, [kakao, initializeMap]);
+    if (isMapInitialized && kakaoLoaded) {
+      initializeMap();
+    }
+  }, [initializeMap, isMapInitialized, kakaoLoaded]);
 
-    const handleConfirmLocation = () => {
-      if (location) {
-        setAddress(location);
-      }
-      setOnModal(false);
-    };
+  const handleConfirmLocation = () => {
+    setOnModal(false);
+  };
 
   return (
     <ModalFrame setOnModal={setOnModal} isDim className={s.map_modal}>
@@ -181,16 +133,15 @@ const MapModal = ({ setOnModal, setAddress }) => {
             style={{ width: "100%", height: "400px" }}
             className="mt-3"
           ></div>
-          {location && (
+          {address && (
             <p className="mt-2 text-sm text-gray-500">
-              선택된 주소: {location}
+              선택된 주소: {address}
             </p>
           )}
         </div>
         <div className="items-center px-4 py-3">
           <button
             onClick={handleConfirmLocation}
-            // onClick={() => setAddress('주소')}
             className="w-full px-4 py-2 mb-2 text-base font-medium text-white bg-blue-500 rounded-md shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-300"
           >
             확인
