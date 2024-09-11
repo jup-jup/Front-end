@@ -37,6 +37,7 @@ export default function JupJup() {
       jupjupListFetchNextPage();
     }
     console.log(jupjupList, "jupjupList");
+    // console.log(Object.getPrototypeOf(jupjupList.pages).length, "data");
   }, [isView, jupjupListHasNextPage, jupjupListFetchNextPage, jupjupList]);
 
   return (

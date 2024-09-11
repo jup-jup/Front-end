@@ -3,7 +3,7 @@ import Header from "components/Header/Header";
 import { useAtom } from "jotai";
 import { useEffect } from "react";
 import { Outlet, useLocation } from "react-router-dom";
-import { LocationUrlAtom } from "store/Location";
+import { LocationUrlAtom } from "store/LocationUrl";
 
 export const PageLayout = () => {
   const location = useLocation();
