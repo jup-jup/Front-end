@@ -9,8 +9,8 @@ import jup from "./JupJup.module.scss";
 
 export default function JupJup() {
   const [ref, isView] = useInView();
-  const search = "검색어";
   const size = 3; // 한 페이지당 아이템 수
+
   const {
     data: jupjupList,
     fetchNextPage: jupjupListFetchNextPage,
@@ -21,15 +21,14 @@ export default function JupJup() {
     queryKey: ["jupjupList"],
     queryFn: async ({ pageParam = 0 }) => {
       const response = await sharingListApi(pageParam, size);
-      // console.log(response, 'response')
-      // console.log(response.length , 'response length')
-      // console.log(pageParam, 'pageParam')
-      return {
-        data: response,
-        nextPage: response.length === size ? pageParam + 1 : undefined,
-      };
+      console.log(response, 'response');
+      console.log(response.length, 'response length');
+      console.log(pageParam, 'pageParam');
+      return response; // 직접 response를 반환
     },
-    getNextPageParam: (lastPage) => lastPage.nextPage,
+    getNextPageParam: (lastPage, allPages) => {
+      return lastPage.length === size ? allPages.length : undefined;
+    },
     initialPageParam: 0,
   });
 
@@ -37,8 +36,8 @@ export default function JupJup() {
     if (isView && jupjupListHasNextPage) {
       jupjupListFetchNextPage();
     }
-    console.log(jupjupList, "data");
-  }, [isView, jupjupListHasNextPage, jupjupListFetchNextPage]);
+    console.log(jupjupList, "jupjupList");
+  }, [isView, jupjupListHasNextPage, jupjupListFetchNextPage, jupjupList]);
 
   return (
     <div className={jup.container}>
@@ -67,25 +66,23 @@ export default function JupJup() {
       <div className={jup.postsContainer}>
         <div className={jup.postsWrapper}>
           <div className={jup.postsList}>
-            {jupjupList?.pages.length > 1 ? (
-              jupjupList?.pages.map((page, pageIndex) => (
+            {jupjupListStatus === "success" && jupjupList.pages.length > 0 ? (
+              jupjupList.pages.map((page, pageIndex) => (
                 <React.Fragment key={pageIndex}>
-                  {page.data.map((post, postIndex) => (
+                  {page.map((post, postIndex) => (
                     <JupjupItem key={`${pageIndex}-${postIndex}`} data={post} />
                   ))}
                 </React.Fragment>
               ))
-            ) : (
-              <>데이터가 없습니다.</>
-            )}
-            {/* {jupjupList === undefined && <>데이터가 없습니다.</>} */}
+            ) : jupjupListStatus === "success" && jupjupList.pages.length === 0 ? (
+              <p>데이터가 없습니다.</p>
+            ) : null}
           </div>
           {jupjupListStatus === "loading" && <p>데이터를 불러오는 중...</p>}
           {jupjupListStatus === "error" && (
             <p>오류 발생: {jupjupListError.message}</p>
           )}
-          <div ref={ref} style={{ height: "20px" }} />{" "}
-          {/* 스크롤 감지를 위한 요소 */}
+          <div ref={ref} style={{ height: "20px" }} />
         </div>
       </div>
     </div>

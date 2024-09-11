@@ -121,7 +121,8 @@ export default function JupJupWrite() {
                   id="description"
                   rows={3}
                   className={jw.textarea}
-                  {...register("description")}
+                  placeholder="내용을 입력해주세요"
+                  {...register("description", { required: "내용을 입력해주세요" })}
                 />
               </div>
             </div>
@@ -133,7 +134,8 @@ export default function JupJupWrite() {
                 <input
                   id="location"
                   className={jw.textarea}
-                  {...register("location")}
+                  placeholder="위치를 입력해주세요"
+                  {...register("location", { required: "위치를 입력해주세요" })}
                 />
               </div>
             </div>
