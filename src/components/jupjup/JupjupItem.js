@@ -25,7 +25,7 @@ const JupjupItem = ({ data, postIndex }) => {
       <article className={jup.postItem}>
         <Link to={`/jupjupDetail/${data.giveaway_id}`} className={jup.content}>
           <div className={jup.postImageLink}>
-            <img alt="" src={data.imageUrl} className={jup.postImage} />
+            <img alt="" src={`${process.env.REACT_APP_IMG}${data.images[0]?.path}`} className={jup.postImage} />
             <div className={jup.postImageOverlay} />
           </div>
           <div className={jup.postContent}>
