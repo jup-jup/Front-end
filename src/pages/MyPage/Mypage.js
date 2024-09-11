@@ -114,7 +114,7 @@ export default function Mypage() {
                   }}
                   className={mp.postImageLink}
                 >
-                  <img alt="" src={post.imageUrl} className={mp.postImage} />
+                  <img alt="" src={`${process.env.REACT_APP_IMG}${post.images[0]?.path}`} className={mp.postImage} />
                   <div className={mp.postImageOverlay} />
                 </Link>
                 <div className={mp.postContent}>
