@@ -107,11 +107,11 @@ export default function JupJupDetailCompo ({ data }) {
               <div className={jd.authorInfo}>
                 <div className={jd.viewCount}>
                   <CommentIcon className={jd.commentIcon} />
-                  {data.chatCnt == null ? 0 : data.chatCnt}
+                  {data.chat_cnt == null ? 0 : data.chat_cnt}
                 </div>
                 <div className={jd.viewCount}>
                   <ViewIcon className={jd.viewIcon} />
-                  <p>{data.viewCnt == null ? 0 : data.viewCnt}</p>
+                  <p>{data.view_cnt == null ? 0 : data.view_cnt}</p>
                 </div>
               </div>
             </div>
