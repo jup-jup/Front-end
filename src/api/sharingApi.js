@@ -23,13 +23,19 @@ import instance from './axios';
 // }
 
 // 이미지 post
+
 export async function sharingPostIMGApi(formData) {
-  console.log(formData, '???');
   const res = await instance.post(
     `${process.env.REACT_APP_API_URL}/v1/images`,
     formData,
+    {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+        'Authorization': `Bearer ${localStorage.getItem("accessToken")}`,
+      },
+    }
   );
-  return res;
+  return res.data;
 }
 
 // 목록보기

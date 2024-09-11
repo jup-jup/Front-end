@@ -18,6 +18,8 @@ export default function JupJupWrite() {
   const [tempImgUrl, setTempImgUrl] = useState([]) // 이미지 경로 임시 저장소
   const [detailData, setDetailData] = useState(null);
   const { id } = useParams();
+  const [uploadResponse, setUploadResponse] = useState(null);
+  let newImageIds = [];
 
   const {
     register,
@@ -50,7 +52,7 @@ export default function JupJupWrite() {
     }
   };
 
-  console.log(isEdit, 'isEdit')
+
 
   useEffect(() => {
     const fetchData = async () => {
@@ -64,7 +66,11 @@ export default function JupJupWrite() {
           setValue("description", response.data.description);
           setValue("location", response.data.location);
           // 이미지 URL 설정
-          setTempImgUrl(response.data.image_ids || []);
+          setTempImgUrl(prevUrls => {
+            // 중복 제거를 위해 Set 사용
+            const uniqueIds = new Set([...prevUrls, ...newImageIds]);
+            return Array.from(uniqueIds);
+          });
         } catch (err) {
           setError(err.message);
         } finally {
@@ -85,6 +91,30 @@ export default function JupJupWrite() {
     if(updateMutation.isSuccess) window.location.href = '/Mypage'
 
   }, [isSuccess, updateMutation.isSuccess, navigate]);
+
+  const handleUploadSuccess = (response) => {
+    console.log("업로드 응답:", response);
+    setUploadResponse(response);
+    // 여기서 response를 활용하여 필요한 처리를 수행
+    if (response && typeof response === 'object') {
+      if (Array.isArray(response.image_ids)) {
+        newImageIds = response.image_ids;
+      } else if (typeof response.image_ids === 'string') {
+        newImageIds = [response.image_ids];
+      } else if (Array.isArray(response)) {
+        newImageIds = response.map(item => item.id || item.image_id).filter(Boolean);
+      } else if (response.id || response.image_id) {
+        newImageIds = [response.id || response.image_id];
+      }
+    }
+  
+  };
+
+  useEffect(() => {
+    console.log("현재 tempImgUrl:", tempImgUrl);
+  }, [tempImgUrl]);
+
+  console.log(uploadResponse, 'uploadResponse')
 
   if (loading) return <div>로딩 중...</div>;
   if (error) return <div>에러 발생: {error}</div>;
@@ -146,16 +176,17 @@ export default function JupJupWrite() {
               </label>
               <FileUpload
                 accept={"image"}
-                formDataEvent={(event) => {
-                  console.log("get formData", event);
+                formDataEvent={(files) => {
+                  console.log("파일 선택됨", files);
                 }}
-                uploadEvent={(event) => {
-                  console.log("upload event", event);
+                uploadEvent={(imageIds) => {
+                  console.log("업로드된 이미지 ID:", imageIds);
+                  setTempImgUrl(prevUrls => [...prevUrls, ...imageIds]);
                 }}
                 setPreviewUrl={(url) => {
-                  console.log("get preview url", url);
-                  setTempImgUrl([...tempImgUrl, url]);
+                  console.log("선택된 프리뷰 URL", url);
                 }}
+                onUploadSuccess={handleUploadSuccess}
               />
             </div>
           </div>
