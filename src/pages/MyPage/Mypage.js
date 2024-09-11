@@ -148,13 +148,15 @@ export default function Mypage() {
                           className={mp.authorNameLink}
                         >
                           <CommentIcon className={mp.commentIcon} />
-                          {post.chatCnt == null ? 0 : post.chatCnt}
+                          <p className={mp.viewCountText}>
+                          {post.chat_cnt == null ? 0 : post.chat_cnt}
+                          </p>
                         </span>
                       </div>
                       <div className={mp.viewCount}>
                         <ViewIcon className={mp.viewIcon} />
                         <p className={mp.viewCountText}>
-                          {post.viewCnt == null ? 0 : post.viewCnt}
+                          {post.view_cnt == null ? 0 : post.view_cnt}
                         </p>
                       </div>
                     </div>

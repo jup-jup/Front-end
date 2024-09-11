@@ -41,13 +41,13 @@ const JupjupItem = ({ data, postIndex }) => {
                 <div className={jup.authorName}>
                   <span href={data.location} className={jup.authorNameLink}>
                     <CommentIcon className={jup.commentIcon} />
-                    {data.chatCnt == null ? 0 : data.chatCnt}
+                    {data.chat_cnt == null ? 0 : data.chat_cnt}
                   </span>
                 </div>
                 <div className={jup.viewCount}>
                   <ViewIcon className={jup.viewIcon} />
                   <p className={jup.viewCountText}>
-                    {data.viewCnt == null ? 0 : data.viewCnt}
+                    {data.view_cnt == null ? 0 : data.view_cnt}
                   </p>
                 </div>
               </div>
