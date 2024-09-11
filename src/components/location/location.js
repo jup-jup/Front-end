@@ -1,31 +1,59 @@
-import { atom, useAtom } from 'jotai';
-import { useCallback } from 'react';
+import { useAtom } from "jotai";
+import { useEffect } from "react";
+import { updateLocationAtom } from "store/Location";
 
-export const coordinatesAtom = atom({ lat: 37.5665, lng: 126.9780 });
-export const addressAtom = atom('');
+const { kakao } = window;
 
-export const useLocation = () => {
-  const [coordinates, setCoordinates] = useAtom(coordinatesAtom);
-  const [address, setAddress] = useAtom(addressAtom);
+// 주소 변환
+export const convertAddress = (position) => {
+  return new Promise((resolve, reject) => {
+    const geocoder = new kakao.maps.services.Geocoder();
+    geocoder.coord2Address(
+      position.coords.longitude,
+      position.coords.latitude,
+      (result, status) => {
+        if (status === kakao.maps.services.Status.OK) {
+          const fullAddress = result[0].road_address
+            ? result[0].road_address.address_name
+            : result[0].address.address_name;
+          resolve(fullAddress);
+        } else {
+          reject("주소 변환 실패");
+        }
+      }
+    );
+  });
+};
 
-  const getCurrentLocation = useCallback(() => {
+// 현재 위치 위도, 경도 
+export const Location = () => {
+  const [, updateLocation] = useAtom(updateLocationAtom);
+
+  useEffect(() => {
     if (!navigator.geolocation) {
-      console.error('Geolocation is not supported by this browser.');
+      console.error("Geolocation is not supported by this browser.");
       return;
     }
 
     navigator.geolocation.getCurrentPosition(
-      (position) => {
-        setCoordinates({
-          lat: position.coords.latitude,
-          lng: position.coords.longitude,
-        });
+      async (position) => {
+        try {
+          const fullAddress = await convertAddress(position);
+          console.log("full", fullAddress);
+          updateLocation({
+            lat: position.coords.latitude,
+            lon: position.coords.longitude,
+            address: fullAddress,
+          });
+        } catch (error) {
+          console.error("Error converting address:", error);
+        }
       },
       (error) => {
-        console.error('Error getting current location:', error);
+        console.error("Error getting current location:", error);
       }
     );
-  }, [setCoordinates]);
+  }, []);
 
-  return { coordinates, setCoordinates, address, setAddress, getCurrentLocation };
+  return null;
 };

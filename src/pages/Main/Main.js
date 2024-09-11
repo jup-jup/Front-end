@@ -3,31 +3,10 @@ import { mainPosts } from "components/dummydata/main";
 import { Link } from "react-router-dom";
 import m from './Main.module.scss';
 import { useNavigate } from 'react-router-dom';
-import { useLocation } from 'components/location/location';
-import MapModal from 'components/portalModal/mapModal/MapModal';
-import { useAtom } from 'jotai';
-import { coordinatesAtom, addressAtom, kakaoLoadedAtom } from 'components/location/location';
 
 const Main = memo(() => {
   const navigate = useNavigate();
   const [shouldRedirect, setShouldRedirect] = useState(false);
-  // 로케이션에서 가져오는 데이터
-  // const { coordinates, address, getCurrentLocation, setAddress } = useLocation();
-
-  // jotai에서 전역으로 가져오는 데이터
-  // const [coordinates] = useAtom(coordinatesAtom);
-  const [address] = useAtom(addressAtom);
-  // const [kakaoLoaded] = useAtom(kakaoLoadedAtom);
-  
-  const [isMapModalOpen, setIsMapModalOpen] = useState(false);
-
-  const handleOpenMapModal = () => {
-    setIsMapModalOpen(true);
-  };
-
-  const handleCloseMapModal = () => {
-    setIsMapModalOpen(false);
-  };
 
   useEffect(() => {
     const checkLoginStatus = () => {
@@ -89,9 +68,9 @@ const Main = memo(() => {
                 <img alt="" src={post.imageUrl} className={m.featureImage} />
                 <div className={m.featureOverlay} />
                 <h3 className={m.featureTitle}>
-                  <a>
+                  <span>
                     {post.title}
-                  </a>
+                  </span>
                 </h3>
               </article>
             ))}
@@ -140,26 +119,6 @@ const Main = memo(() => {
           </div>
         </div>
         <img alt="" src="/main/maria.jpg" className={m.missionImage} />
-      </div>
-
-      {/* Location Information Section */}
-      <div>
-        <h1>Location Information</h1>
-        <p>Address: {address}</p>
-        <div className="mb-4">
-          <button 
-            onClick={handleOpenMapModal}
-            className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
-          >
-            Open Map
-          </button>
-        </div>
-
-        {isMapModalOpen && (
-          <MapModal 
-            setOnModal={handleCloseMapModal}
-          />
-        )}
       </div>
     </>
   );

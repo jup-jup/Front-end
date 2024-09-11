@@ -1,69 +1,78 @@
 import React, { useEffect, useRef, useState, useCallback } from "react";
 import ModalFrame from "../ModalFrame";
 import s from "./mapModal.module.scss";
-import { useLocation, addressAtom } from 'components/location/location';
-import { useAtom } from 'jotai';
+import { useAtom } from "jotai";
+import { LocationAtom } from "store/Location";
+import { convertAddress } from "components/location/location";
 
 const { kakao } = window;
 
 const MapModal = ({ setOnModal }) => {
-  const { coordinates, setCoordinates, getCurrentLocation } = useLocation();
-  const [address, setAddress] = useAtom(addressAtom);
   const mapRef = useRef(null);
   const searchInputRef = useRef(null);
   const [map, setMap] = useState(null);
   const [marker, setMarker] = useState(null);
+  const [address, setAddress] = useState(""); // 맵에서 위치 변경시 주소 저장
+  const [coordinates, setCoordinates] = useState({ // 맵에서 위치 변경시 위도,경도 저장
+    lat: 0,
+    lng: 0,
+  });
+  const [location] = useAtom(LocationAtom);
+
+  const lat = location.location.lat;
+  const lon = location.location.lon;
 
   useEffect(() => {
-    getCurrentLocation();
-  }, [getCurrentLocation]);
-
-  useEffect(() => {
-    if (mapRef.current && coordinates.lat && coordinates.lng) {
-      const options = { 
-        center: new kakao.maps.LatLng(coordinates.lat, coordinates.lng),
-        level: 3
+    if (mapRef.current && location) {
+      const options = {
+        center:
+          coordinates.lat !== 0
+            ? new kakao.maps.LatLng(coordinates.lat, coordinates.lng)
+            : new kakao.maps.LatLng(
+                location.location.lat,
+                location.location.lon
+              ),
+        level: 3,
       };
       const newMap = new kakao.maps.Map(mapRef.current, options);
       setMap(newMap);
 
       const newMarker = new kakao.maps.Marker({
-        position: new kakao.maps.LatLng(coordinates.lat, coordinates.lng),
-        map: newMap
+        position:
+          coordinates.lat !== 0
+            ? new kakao.maps.LatLng(coordinates.lat, coordinates.lng)
+            : new kakao.maps.LatLng(lat, lon),
+        map: newMap,
       });
       setMarker(newMarker);
 
       const geocoder = new kakao.maps.services.Geocoder();
-      geocoder.coord2Address(coordinates.lng, coordinates.lat, (result, status) => {
-        if (status === kakao.maps.services.Status.OK) {
-          const fullAddress = result[0].road_address 
-            ? result[0].road_address.address_name 
-            : result[0].address.address_name;
-          setAddress(fullAddress);
-        }
-      });
 
-      kakao.maps.event.addListener(newMap, 'click', function(mouseEvent) {
+      kakao.maps.event.addListener(newMap, "click", function (mouseEvent) {
         const latlng = mouseEvent.latLng;
         newMarker.setPosition(latlng);
         setCoordinates({ lat: latlng.getLat(), lng: latlng.getLng() });
-        
-        geocoder.coord2Address(latlng.getLng(), latlng.getLat(), (result, status) => {
-          if (status === kakao.maps.services.Status.OK) {
-            const fullAddress = result[0].road_address 
-              ? result[0].road_address.address_name 
-              : result[0].address.address_name;
-            setAddress(fullAddress);
+
+        geocoder.coord2Address(
+          latlng.getLng(),
+          latlng.getLat(),
+          (result, status) => {
+            if (status === kakao.maps.services.Status.OK) {
+              const fullAddress = result[0].road_address
+                ? result[0].road_address.address_name
+                : result[0].address.address_name;
+              setAddress(fullAddress);
+            }
           }
-        });
+        );
       });
     }
-  }, [coordinates, setCoordinates, setAddress]);
+  }, [coordinates]);
 
   const handleSearch = useCallback(() => {
     if (map && searchInputRef.current) {
       const ps = new kakao.maps.services.Places();
-      ps.keywordSearch(searchInputRef.current.value, (data, status) => {
+      ps.keywordSearch(searchInputRef.current.value, async (data, status) => {
         if (status === kakao.maps.services.Status.OK) {
           const bounds = new kakao.maps.LatLngBounds();
           for (let i = 0; i < data.length; i++) {
@@ -72,31 +81,48 @@ const MapModal = ({ setOnModal }) => {
           map.setBounds(bounds);
           const newPosition = new kakao.maps.LatLng(data[0].y, data[0].x);
           marker.setPosition(newPosition);
-          setCoordinates({ lat: data[0].y, lng: data[0].x });
+          const position = {
+            coords: {
+              latitude: data[0].y,
+              longitude: data[0].x,
+            },
+          };
+          try {
+            const fullAddress = await convertAddress(position);
+            setAddress(fullAddress);
+          } catch (error) {
+            console.error("주소 변환 중 오류 발생:", error);
+          }
         }
       });
     }
-  }, [map, setCoordinates, marker]);
+  }, [map, marker]);
 
   return (
     <ModalFrame setOnModal={setOnModal} isDim className={s.map_modal}>
       <div className="mt-3 text-center">
-        <h3 className="text-lg font-medium leading-6 text-gray-900">위치 선택</h3>
+        <h3 className="text-lg font-medium leading-6 text-gray-900">
+          위치 선택
+        </h3>
         <div className="py-3 mt-2 px-7">
           <input
             ref={searchInputRef}
             type="text"
             className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
             placeholder="위치 검색..."
-            onKeyPress={(e) => e.key === 'Enter' && handleSearch()}
+            onKeyPress={(e) => e.key === "Enter" && handleSearch()}
           />
           <div
             ref={mapRef}
             style={{ width: "100%", height: "400px" }}
             className="mt-3"
           ></div>
-          {address && (
+          {address ? (
             <p className="mt-2 text-sm text-gray-500">선택된 주소: {address}</p>
+          ) : (
+            <p className="mt-2 text-sm text-gray-500">
+              선택된 주소: {location.address}
+            </p>
           )}
         </div>
         <div className="items-center px-4 py-3">
