@@ -4,21 +4,28 @@ import { Link } from "react-router-dom";
 import { getRelativeTime } from "util/day";
 import s from "./chat.module.scss";
 
+{
+  /* <div className={s.status}>
+  <span className={s.icon}></span>
+  <p>Online</p>
+</div>; */
+}
+
 export default function ChatOtherList() {
   const { data, isLoading } = useGetChatList();
 
-  console.log('채팅 리스트', data);
+  console.log("채팅 리스트", data);
 
-  if (isLoading) return <div>로딩중 ...</div>
-    return (
-      <ul className={s.chat_list}>
-        {data.length > 1 ? 
+  if (isLoading) return <div>로딩중 ...</div>;
+  return (
+    <ul className={s.chat_list}>
+      {data.length > 0 ? (
         data?.map((item, index) => (
           <li key={index}>
             <Link
               to={`/chatOtherDetail/${item.giveaway_id}`}
               className={s.item}
-              state={{ type: 'old'}}
+              state={{ type: "old" }}
             >
               <div className={s.profile}>
                 <Gravatar email="2" className={s.img} />
@@ -34,17 +41,13 @@ export default function ChatOtherList() {
                     </time>
                   </p>
                 )}
-                {/* {
-                <div className={s.status}>
-                  <span className={s.icon}></span>
-                  <p>Online</p>
-                </div>
-              } */}
               </div>
             </Link>
           </li>
-        )) : <>채팅방이 없습니다</>
-        }
-      </ul>
-    );
+        ))
+      ) : (
+        <>채팅방이 없습니다</>
+      )}
+    </ul>
+  );
 }

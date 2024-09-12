@@ -71,7 +71,6 @@ const ChatInput = ({ setText, onClick }) => {
           onClick={(e) => {
             e.preventDefault();
             click(e, inputText);
-            console.log('zzz')
           }}
         >
           전송

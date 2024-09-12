@@ -1,69 +1,77 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import SockJS from "sockjs-client";
 import Stomp from "stompjs";
 import ChatInput from "./ChatInput";
 
-
 const Chat = ({ postId, upText, setUpText }) => {
   const [text, setText] = useState("");
-  const [temps, setTemp] = useState([{}]);
+  const [messages, setMessages] = useState([]);
+  const stompClient = useRef(null);
 
-  //socket 연결
   const headers = {
     Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
   };
 
-  const socket = new SockJS(`https://jupjup.store/ws`);
-  // const socket = new SockJS(`https://localhost:8080/ws`);
-  const stomp = new Stomp.over(socket);
-
+  // 소켓 연결 설정
   useEffect(() => {
-    console.log('소켓 안에 받은 id', postId);
-    stomp.connect(headers, ({ temp }) => {
-      //방 생성
+    const socket = new SockJS(`https://jupjup.store/ws`);
+    stompClient.current = Stomp.over(socket);
 
-      //이벤트 구독
-      stomp.subscribe(
+    // STOMP 클라이언트 연결
+    stompClient.current.connect(headers, (frame) => {
+      console.log('Connected to WebSocket, Frame:', frame);
+
+      // 방 구독
+      stompClient.current.subscribe(
         `/sub/room/${postId}`,
-        (body) => {
-          // console.log("메시지 받음: ", JSON.parse(body.body));
-          console.log("메시지 받음: ", body);
-          // dispatch(SEND_MESSAGE(JSON.parse(body.body)));
+        (message) => {
+          const parsedMessage = JSON.parse(message.body);
+          console.log("메시지 받음: ", parsedMessage);
+          setMessages((prevMessages) => [...prevMessages, parsedMessage]);
         },
         headers
       );
     });
-  }, []);
 
-  useEffect(() => {
+    // 컴포넌트가 언마운트될 때 연결 해제
     return () => {
-      //연결 끊기
-      stomp.disconnect(() => {
-        console.log("socket연결 해제");
-      });
+      if (stompClient.current) {
+        stompClient.current.disconnect(() => {
+          console.log("WebSocket 연결 해제");
+        });
+      }
     };
-  }, []);
+  }, [postId]);
 
-  const click = async (e, text) => {
-    console.log('클릭');
+  const sendMessage = (e, text) => {
     e.preventDefault();
-
-    stomp.send(
-      `/pub/room/${postId}/chat`,
-      {
-        Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-      },
-      // JSON.stringify(text) )
-      // text)
-       JSON.stringify({ content: text }));
-      // { content: text });
-      // { content: JSON.stringify(text) }); 
+    if (stompClient.current && stompClient.current.connected) {
+      stompClient.current.send(
+        `/pub/room/${postId}/chat`,
+        {
+          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+        },
+        JSON.stringify({ content: text })
+      );
+      console.log("메시지 전송: ", text);
+    } else {
+      console.error("STOMP 클라이언트가 연결되지 않았습니다.");
+    }
   };
 
   return (
     <div>
-      <ChatInput setText={setText} onClick={click} text={text} />
+      <ChatInput setText={setText} onClick={sendMessage} text={text} />
+      <div>
+        <h3>메시지 목록</h3>
+        <ul>
+          {messages.map((msg, index) => (
+            <li key={index}>{msg.content}</li>
+          ))}
+        </ul>
+      </div>
     </div>
   );
 };
+
 export default Chat;
