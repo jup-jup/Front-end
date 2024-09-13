@@ -158,3 +158,17 @@
   font-size: 0.875rem;
   line-height: 1.5rem;
 }
+
+.emptySlide {
+  background-color: #e0e0e0; // 회색 배경
+  height: 200px; // 원하는 높이로 조정
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  &::after {
+    content: '이미지 없음';
+    color: #999;
+    font-size: 14px;
+  }
+}

@@ -15,6 +15,9 @@ export default function JupJupDetailCompo({ data }) {
     setIsFilled(!isFilled);
   };
 
+  // 이미지가 없을 경우 표시할 빈 슬라이드 개수
+  const emptySlideCount = 3;
+
   return (
     <>
       <article className={jd.postItem}>
@@ -37,14 +40,23 @@ export default function JupJupDetailCompo({ data }) {
             }}
             className={jd.swiper}
           >
-            {data.images.map((image, index) => (
-              <SwiperSlide key={index} className={jd.swiperSlide}>
-                <div className={jd.imageWrapper}>
-                  <img alt={image.file_name} src={`${process.env.REACT_APP_IMG}${image.path}`} className={jd.image} />
-                  <div className={jd.imageOverlay} />
-                </div>
-              </SwiperSlide>
-            ))}
+            {data.images && data.images.length > 0 ? (
+              data.images.map((image, index) => (
+                <SwiperSlide key={index} className={jd.swiperSlide}>
+                  <div className={jd.imageWrapper}>
+                    <img alt={image.file_name} src={`${process.env.REACT_APP_IMG}${image.path}`} className={jd.image} />
+                    <div className={jd.imageOverlay} />
+                  </div>
+                </SwiperSlide>
+              ))
+            ) : (
+              Array(emptySlideCount).fill().map((_, index) => (
+                <SwiperSlide key={index} className={jd.swiperSlide}>
+                  <div className={`${jd.imageWrapper} ${jd.emptySlide}`}>
+                  </div>
+                </SwiperSlide>
+              ))
+            )}
           </Swiper>
         </div>
         <div className={jd.postContent}>

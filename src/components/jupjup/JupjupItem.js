@@ -8,24 +8,20 @@ import { getRelativeTime } from "util/day";
 const JupjupItem = ({ data, postIndex }) => {
   return (
     <div className={jup.postItem}>
-      {/* <h3>{data.title}</h3>
-      <p>상태: {data.status}</p>
-      <p>생성일: {new Date(data.createdAt).toLocaleDateString()}</p>
-      <p>위치: {data.location}</p>
-      <div className={jup.postStats}>
-        <span>채팅수: {data.chatCnt}</span>
-        <span>조회수: {data.viewCnt}</span>
-      </div>
-      {data.imageIds && data.imageIds.length > 0 && (
-        <div className={jup.postImages}>
-          <p>{data.imageIds.length} 개의 이미지</p>
-        </div>
-      )} */}
-
       <article className={jup.postItem}>
         <Link to={`/jupjupDetail/${data.giveaway_id}`} className={jup.content}>
           <div className={jup.postImageLink}>
-            <img alt="" src={`${process.env.REACT_APP_IMG}${data.images[0]?.path}`} className={jup.postImage} />
+            {data.images && data.images.length > 0 ? (
+              <img 
+                alt="" 
+                src={`${process.env.REACT_APP_IMG}${data.images[0]?.path}`} 
+                className={jup.postImage} 
+              />
+            ) : (
+              <div className={`${jup.postImage} ${jup.emptyImage}`}>
+                <span>이미지 없음</span>
+              </div>
+            )}
             <div className={jup.postImageOverlay} />
           </div>
           <div className={jup.postContent}>
