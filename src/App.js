@@ -57,11 +57,12 @@ export default function App() {
         navigate("/");
       } catch (error) {
         console.error("Error decoding token:", error);
+        console.log("error: " + JSON.stringify(localStorage));
       }
     }
   }, [location]);
 
-  useRefreshToken();
+  // useRefreshToken();
 
   return (
     <Routes>
