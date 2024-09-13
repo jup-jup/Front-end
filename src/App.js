@@ -20,6 +20,7 @@ import { useAtom } from "jotai";
 import { userAtom } from "store/User";
 import { isDev } from "util/Util";
 import PrivateRoute from "components/privateRoute/PrivateRoute";
+import useRefreshToken from "useRefreshToken";
 
 export default function App() {
   const navigate = useNavigate();
@@ -59,6 +60,8 @@ export default function App() {
       }
     }
   }, [location]);
+
+  useRefreshToken();
 
   return (
     <Routes>
