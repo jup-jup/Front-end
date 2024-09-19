@@ -50,12 +50,14 @@ export default function JupJupDetailCompo({ data }) {
                 </SwiperSlide>
               ))
             ) : (
-              Array(emptySlideCount).fill().map((_, index) => (
-                <SwiperSlide key={index} className={jd.swiperSlide}>
-                  <div className={`${jd.imageWrapper} ${jd.emptySlide}`}>
-                  </div>
-                </SwiperSlide>
-              ))
+              // Array(emptySlideCount).fill().map((_, index) => (
+              //   <SwiperSlide key={index} className={jd.swiperSlide}>
+              //     <div className={`${jd.imageWrapper} ${jd.emptySlide}`}>
+              //     </div>
+              //   </SwiperSlide>
+              // ))
+              <>
+              </>
             )}
           </Swiper>
         </div>
