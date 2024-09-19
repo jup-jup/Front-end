@@ -40,25 +40,17 @@ const Header = () => {
   const [openErrorModal, setOpenErrorModal] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const { data: chatRoomCount } = useGetChatList();
-  const [userName, setUserName] = useAtom(userAtom);
+  const userName = useAtom(userAtom);
 
   console.log(userName, 'useAtom(userAtom)')
 
   useEffect(() => {
     const accessToken = localStorage.getItem("accessToken");
-    const storedUserName = localStorage.getItem("userName");
     setIsLoggedIn(!!accessToken);
-    if (storedUserName && !userName) {
-      setUserName(storedUserName);
-    }
 
     const handleLoginStateChange = () => {
       const newAccessToken = localStorage.getItem("accessToken");
-      const newUserName = localStorage.getItem("userName");
       setIsLoggedIn(!!newAccessToken);
-      if (newUserName) {
-        setUserName(newUserName);
-      }
     };
 
     window.addEventListener("loginStateChange", handleLoginStateChange);
@@ -66,7 +58,7 @@ const Header = () => {
     return () => {
       window.removeEventListener("loginStateChange", handleLoginStateChange);
     };
-  }, [setUserName, userName]);
+  }, [userName]);
 
   const { refetch } = useLogout();
 
@@ -76,12 +68,10 @@ const Header = () => {
       .then(() => {
         localStorage.removeItem("accessToken");
         localStorage.removeItem("refreshToken");
-        localStorage.removeItem("userName");
         sessionStorage.removeItem("accessToken");
         document.cookie = "JSESSIONID=; max-age=0; path=/;";
 
         setIsLoggedIn(false);
-        setUserName('');
         window.dispatchEvent(new Event("loginStateChange"));
       })
       .catch((error) => {
@@ -91,7 +81,7 @@ const Header = () => {
       .finally(() => {
         setMobileMenuOpen(false);
       });
-  }, [refetch, setUserName]);
+  }, [refetch]);
 
 
   const handleLinkClick = useCallback(() => {
@@ -114,7 +104,7 @@ const Header = () => {
           </div>
           {userName && (
             <div className={h.userInfo}>
-              <Gravatar email={userName} className={h.userAvatar} />
+              <Gravatar email={`${userName}`} className={h.userAvatar} />
               <p className={h.userName}>{userName}</p>
             </div>
           )}

@@ -3,6 +3,7 @@ import Gravatar from "react-gravatar";
 import { Link } from "react-router-dom";
 import { getRelativeTime } from "util/day";
 import s from "./chat.module.scss";
+import { useEffect } from "react";
 
 {
   /* <div className={s.status}>
@@ -16,6 +17,13 @@ export default function ChatOtherList() {
 
   console.log("채팅 리스트", data);
 
+  const OtherUser = (data) => {
+    const nameFilter = data.map((item) =>
+      item.joined_users.filter((item) => item.name !== "경")
+    );
+    return nameFilter;
+  }
+
   if (isLoading) return <div>로딩중 ...</div>;
   return (
     <ul className={s.chat_list}>
@@ -28,8 +36,11 @@ export default function ChatOtherList() {
               state={{ type: "old" }}
             >
               <div className={s.profile}>
-                <Gravatar email="2" className={s.img} />
-                <p> 참여자 닉네임 </p>
+                <Gravatar
+                  email={`${OtherUser(data).flat()[index].name}`}
+                  className={s.img}
+                />
+                <p> {OtherUser(data).flat()[index].name} </p>
               </div>
               <div className={s.text}>
                 <p>{item?.last_chat?.content}</p>

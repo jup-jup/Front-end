@@ -51,7 +51,6 @@ export default function App() {
         // localStorage 저장
         localStorage.setItem("accessToken", accessToken);
         localStorage.setItem("refreshToken", refreshToken);
-        localStorage.setItem("userName", userName);
 
         // setName(userName);
 
