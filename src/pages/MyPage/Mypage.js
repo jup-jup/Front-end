@@ -1,10 +1,9 @@
-import React, { useState, useEffect, Suspense } from "react";
+import React, { useState, useEffect, Suspense } from 'react';
 import { Link } from "react-router-dom";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { useInView } from "react-intersection-observer";
 import { myPageSharingGet, myPageReceiveGet } from "api/myPageApi";
-import mp from "./Mypage.module.scss";
-import SearchIcon from "components/icons/SearchIcon";
+import mp from "./Mypage.module.scss";import SearchIcon from "components/icons/SearchIcon";
 import CommentIcon from "components/icons/CommentIcon";
 import ViewIcon from "components/icons/ViewIcon";
 import ErrorBoundary from "components/Error/ErrorBoundary";
@@ -18,14 +17,13 @@ function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
 
-// PostList 컴포넌트: 게시물 목록을 렌더링
+// Post
 function PostList({ activeTab, searchTerm }) {
   const [ref, inView] = useInView();
   const PAGE_SIZE = 3;
 
   const fetchPosts = async ({ pageParam = 0 }) => {
-    const apiFunction =
-      activeTab === "나눔내역" ? myPageSharingGet : myPageReceiveGet;
+    const apiFunction = activeTab === "나눔내역" ? myPageSharingGet : myPageReceiveGet;
     const response = await apiFunction(pageParam, PAGE_SIZE);
     return {
       data: response,
@@ -38,7 +36,7 @@ function PostList({ activeTab, searchTerm }) {
     queryFn: fetchPosts,
     getNextPageParam: (lastPage) => lastPage.nextPage,
     initialPageParam: 0,
-    suspense: true,  // Suspense 모드 활성화
+    suspense: true,
   });
 
   useEffect(() => {
@@ -64,62 +62,46 @@ function PostList({ activeTab, searchTerm }) {
     <div className={mp.postsContainer}>
       {filteredPosts.length > 0 ? (
         filteredPosts.map((post) => (
-          <article key={post.id} className={mp.postItem}>
-            <Link
-              to={`/MypageGiveReceive/${post.giveaway_id}`}
-              state={{
-                type: activeTab === "나눔내역" ? "give" : "receive",
-              }}
-              className={mp.postImageLink}
-            >
-              <img alt="" src={`${process.env.REACT_APP_IMG}${post.images[0]?.path}`} className={mp.postImage} />
-              <div className={mp.postImageOverlay} />
-            </Link>
-            <div className={mp.postContent}>
-              <Link
-                to={`/MypageGiveReceive/${post.giveaway_id}`}
-                state={{
-                  type: activeTab === "나눔내역" ? "give" : "receive",
-                }}
-                className={mp.postImageLink}
-              >
+          <Link
+            key={post.id}
+            to={`/MypageGiveReceive/${post.giveaway_id}`}
+            state={{
+              type: activeTab === "나눔내역" ? "give" : "receive",
+            }}
+            className={mp.postLink}
+          >
+            <article className={mp.postItem}>
+              <div className={mp.postImageLink}>
+                <img alt="" src={`${process.env.REACT_APP_IMG}${post.images[0]?.path}`} className={mp.postImage} />
+                <div className={mp.postImageOverlay} />
+              </div>
+              <div className={mp.postContent}>
                 <time dateTime={post.createdAt} className={mp.postDate}>
                   {/* {post.createdAt.split('T')[0]} */}
                 </time>
                 <span className={mp.postCategory}>{post.location}</span>
-              </Link>
-              <Link
-                to={`/MypageGiveReceive/${post.giveaway_id}`}
-                state={{
-                  type: activeTab === "나눔내역" ? "give" : "receive",
-                }}
-                className={mp.postImageLink}
-              >
                 <h3 className={mp.postTitle}>{post.title}</h3>
-              </Link>
-              <div className={mp.postFooter}>
-                <div className={mp.authorInfo}>
-                  <div className={mp.authorName}>
-                    <span
-                      href={post.location}
-                      className={mp.authorNameLink}
-                    >
-                      <CommentIcon className={mp.commentIcon} />
+                <div className={mp.postFooter}>
+                  <div className={mp.authorInfo}>
+                    <div className={mp.authorName}>
+                      <span className={mp.authorNameLink}>
+                        <CommentIcon className={mp.commentIcon} />
+                        <p className={mp.viewCountText}>
+                          {post.chat_cnt == null ? 0 : post.chat_cnt}
+                        </p>
+                      </span>
+                    </div>
+                    <div className={mp.viewCount}>
+                      <ViewIcon className={mp.viewIcon} />
                       <p className={mp.viewCountText}>
-                      {post.chat_cnt == null ? 0 : post.chat_cnt}
+                        {post.view_cnt == null ? 0 : post.view_cnt}
                       </p>
-                    </span>
-                  </div>
-                  <div className={mp.viewCount}>
-                    <ViewIcon className={mp.viewIcon} />
-                    <p className={mp.viewCountText}>
-                      {post.view_cnt == null ? 0 : post.view_cnt}
-                    </p>
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
-          </article>
+            </article>
+          </Link>
         ))
       ) : (
         <p>게시물을 찾을 수 없습니다.</p>
@@ -129,7 +111,6 @@ function PostList({ activeTab, searchTerm }) {
   );
 }
 
-// Mypage 컴포넌트: 전체 페이지 구조
 export default function Mypage() {
   const [activeTab, setActiveTab] = useState("나눔내역");
   const [searchTerm, setSearchTerm] = useState("");
