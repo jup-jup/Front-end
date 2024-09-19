@@ -1,28 +1,16 @@
-"use client";
-import React, { useEffect, useState, Fragment, useCallback } from "react";
-import h from "./header.module.scss";
-import {
-  Dialog,
-  DialogPanel,
-  PopoverGroup,
-  Transition,
-} from "@headlessui/react";
-import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
-import { Link } from "react-router-dom";
-import {
-  Disclosure,
-  DisclosureButton,
-  DisclosurePanel,
-} from "@headlessui/react";
-import { MinusSmallIcon, PlusSmallIcon } from "@heroicons/react/24/outline";
-import { useLogout } from "hooks/useAuthApi";
-import BasicModal from "components/portalModal/basicmodal/BasicModal";
+import { Dialog, Disclosure, Transition } from "@headlessui/react";
+import { Bars3Icon, MinusSmallIcon, PlusSmallIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import instance from "api/axios";
-import { useGetChatList } from "hooks/useChatApi";
 import { Location } from "components/location/location";
+import BasicModal from "components/portalModal/basicmodal/BasicModal";
+import { useLogout } from "hooks/useAuthApi";
+import { useGetChatList } from "hooks/useChatApi";
 import { useAtom } from "jotai";
-import { userAtom } from "store/User";
+import { Fragment, useCallback, useEffect, useState } from "react";
 import Gravatar from "react-gravatar";
+import { Link } from "react-router-dom";
+import { userAtom } from "store/User";
+import h from "./header.module.scss";
 
 const faqs = [
   {
