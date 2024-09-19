@@ -341,3 +341,21 @@
     transform: translateX(100%);
   }
   
+
+  .userInfo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-right: 10px;
+  }
+  
+  .userAvatar {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+  }
+  
+  .userName {
+    font-size: 14px;
+    font-weight: 500;
+  }

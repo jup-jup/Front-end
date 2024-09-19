@@ -20,6 +20,9 @@ import BasicModal from "components/portalModal/basicmodal/BasicModal";
 import instance from "api/axios";
 import { useGetChatList } from "hooks/useChatApi";
 import { Location } from "components/location/location";
+import { useAtom } from "jotai";
+import { userAtom } from "store/User";
+import Gravatar from "react-gravatar";
 
 const faqs = [
   {
@@ -30,20 +33,32 @@ const faqs = [
   // More questions...
 ];
 
+
 const Header = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [openErrorModal, setOpenErrorModal] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const { data: chatRoomCount } = useGetChatList();
+  const [userName, setUserName] = useAtom(userAtom);
+
+  console.log(userName, 'useAtom(userAtom)')
 
   useEffect(() => {
     const accessToken = localStorage.getItem("accessToken");
+    const storedUserName = localStorage.getItem("userName");
     setIsLoggedIn(!!accessToken);
+    if (storedUserName && !userName) {
+      setUserName(storedUserName);
+    }
 
     const handleLoginStateChange = () => {
       const newAccessToken = localStorage.getItem("accessToken");
+      const newUserName = localStorage.getItem("userName");
       setIsLoggedIn(!!newAccessToken);
+      if (newUserName) {
+        setUserName(newUserName);
+      }
     };
 
     window.addEventListener("loginStateChange", handleLoginStateChange);
@@ -51,21 +66,22 @@ const Header = () => {
     return () => {
       window.removeEventListener("loginStateChange", handleLoginStateChange);
     };
-  }, []);
+  }, [setUserName, userName]);
 
   const { refetch } = useLogout();
 
   const handleLogout = useCallback(() => {
-    // refetch()
     instance
       .post(`${process.env.PUBLIC_URL}/v1/auth/logout`)
       .then(() => {
         localStorage.removeItem("accessToken");
         localStorage.removeItem("refreshToken");
+        localStorage.removeItem("userName");
         sessionStorage.removeItem("accessToken");
         document.cookie = "JSESSIONID=; max-age=0; path=/;";
 
         setIsLoggedIn(false);
+        setUserName('');
         window.dispatchEvent(new Event("loginStateChange"));
       })
       .catch((error) => {
@@ -75,7 +91,8 @@ const Header = () => {
       .finally(() => {
         setMobileMenuOpen(false);
       });
-  }, [refetch]);
+  }, [refetch, setUserName]);
+
 
   const handleLinkClick = useCallback(() => {
     setMobileMenuOpen(false);
@@ -95,6 +112,12 @@ const Header = () => {
               <p className={h.logoText}>JUPJUP</p>
             </Link>
           </div>
+          {userName && (
+            <div className={h.userInfo}>
+              <Gravatar email={userName} className={h.userAvatar} />
+              <p className={h.userName}>{userName}</p>
+            </div>
+          )}
           <div className={h.menuButtonContainer}>
             <button
               type="button"
