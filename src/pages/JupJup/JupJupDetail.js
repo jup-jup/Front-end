@@ -50,21 +50,19 @@ export default function JupJupDetail() {
 
   return (
     <div className={jd.container}>
-      <div className={jd.innerContainer}>
-        <div className={jd.content}>
-          <div className={jd.postList}>
-            <JupJupDetailCompo data={detailData} />
-            <div className={jd.chatButtonContainer}>
-              {detailData.giver.name !== userName && (
-                <Link
-                  to={`/chatOtherDetail/${id}`}
-                  state={{ type: "new" }}
-                  className={jd.chatButton}
-                >
-                  채팅하기
-                </Link>
-              )}
-            </div>
+      <div className={jd.content}>
+        <div className={jd.postList}>
+          <JupJupDetailCompo data={detailData} />
+          <div className={jd.chatButtonContainer}>
+            {detailData.giver.name !== userName && (
+              <Link
+                to={`/chatOtherDetail/${id}`}
+                state={{ type: "new" }}
+                className={jd.chatButton}
+              >
+                채팅하기
+              </Link>
+            )}
           </div>
         </div>
       </div>

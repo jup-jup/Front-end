@@ -7,7 +7,7 @@ import { getRelativeTime } from "util/day";
 
 const JupjupItem = ({ data, postIndex }) => {
   const getStatusText = (status) => {
-    switch(status) {
+    switch (status) {
       case "PENDING":
         return "";
       case "RESERVED":
@@ -25,10 +25,11 @@ const JupjupItem = ({ data, postIndex }) => {
         <Link to={`/jupjupDetail/${data.giveaway_id}`} className={jup.content}>
           <div className={jup.postImageLink}>
             {data.images && data.images.length > 0 ? (
-              <img 
-                alt="" 
-                src={`${process.env.REACT_APP_IMG}${data.images[0]?.path}`} 
-                className={jup.postImage} 
+              <img
+                alt=""
+                src={`${process.env.REACT_APP_IMG}${data.images[0]?.path}`}
+                className={jup.postImage}
+                fetchpriority="high"
               />
             ) : (
               <div className={`${jup.postImage} ${jup.emptyImage}`}>
