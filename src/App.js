@@ -77,7 +77,8 @@ export default function App() {
         <Route path="/JupJup" element={<JupJup />} />
         <Route path="/signin" element={<SignIn />} />
         {/* <Route path='/signUp' element={<SignUp />}></Route> */}
-        <Route path="/jupjupDetail/:id" element={<JupjupDetail />} />
+        <Route path="/jupjupDetail/:id" 
+        element={<PrivateRoute element={<JupjupDetail/>} />} />
         <Route path="/chat" element={<Chat />} />
         <Route path="/WriteUpdate/:id" element={<WriteUpdate />} />
         <Route
@@ -85,7 +86,7 @@ export default function App() {
           element={<PrivateRoute element={<ChatOtherList />} />}
         />
         <Route path="/chatOtherDetail/:id" element={<ChatOtherDetail />} />
-        <Route path="/Mypage" element={<Mypage />} />
+        <Route path="/Mypage" element={<PrivateRoute element={<Mypage/>} />} />
         <Route path="/MypageGiveReceive/:id" element={<MypageGiveReceive />} />
         <Route path="/ProfileUpdate" element={<ProfileUpdate />} />
         <Route path="/modal" element={<ModalView />} />
