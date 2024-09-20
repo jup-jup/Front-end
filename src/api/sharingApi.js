@@ -1,7 +1,7 @@
 // 나눔하기 관련 API 엔드포인트
 
-import axios from 'axios';
-import instance from './axios';
+import axios from "axios";
+import instance from "./axios";
 
 // 목록보기
 // export async function sharingListApi(page, size = 10) {
@@ -30,8 +30,8 @@ export async function sharingPostIMGApi(formData) {
     formData,
     {
       headers: {
-        'Content-Type': 'multipart/form-data',
-        'Authorization': `Bearer ${localStorage.getItem("accessToken")}`,
+        "Content-Type": "multipart/form-data",
+        Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
       },
     }
   );
@@ -40,21 +40,37 @@ export async function sharingPostIMGApi(formData) {
 
 // 목록보기
 // export async function getPoketmonListAll(pageParam, size) {
-export async function sharingListApi(pageParam, size) {
+export async function sharingListApi(serachValue, pageParam, size) {
   console.log(pageParam);
-  const res = await axios
-    .get(`${process.env.REACT_APP_API_URL}/v1/giveaways/list`, {
-      params: {
-        size: size,
-        page: pageParam,
-      },
-    })
-    .then((response) => response.data)
-    .catch((err) => {
-      console.log("err", err);
-      throw err;
-    });
-  return res;
+  if (serachValue) {
+    const res = await axios
+      .get(`${process.env.REACT_APP_API_URL}/v1/giveaways/search/${serachValue}`, {
+        params: {
+          size: size,
+          page: pageParam,
+        },
+      })
+      .then((response) => response.data)
+      .catch((err) => {
+        console.log("err", err);
+        throw err;
+      });
+    return res;
+  } else {
+    const res = await axios
+      .get(`${process.env.REACT_APP_API_URL}/v1/giveaways/list`, {
+        params: {
+          size: size,
+          page: pageParam,
+        },
+      })
+      .then((response) => response.data)
+      .catch((err) => {
+        console.log("err", err);
+        throw err;
+      });
+    return res;
+  }
 }
 
 // 글쓰기

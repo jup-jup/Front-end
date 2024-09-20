@@ -10,6 +10,7 @@ import jup from "./JupJup.module.scss";
 export default function JupJup() {
   const [ref, isView] = useInView();
   const size = 3; // 한 페이지당 아이템 수
+  const serachValue = "테스트";
 
   const {
     data: jupjupList,
@@ -18,9 +19,9 @@ export default function JupJup() {
     status: jupjupListStatus,
     error: jupjupListError,
   } = useInfiniteQuery({
-    queryKey: ["jupjupList"],
+    queryKey: ["jupjupList", serachValue],
     queryFn: async ({ pageParam = 0 }) => {
-      const response = await sharingListApi(pageParam, size);
+      const response = await sharingListApi(serachValue, pageParam, size);
       console.log(response, 'response');
       console.log(response.length, 'response length');
       console.log(pageParam, 'pageParam');
