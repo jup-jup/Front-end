@@ -31,7 +31,7 @@ export default function ChatOtherList() {
         data?.map((item, index) => (
           <li key={index}>
             <Link
-              to={`/chatOtherDetail/${item.giveaway_id}`}
+              to={`/chatOtherDetail/${item.id}`}
               className={s.item}
               state={{ type: "old" }}
             >

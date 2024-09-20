@@ -29,10 +29,8 @@ const ChatList = ({ postId, upText, otherUserId }) => {
   const [dataPage, setDataPage] = useState(0);
   const [dataSize, setDataSize] = useState(20);
   const [atBottom, setAtBottom] = useState(false);
-  console.log("토큰 ", myid);
 
   async function getChatList() {
-    console.log('cc', postId)
     const { data } = await axios.get(
       `https://jupjup.store/api/v1/chat-rooms/${postId}/chats`,
       {

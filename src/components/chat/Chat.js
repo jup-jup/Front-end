@@ -12,6 +12,8 @@ const Chat = ({ postId, upText, setUpText }) => {
     Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
   };
 
+  console.log("챗 아이디", postId);
+
   // 소켓 연결 설정
   useEffect(() => {
     const socket = new SockJS(`https://jupjup.store/ws`);
