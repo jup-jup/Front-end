@@ -84,8 +84,16 @@ function PostList({ activeTab, searchTerm }) {
             className={mp.postLink}
           >
             <article className={mp.postItem}>
-              <div className={mp.postImageLink}>
-                <img alt="" src={`${process.env.REACT_APP_IMG}${post.images[0]?.path}`} className={mp.postImage} />
+            <div className={mp.postImageLink}>
+                {post.images && post.images.length > 0 ? (
+                  <img
+                    alt=""
+                    src={`${process.env.REACT_APP_IMG}${post.images[0]?.path}`}
+                    className={mp.postImage}
+                  />
+                ) : (
+                  <div className={mp.placeholderImage}>이미지 없음.</div>
+                )}
                 <div className={mp.postImageOverlay} />
               </div>
               <div className={mp.postContent}>
