@@ -1,4 +1,5 @@
 import React, { useEffect, useState, useCallback } from "react";
+import { useGetChatList } from "hooks/useChatApi";
 import { useParams, useLocation, useNavigate, Link } from "react-router-dom";
 import styles from './MypageGiveReceive.module.scss';
 import JupJupDetailCompo from 'components/jupjup/JupJupDetailCompo';
@@ -15,6 +16,26 @@ export default function MypageGive() {
   const [error, setError] = useState(null);
   const [openErrorModal, setOpenErrorModal] = useState(false);
   const [deleteConfirmModal, setDeleteConfirmModal] = useState(false);
+
+  const { data, isLoading } = useGetChatList();
+
+  const [matchId, setMatchId] = useState(null);
+
+  console.log("채팅 리스트", data);
+
+  useEffect(() => {
+    if (data) {
+      const matchingGiveaway = data.find(item => item.giveaway_id === parseInt(id));
+      if (matchingGiveaway) {
+        console.log(matchingGiveaway.giveaway_id, 'matchingGiveaway')
+        setMatchId(matchingGiveaway.giveaway_id);
+        // 여기서 matchingGiveaway를 사용하여 추가 작업을 수행할 수 있습니다.
+      } else {
+        console.log("일치하는 giveaway를 찾을 수 없습니다.");
+      }
+      setLoading(false);
+    }
+  }, [data, id]);
 
   useEffect(() => {
     const fetchDetailData = async () => {
@@ -67,9 +88,11 @@ export default function MypageGive() {
             <JupJupDetailCompo data={detailData}/>
             {type === 'give' && (
               <div className={styles.actionButtons}>
-                <Link to={`/chatOtherDetail/${id}`} className={styles.button}>
+                {matchId &&
+                <Link to={`/chatOtherDetail/${matchId}`} className={styles.button} state={{ type: "old" }}>
                   대화중인 채팅 방
                 </Link>
+                }
                 <Link to={`/WriteUpdate/${id}`} state={{ type: 'edit' }} className={styles.button}>
                   수정하기
                 </Link>
