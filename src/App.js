@@ -28,13 +28,6 @@ export default function App() {
   const [, setName] = useAtom(userAtom);
 
   useEffect(() => {
-    const userName = localStorage.getItem("userName");
-    if (userName) {
-      setName(userName);
-    }
-  }, [setName]);
-
-  useEffect(() => {
     // URL의 쿼리 파라미터를 파싱합니다.
     const searchParams = new URLSearchParams(location.search);
     const accessToken = searchParams.get("accessToken");
@@ -42,18 +35,9 @@ export default function App() {
  
     if (accessToken) {
       try {
-        // JWT 토큰 디코딩
-        const decodedToken = jwtDecode(accessToken);
-
-        // 디코딩된 토큰에서 필요한 정보 추출
-        const { userName, exp } = decodedToken;
-
         // localStorage 저장
         localStorage.setItem("accessToken", accessToken);
         localStorage.setItem("refreshToken", refreshToken);
-        localStorage.setItem("userName", userName)
-        
-        setName(userName);
 
         // 토큰 만료 시간 저장 (밀리초 단위)
         // localStorage.setItem("tokenExpiration", exp * 1000);
@@ -67,6 +51,19 @@ export default function App() {
       } catch (error) {
         console.error("Error decoding token:", error);
         console.log("error: " + JSON.stringify(localStorage));
+      }
+    }
+
+
+    const accessTokenforName = localStorage.getItem("accessToken");
+
+    if(accessTokenforName) {
+      const decodedToken = jwtDecode(accessTokenforName);
+  
+      const { userName, exp } = decodedToken;
+  
+      if(userName) {
+        setName(userName);
       }
     }
   }, [location]);

@@ -30,7 +30,7 @@ const Header = () => {
   const { data: chatRoomCount } = useGetChatList();
   const userName = useAtom(userAtom);
 
-  console.log(userName, 'useAtom(userAtom)')
+  console.log(userName[0], 'useAtom(userAtom)')
 
   useEffect(() => {
     const accessToken = localStorage.getItem("accessToken");
@@ -61,6 +61,8 @@ const Header = () => {
 
         setIsLoggedIn(false);
         window.dispatchEvent(new Event("loginStateChange"));
+
+        window.location.href = `/`;
       })
       .catch((error) => {
         setErrorMessage("로그아웃 중 문제가 발생했습니다.");
@@ -90,7 +92,7 @@ const Header = () => {
               <p className={h.logoText}>JUPJUP</p>
             </Link>
           </div>
-          {userName && (
+          {userName[0] && (
             <div className={h.userInfo}>
               <Gravatar email={`${userName}`} className={h.userAvatar} />
               <p className={h.userName}>{userName}</p>
