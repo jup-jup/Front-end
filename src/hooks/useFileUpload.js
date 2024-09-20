@@ -12,13 +12,25 @@ const acceptDefault = {
 
 export default function useFileUpload({ uploadEvent, formDataEvent, accept, onUploadSuccess }) {
   const [files, setFiles] = useState([]);
-  const [previewUrls, setPreviewUrls] = useState([]);
   const [uploadedImageIds, setUploadedImageIds] = useState([]);
+  const [previewUrls, setPreviewUrls] = useState([]);
+  const [isDragActive, setIsDragActive] = useState(false);
+  const [isUploading, setIsUploading] = useState(false);
+  const [uploadError, setUploadError] = useState(null);
+
+  const reset = useCallback(() => {
+    console.log("Resetting file upload state"); // 추가된 로그
+    setPreviewUrls([]);
+    setUploadedImageIds([]);
+    setIsDragActive(false);
+    setIsUploading(false);
+    setUploadError(null);
+  }, []);
 
   const mutation = useMutation({
     mutationFn: (filesToUpload) => {
       const formData = new FormData();
-      filesToUpload.forEach((file, index) => {
+      filesToUpload.forEach((file) => {
         formData.append(`files`, file);
       });
       return sharingPostIMGApi(formData);
@@ -54,12 +66,6 @@ export default function useFileUpload({ uploadEvent, formDataEvent, accept, onUp
     }
   });
 
-  const uploadImages = useCallback((selectedIndexes) => {
-    const selectedFiles = selectedIndexes.map(index => files[index]);
-    mutation.mutate(selectedFiles);
-  }, [files, mutation]);
-
-
   const onDrop = useCallback((acceptedFiles) => {
     const newPreviewUrls = acceptedFiles.map((file) =>
       URL.createObjectURL(file)
@@ -68,9 +74,12 @@ export default function useFileUpload({ uploadEvent, formDataEvent, accept, onUp
     setFiles((prev) => [...prev, ...acceptedFiles]);
 
     if (formDataEvent) formDataEvent(acceptedFiles);
-  }, [formDataEvent]);
+    
+    // 파일이 드롭되면 즉시 업로드 시작
+    mutation.mutate(acceptedFiles);
+  }, [formDataEvent, mutation]);
 
-  const { getRootProps, getInputProps, isDragActive } = useDropzone({
+  const { getRootProps, getInputProps } = useDropzone({
     accept: acceptDefault[accept],
     onDrop
   });
@@ -83,8 +92,10 @@ export default function useFileUpload({ uploadEvent, formDataEvent, accept, onUp
 
   const removeEvent = useCallback((index) => {
     setFiles((prev) => prev.filter((_, i) => i !== index));
-    URL.revokeObjectURL(previewUrls[index]);
-    setPreviewUrls((prev) => prev.filter((_, i) => i !== index));
+    if (previewUrls[index]) {
+      URL.revokeObjectURL(previewUrls[index]);
+      setPreviewUrls((prev) => prev.filter((_, i) => i !== index));
+    }
     setUploadedImageIds((prev) => prev.filter((_, i) => i !== index));
   }, [previewUrls]);
 
@@ -98,6 +109,6 @@ export default function useFileUpload({ uploadEvent, formDataEvent, accept, onUp
     isUploading: mutation.isLoading,
     uploadError: mutation.error,
     uploadedImageIds,
-    uploadImages,  // 새로 추가된 함수
+    reset
   };
 }

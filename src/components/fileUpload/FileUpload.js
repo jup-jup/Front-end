@@ -7,6 +7,9 @@ export default function FileUpload({
   accept,
   setPreviewUrl,
   onUploadSuccess,
+  initialImages = [],
+  initialImageIds = [],
+  onImagesChange,
 }) {
   const {
     getRootProps,
@@ -17,7 +20,7 @@ export default function FileUpload({
     isUploading,
     uploadError,
     uploadedImageIds,
-    uploadImages,
+    reset,
   } = useFileUpload({
     uploadEvent,
     formDataEvent,
@@ -25,27 +28,39 @@ export default function FileUpload({
     onUploadSuccess,
   });
 
-  const [selectedImages, setSelectedImages] = useState([]);
-
-  const handleCheckboxChange = useCallback((url, isChecked, index) => {
-    console.log('Checkbox changed:', url, isChecked);
-    if (isChecked) {
-      setSelectedImages(prev => [...prev, url]);
-      uploadImages([index]); // 선택된 이미지의 인덱스만 전달
-    } else {
-      setSelectedImages(prev => prev.filter(selectedUrl => selectedUrl !== url));
-      // 체크 해제 시 추가적인 처리가 필요하다면 여기에 구현
-    }
-  }, [uploadImages]);
-
-  const handleRemove = useCallback((index) => {
-    removeEvent(index);
-    setSelectedImages(prev => prev.filter(url => url !== previewUrls[index]));
-  }, [removeEvent, previewUrls]);
+  const [allImages, setAllImages] = useState([...initialImages]);
+  const [allImageIds, setAllImageIds] = useState([...initialImageIds]);
 
   useEffect(() => {
-    console.log('Selected images count:', selectedImages.length);
-  }, [selectedImages]);
+    const newImages = [...initialImages, ...previewUrls];
+    const newImageIds = [...initialImageIds, ...uploadedImageIds];
+    
+    setAllImages(newImages);
+    setAllImageIds(newImageIds);
+
+    if (onImagesChange) {
+      onImagesChange(newImageIds);
+    }
+  }, [initialImages, initialImageIds, previewUrls, uploadedImageIds, onImagesChange]);
+
+  const handleRemove = useCallback((index) => {
+     // 모든 이미지가 삭제되었을 때 초기화
+     
+     console.log(allImages.length, 'allImages.length')
+     if (allImages.length === 0) {
+      setAllImages([]);
+      setAllImageIds([]);
+      reset(); // useFileUpload 훅의 상태 초기화
+    }
+
+    setAllImages(prev => prev.filter((_, i) => i !== index));
+    setAllImageIds(prev => prev.filter((_, i) => i !== index));
+
+    if (index >= initialImages.length) {
+      const newIndex = index - initialImages.length;
+      removeEvent(newIndex);
+    }
+  }, [initialImages.length, removeEvent, allImages.length, reset]);
 
   return (
     <section>
@@ -69,19 +84,11 @@ export default function FileUpload({
       {uploadError && <p>업로드 오류: {uploadError.message}</p>}
       <aside>
         <div style={{ display: 'flex', flexWrap: 'wrap' }}>
-          {previewUrls.map((url, index) => (
-            <div key={index} style={{ display: 'flex', margin: '12px', flexDirection: 'column', alignItems: 'center' }}>
+          {allImages.map((url, index) => (
+            <div key={allImageIds[index]} style={{ display: 'flex', margin: '12px', flexDirection: 'column', alignItems: 'center' }}>
               <img src={url} alt="" style={{ maxWidth: '100px', maxHeight: '100px' }} />
               <div style={{ marginTop: '5px' }}>
-                <label style={{ display: 'flex', alignItems: 'center', cursor: 'pointer' }}>
-                  <input
-                    type="checkbox"
-                    checked={selectedImages.includes(url)}
-                    onChange={(e) => handleCheckboxChange(url, e.target.checked, index)}
-                    style={{ marginRight: '5px' }}
-                  />
-                  {selectedImages.includes(url) ? '업로드됨' : '업로드'}
-                </label>
+                <p>ID: {allImageIds[index]}</p>
                 <button onClick={() => handleRemove(index)} style={{ marginLeft: '5px' }}>
                   삭제
                 </button>
@@ -90,7 +97,7 @@ export default function FileUpload({
           ))}
         </div>
       </aside>
-      <p>업로드된 이미지 수: {selectedImages.length}</p>
+      <p>업로드된 이미지 수: {allImages.length}</p>
     </section>
   );
 }

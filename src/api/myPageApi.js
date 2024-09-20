@@ -39,27 +39,12 @@ export async function MypgeDeleteApi(id) {
 // 나눔 업데이트
 export async function myPageUpdateApi(id, data) {
   console.log('Updating giveaway:', id, data);
-  try {
-    const requestBody = {
-      title: data.title,
-      description: data.description,
-      status: "PENDING",
-      imageIds: data.image_ids || []
-    };
+  const res = await instance.patch(
+    `${process.env.REACT_APP_API_URL}/v1/giveaways/${id}`,
+    data
+  );
+  return res.data;
 
-    console.log('Request body:', JSON.stringify(requestBody, null, 2));
-
-    const res = await instance.patch(
-      `${process.env.REACT_APP_API_URL}/v1/giveaways/${id}`,
-      JSON.stringify(requestBody)
-    );
-
-    console.log('Update response:', res.data);
-    return res.data;
-  } catch (error) {
-    console.error('Update error:', error.response ? error.response.data : error.message);
-    throw error;
-  }
 }
 
 //받음내역
