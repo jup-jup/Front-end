@@ -44,24 +44,30 @@ export default function FileUpload({
   }, [initialImages, initialImageIds, previewUrls, uploadedImageIds, onImagesChange]);
 
   const handleRemove = useCallback((index) => {
-     // 모든 이미지가 삭제되었을 때 초기화
-     
-     console.log(allImages.length, 'allImages.length')
-     if (allImages.length === 0) {
+    // 모든 이미지가 삭제되었을 때 초기화
+    if (allImages.length === 0) {
       setAllImages([]);
       setAllImageIds([]);
       reset(); // useFileUpload 훅의 상태 초기화
+    } else {
+      // 이미지 삭제 처리
+      const newImages = allImages.filter((_, i) => i !== index);
+      const newImageIds = allImageIds.filter((_, i) => i !== index);
+      
+      setAllImages(newImages);
+      setAllImageIds(newImageIds);
+  
+      if (index >= initialImages.length) {
+        const newIndex = index - initialImages.length;
+        removeEvent(newIndex);
+      }
+  
+      // 삭제 후 새로운 이미지 ID 배열을 onImagesChange에 전달
+      if (onImagesChange) {
+        onImagesChange(newImageIds);
+      }
     }
-
-    setAllImages(prev => prev.filter((_, i) => i !== index));
-    setAllImageIds(prev => prev.filter((_, i) => i !== index));
-
-    if (index >= initialImages.length) {
-      const newIndex = index - initialImages.length;
-      removeEvent(newIndex);
-    }
-  }, [initialImages.length, removeEvent, allImages.length, reset]);
-
+  }, [initialImages.length, removeEvent, reset, allImages, allImageIds, onImagesChange]);
   return (
     <section>
       <div style={{

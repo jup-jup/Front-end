@@ -94,8 +94,8 @@ export default function JupJupWrite() {
     if (isSuccess) {
       window.location.href = "/jupjup";
     }
-     if (updateMutation.isSuccess) window.location.href = "/Mypage";
-  }, [isSuccess, navigate]);
+    if (updateMutation.isSuccess) window.location.href = "/Mypage";
+  }, [isSuccess, navigate, updateMutation.isSuccess]);
 
   const handleUploadSuccess = (response) => {
     console.log("업로드 응답:", response);
