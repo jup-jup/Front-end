@@ -1,5 +1,10 @@
 import { Dialog, Disclosure, Transition } from "@headlessui/react";
-import { Bars3Icon, MinusSmallIcon, PlusSmallIcon, XMarkIcon } from "@heroicons/react/24/outline";
+import {
+  Bars3Icon,
+  MinusSmallIcon,
+  PlusSmallIcon,
+  XMarkIcon,
+} from "@heroicons/react/24/outline";
 import instance from "api/axios";
 import { Location } from "components/location/location";
 import BasicModal from "components/portalModal/basicmodal/BasicModal";
@@ -21,16 +26,15 @@ const faqs = [
   // More questions...
 ];
 
-
 const Header = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [openErrorModal, setOpenErrorModal] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const { data: chatRoomCount } = useGetChatList();
-  const userName = useAtom(userAtom);
+  const [userName] = useAtom(userAtom);
 
-  console.log(userName[0], 'useAtom(userAtom)')
+  console.log(userName, "useAtom(userAtom)");
 
   useEffect(() => {
     const accessToken = localStorage.getItem("accessToken");
@@ -46,7 +50,8 @@ const Header = () => {
     return () => {
       window.removeEventListener("loginStateChange", handleLoginStateChange);
     };
-  }, [userName]);
+  }, [userName.userName]);
+  // }, []);
 
   const { refetch } = useLogout();
 
@@ -73,7 +78,6 @@ const Header = () => {
       });
   }, [refetch]);
 
-
   const handleLinkClick = useCallback(() => {
     setMobileMenuOpen(false);
   }, []);
@@ -92,10 +96,10 @@ const Header = () => {
               <p className={h.logoText}>JUPJUP</p>
             </Link>
           </div>
-          {userName[0] && (
+          {userName && (
             <div className={h.userInfo}>
-              <Gravatar email={`${userName}`} className={h.userAvatar} />
-              <p className={h.userName}>{userName}</p>
+              <Gravatar email={`${userName.userName}`} className={h.userAvatar} />
+              <p className={h.userName}>{userName.userName}</p>
             </div>
           )}
           <div className={h.menuButtonContainer}>

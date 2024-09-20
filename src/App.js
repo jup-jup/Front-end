@@ -32,7 +32,7 @@ export default function App() {
     const searchParams = new URLSearchParams(location.search);
     const accessToken = searchParams.get("accessToken");
     const refreshToken = searchParams.get("refreshToken");
- 
+
     if (accessToken) {
       try {
         // localStorage 저장
@@ -54,16 +54,19 @@ export default function App() {
       }
     }
 
-
     const accessTokenforName = localStorage.getItem("accessToken");
 
-    if(accessTokenforName) {
+    if (accessTokenforName) {
       const decodedToken = jwtDecode(accessTokenforName);
-  
-      const { userName, exp } = decodedToken;
-  
-      if(userName) {
-        setName(userName);
+
+      const { userName, exp, userId } = decodedToken;
+
+      if (userName) {
+        const newUserData = {
+          userName: userName,
+          userId: userId,
+        };
+        setName(newUserData);
       }
     }
   }, [location]);
@@ -77,8 +80,10 @@ export default function App() {
         <Route path="/JupJup" element={<JupJup />} />
         <Route path="/signin" element={<SignIn />} />
         {/* <Route path='/signUp' element={<SignUp />}></Route> */}
-        <Route path="/jupjupDetail/:id" 
-        element={<PrivateRoute element={<JupjupDetail/>} />} />
+        <Route
+          path="/jupjupDetail/:id"
+          element={<PrivateRoute element={<JupjupDetail />} />}
+        />
         <Route path="/chat" element={<Chat />} />
         <Route path="/WriteUpdate/:id" element={<WriteUpdate />} />
         <Route
@@ -86,7 +91,7 @@ export default function App() {
           element={<PrivateRoute element={<ChatOtherList />} />}
         />
         <Route path="/chatOtherDetail/:id" element={<ChatOtherDetail />} />
-        <Route path="/Mypage" element={<PrivateRoute element={<Mypage/>} />} />
+        <Route path="/Mypage" element={<PrivateRoute element={<Mypage />} />} />
         <Route path="/MypageGiveReceive/:id" element={<MypageGiveReceive />} />
         <Route path="/ProfileUpdate" element={<ProfileUpdate />} />
         <Route path="/modal" element={<ModalView />} />

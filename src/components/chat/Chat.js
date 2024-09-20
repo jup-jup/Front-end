@@ -2,8 +2,11 @@ import { useEffect, useState, useRef } from "react";
 import SockJS from "sockjs-client";
 import Stomp from "stompjs";
 import ChatInput from "./ChatInput";
+import { useAtom } from "jotai";
+import { updateChatAtom } from "store/Chat";
 
 const Chat = ({ postId, upText, setUpText }) => {
+  const [, updateChat] = useAtom(updateChatAtom);
   const [text, setText] = useState("");
   const [messages, setMessages] = useState([]);
   const stompClient = useRef(null);
@@ -21,7 +24,7 @@ const Chat = ({ postId, upText, setUpText }) => {
 
     // STOMP 클라이언트 연결
     stompClient.current.connect(headers, (frame) => {
-      console.log('Connected to WebSocket, Frame:', frame);
+      console.log("Connected to WebSocket, Frame:", frame);
 
       // 방 구독
       stompClient.current.subscribe(
@@ -29,7 +32,13 @@ const Chat = ({ postId, upText, setUpText }) => {
         (message) => {
           const parsedMessage = JSON.parse(message.body);
           console.log("메시지 받음: ", parsedMessage);
-          setMessages((prevMessages) => [...prevMessages, parsedMessage]);
+          // setMessages((prevMessages) => [...prevMessages, parsedMessage]);
+          const newChat = {
+            user_id: parsedMessage.user_id,
+            content: parsedMessage.content,
+            created_at: new Date().toISOString(),
+          };
+          updateChat(newChat);
         },
         headers
       );
@@ -64,14 +73,14 @@ const Chat = ({ postId, upText, setUpText }) => {
   return (
     <div>
       <ChatInput setText={setText} onClick={sendMessage} text={text} />
-      <div>
+      {/* <div>
         <h3>메시지 목록</h3>
         <ul>
           {messages.map((msg, index) => (
             <li key={index}>{msg.content}</li>
           ))}
         </ul>
-      </div>
+      </div> */}
     </div>
   );
 };

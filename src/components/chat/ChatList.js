@@ -5,30 +5,22 @@ import { dayChat } from "util/day";
 import "./chat.scss";
 import { userAuth } from "hooks/useAuth";
 import { useQuery } from "@tanstack/react-query";
+import { useAtom } from "jotai";
+import { userAtom } from "store/User";
+import { updateChatAtom } from "store/Chat";
 
 const ChatList = ({ postId, upText, otherUserId }) => {
-  const message = {
-    data: [
-      {
-        createDate: "2024-09-09T11:58:08.822233",
-        message: "비밀대화",
-      },
-      {
-        createDate: "2024-09-09T11:58:08.822233",
-        message: "https://example.com/image2.jpg",
-      },
-      {
-        createDate: "2024-09-09T11:58:08.822233",
-        message: "https://example.com/image3.jpg",
-      },
-    ],
-  };
   const scroll = useRef();
   const { userId: myid } = userAuth(localStorage.getItem("accessToken"));
+  // const [userData] = useAtom(userAtom);
+  const [chatList] = useAtom(updateChatAtom);
 
   const [dataPage, setDataPage] = useState(0);
-  const [dataSize, setDataSize] = useState(20);
+  const [dataSize, setDataSize] = useState(10);
   const [atBottom, setAtBottom] = useState(false);
+  const [newMessage, setNewMessage] = useState({});
+
+  console.log("cc", chatList);
 
   async function getChatList() {
     const { data } = await axios.get(
@@ -50,7 +42,8 @@ const ChatList = ({ postId, upText, otherUserId }) => {
     queryFn: getChatList,
   });
 
-  // const reversedList = data && [...data.content].reverse();
+  const reversedList = data && [...data].reverse();
+  console.log("대화 목록", data, reversedList);
 
   const lineConverter = (text) => {
     return (
@@ -89,15 +82,16 @@ const ChatList = ({ postId, upText, otherUserId }) => {
       scrollToBottom();
     }, 500);
     setAtBottom(true);
+    
   }, []);
 
   // data && isSuccess && scrollToBottom();
 
-  console.log("cc", isSuccess && data);
+  // console.log("cc", isSuccess && data);
 
   useEffect(() => {
     scrollToBottom();
-  }, [message.data]);
+  }, [newMessage]);
 
   return (
     <>
@@ -105,57 +99,62 @@ const ChatList = ({ postId, upText, otherUserId }) => {
         <div className="chat_list">
           {/* {isLoading && "로딩중.."} */}
           {/* 이전 대화리스트 */}
-          {/* {data &&
+          {data &&
             isSuccess &&
             reversedList.map((item, i) => (
               <div
                 key={i}
                 className={classNames("chat-item", {
-                  "is-my": nickname === item.sender,
+                  "is-my": myid == item.user_id,
                 })}
               >
-                {nickname === item.sender ? (
+                {/* 내 아이디 {myid} 
+                <br/>
+                상대방 아이디 {item.user_id} */}
+                {myid === item.user_id ? (
                   <>
-                    <span className="createDate">{dayChat(item.createDate)}</span>
-                    <span className="message">{lineConverter(item.message)}</span>
+                    <span className="createDate">
+                      {/* {dayChat(item.created_at)} a*/}
+                      {typeof myid}
+                    </span>
+                    <span className="message">
+                      {lineConverter(item.content)}
+                    </span>
                   </>
                 ) : (
                   <>
-                    <span className="sender">{item.sender}</span>
-                    <span className="message">{lineConverter(item.message)}</span>
-                    <span className="createDate">{dayChat(item.createDate)}</span>
+                    <span className="message">
+                      {lineConverter(item.content)}
+                      {typeof item.user_id}
+                    </span>
+                    <span className="createDate">
+                      {/* {dayChat(item.created_at)} */}
+                    </span>
                   </>
                 )}
               </div>
-            ))} */}
+            ))}
           {/* 추가된 대화리스트 */}
-          {message?.data.map(
-            (item, i) =>
-              i !== 0 && (
-                <div
-                  key={i}
-                  className={classNames("chat-item", {
-                    "is-my": otherUserId !== myid,
-                  })}
-                >
-                  {otherUserId !== myid ? (
-                    <>
-                      <span className="createDate">
-                        {dayChat(item.createDate)}
-                      </span>
-                      <span className="message">{item.message}</span>
-                    </>
-                  ) : (
-                    <>
-                      <span className="message">{item.message}</span>
-                      <span className="createDate">
-                        {dayChat(item.createDate)}
-                      </span>
-                    </>
-                  )}
-                </div>
-              )
-          )}
+          {chatList.map((item, i) => (
+            <div
+              key={i}
+              className={classNames("chat-item", {
+                "is-my": otherUserId !== myid,
+              })}
+            >
+              {otherUserId !== myid ? (
+                <>
+                  <span className="createDate">{dayChat(item.created_at)}</span>
+                  <span className="message">{item.content}</span>
+                </>
+              ) : (
+                <>
+                  <span className="message">{item.content}</span>
+                  <span className="createDate">{dayChat(item.created_at)}</span>
+                </>
+              )}
+            </div>
+          ))}
         </div>
       </div>
     </>
