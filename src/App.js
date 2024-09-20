@@ -39,7 +39,7 @@ export default function App() {
     const searchParams = new URLSearchParams(location.search);
     const accessToken = searchParams.get("accessToken");
     const refreshToken = searchParams.get("refreshToken");
-
+ 
     if (accessToken) {
       try {
         // JWT 토큰 디코딩
@@ -51,8 +51,9 @@ export default function App() {
         // localStorage 저장
         localStorage.setItem("accessToken", accessToken);
         localStorage.setItem("refreshToken", refreshToken);
-
-        // setName(userName);
+        localStorage.setItem("userName", userName)
+        
+        setName(userName);
 
         // 토큰 만료 시간 저장 (밀리초 단위)
         // localStorage.setItem("tokenExpiration", exp * 1000);
