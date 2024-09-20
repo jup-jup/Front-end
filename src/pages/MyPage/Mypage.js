@@ -58,6 +58,19 @@ function PostList({ activeTab, searchTerm }) {
 
   const filteredPosts = getFilteredPosts();
 
+  const getStatusText = (status) => {
+    switch(status) {
+      case "PENDING":
+        return "";
+      case "RESERVED":
+        return "예약중";
+      case "COMPLETED":
+        return "나눔완료";
+      default:
+        return null;
+    }
+  };
+
   return (
     <div className={mp.postsContainer}>
       {filteredPosts.length > 0 ? (
@@ -81,6 +94,11 @@ function PostList({ activeTab, searchTerm }) {
                 </time>
                 <span className={mp.postCategory}>{post.location}</span>
                 <h3 className={mp.postTitle}>{post.title}</h3>
+                
+                {getStatusText(post.status) && (
+                    <p className={mp.status}>{getStatusText(post.status)}</p>
+                )}
+                
                 <div className={mp.postFooter}>
                   <div className={mp.authorInfo}>
                     <div className={mp.authorName}>
