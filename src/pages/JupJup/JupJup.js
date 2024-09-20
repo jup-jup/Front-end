@@ -10,7 +10,7 @@ import jup from "./JupJup.module.scss";
 export default function JupJup() {
   const [ref, isView] = useInView();
   const size = 3; // 한 페이지당 아이템 수
-  const serachValue = "테스트";
+  const serachValue = "";
 
   const {
     data: jupjupList,
