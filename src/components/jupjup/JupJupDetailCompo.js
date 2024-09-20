@@ -1,11 +1,11 @@
 import jd from "./JupJupDetailCompo.module.scss";
-import React, { useState } from 'react';
-import UnHeart from 'components/icons/UnHeart';
-import ViewIcon from 'components/icons/ViewIcon';
-import Heart from 'components/icons/Heart';
-import CommentIcon from 'components/icons/CommentIcon';
-import { Swiper, SwiperSlide } from 'swiper/react';
-import { Pagination, Navigation } from 'swiper/modules';
+import React, { useState } from "react";
+import UnHeart from "components/icons/UnHeart";
+import ViewIcon from "components/icons/ViewIcon";
+import Heart from "components/icons/Heart";
+import CommentIcon from "components/icons/CommentIcon";
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Pagination, Navigation } from "swiper/modules";
 import { getRelativeTime } from "util/day";
 
 export default function JupJupDetailCompo({ data }) {
@@ -20,18 +20,23 @@ export default function JupJupDetailCompo({ data }) {
 
   if (data.images.length < 3) {
     return (
-      <div className={`${jd.flexContainer} ${data.images.length === 1 ? jd.singleImage : ''}`}>
+      <div
+        className={`${jd.flexContainer} ${
+          data.images.length === 1 ? jd.singleImage : ""
+        }`}
+      >
         <div className={jd.imgflex}>
-        {data.images.map((image, index) => (
+          {data.images.map((image, index) => (
             <div key={index} className={jd.imageWrapper}>
-              <img 
-                alt={image.file_name} 
-                src={`${process.env.REACT_APP_IMG}${image.path}`} 
-                className={jd.image} 
+              <img
+                alt={image.file_name}
+                src={`${process.env.REACT_APP_IMG}${image.path}`}
+                className={jd.image}
+                fetchpriority="high"
               />
               <div className={jd.imageOverlay} />
             </div>
-        ))}
+          ))}
         </div>
         <div className={jd.postContent}>
           <div className={jd.postMeta}>
@@ -75,42 +80,41 @@ export default function JupJupDetailCompo({ data }) {
     );
   }
 
-
   return (
     <>
       <article className={jd.postItem}>
         <div className={jd.imageGallery}>
-        <Swiper
-          modules={[Pagination, Navigation]}
-          spaceBetween={10}
-          slidesPerView={1}
-          pagination={{ clickable: true }}
-          navigation
-          breakpoints={{
-            640: {
-              slidesPerView: 2,
-              spaceBetween: 20,
-            },
-            1024: {
-              slidesPerView: 3,
-              spaceBetween: 30,
-            },
-          }}
-          className={jd.swiper}
-        >
-          {data.images.map((image, index) => (
-            <SwiperSlide key={index} className={jd.swiperSlide}>
-              <div className={jd.imageWrapper}>
-                <img 
-                  alt={image.file_name} 
-                  src={`${process.env.REACT_APP_IMG}${image.path}`} 
-                  className={jd.image} 
-                />
-                <div className={jd.imageOverlay} />
-              </div>
-            </SwiperSlide>
-          ))}
-        </Swiper>
+          <Swiper
+            modules={[Pagination, Navigation]}
+            spaceBetween={10}
+            slidesPerView={1}
+            pagination={{ clickable: true }}
+            navigation
+            breakpoints={{
+              640: {
+                slidesPerView: 2,
+                spaceBetween: 20,
+              },
+              1024: {
+                slidesPerView: 3,
+                spaceBetween: 30,
+              },
+            }}
+            className={jd.swiper}
+          >
+            {data.images.map((image, index) => (
+              <SwiperSlide key={index} className={jd.swiperSlide}>
+                <div className={jd.imageWrapper}>
+                  <img
+                    alt={image.file_name}
+                    src={`${process.env.REACT_APP_IMG}${image.path}`}
+                    className={jd.image}
+                  />
+                  <div className={jd.imageOverlay} />
+                </div>
+              </SwiperSlide>
+            ))}
+          </Swiper>
         </div>
         <div className={jd.postContent}>
           <div className={jd.postMeta}>
