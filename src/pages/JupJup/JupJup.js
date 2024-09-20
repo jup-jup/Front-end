@@ -2,7 +2,7 @@ import { useInfiniteQuery } from "@tanstack/react-query";
 import { sharingListApi } from "api/sharingApi";
 import SearchIcon from "components/icons/SearchIcon";
 import JupjupItem from "components/jupjup/JupjupItem";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useInView } from "react-intersection-observer";
 import { Link } from "react-router-dom";
 import jup from "./JupJup.module.scss";
@@ -10,7 +10,8 @@ import jup from "./JupJup.module.scss";
 export default function JupJup() {
   const [ref, isView] = useInView();
   const size = 3; // 한 페이지당 아이템 수
-  const serachValue = "";
+  const [searchValue, setSearchValue] = useState("");
+  const [inputValue, setInputValue] = useState("");
 
   const {
     data: jupjupList,
@@ -18,14 +19,15 @@ export default function JupJup() {
     hasNextPage: jupjupListHasNextPage,
     status: jupjupListStatus,
     error: jupjupListError,
+    refetch,
   } = useInfiniteQuery({
-    queryKey: ["jupjupList", serachValue],
+    queryKey: ["jupjupList", searchValue],
     queryFn: async ({ pageParam = 0 }) => {
-      const response = await sharingListApi(serachValue, pageParam, size);
+      const response = await sharingListApi(searchValue, pageParam, size);
       console.log(response, 'response');
       console.log(response.length, 'response length');
       console.log(pageParam, 'pageParam');
-      return response; // 직접 response를 반환
+      return response;
     },
     getNextPageParam: (lastPage, allPages) => {
       return lastPage.length === size ? allPages.length : undefined;
@@ -38,8 +40,22 @@ export default function JupJup() {
       jupjupListFetchNextPage();
     }
     console.log(jupjupList, "jupjupList");
-    // console.log(Object.getPrototypeOf(jupjupList.pages).length, "data");
   }, [isView, jupjupListHasNextPage, jupjupListFetchNextPage, jupjupList]);
+
+  const handleInputChange = (e) => {
+    setInputValue(e.target.value);
+  };
+
+  const handleSearch = () => {
+    setSearchValue(inputValue);
+    refetch();
+  };
+
+  const handleKeyPress = (e) => {
+    if (e.key === 'Enter') {
+      handleSearch();
+    }
+  };
 
   return (
     <div className={jup.container}>
@@ -51,8 +67,11 @@ export default function JupJup() {
             type="text"
             className={jup.searchInput}
             placeholder="검색어를 입력하세요."
+            value={inputValue}
+            onChange={handleInputChange}
+            onKeyPress={handleKeyPress}
           />
-          <SearchIcon className={jup.searchIcon} />
+          <SearchIcon className={jup.searchIcon} onClick={handleSearch} />
         </div>
       </div>
       <div className={jup.writeButtonContainer}>

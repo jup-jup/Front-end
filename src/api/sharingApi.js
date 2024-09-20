@@ -44,7 +44,7 @@ export async function sharingListApi(serachValue, pageParam, size) {
   console.log(pageParam);
   if (serachValue) {
     const res = await axios
-      .get(`${process.env.REACT_APP_API_URL}/v1/giveaways/search/${serachValue}`, {
+      .get(`${process.env.REACT_APP_API_URL}/v1/giveaways/search?keyword=${serachValue}`, {
         params: {
           size: size,
           page: pageParam,

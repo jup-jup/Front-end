@@ -164,7 +164,7 @@ export default function Mypage() {
         </nav>
       </div>
 
-      <div className={mp.searchContainer}>
+      {/* <div className={mp.searchContainer}>
         <div className={mp.searchInputWrapper}>
           <input
             type="text"
@@ -175,7 +175,7 @@ export default function Mypage() {
           />
           <SearchIcon className={mp.searchIcon} />
         </div>
-      </div>
+      </div> */}
 
       <div className={mp.contentContainer}>
         <h3 className={mp.contentTitle}>
