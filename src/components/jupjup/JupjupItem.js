@@ -6,6 +6,19 @@ import { Link } from "react-router-dom";
 import { getRelativeTime } from "util/day";
 
 const JupjupItem = ({ data, postIndex }) => {
+  const getStatusText = (status) => {
+    switch(status) {
+      case "PENDING":
+        return "";
+      case "RESERVED":
+        return "예약중";
+      case "COMPLETED":
+        return "나눔완료";
+      default:
+        return null;
+    }
+  };
+
   return (
     <div className={jup.postItem}>
       <article className={jup.postItem}>
@@ -32,6 +45,9 @@ const JupjupItem = ({ data, postIndex }) => {
             <span className={jup.userName}>{data.user_name}</span>
             <h3 className={jup.postTitle}>{data.title}</h3>
             <p className={jup.postDescription}>{data.description}</p>
+            {getStatusText(data.status) && (
+              <p className={jup.status}>{getStatusText(data.status)}</p>
+            )}
             <div className={jup.postFooter}>
               <div className={jup.authorInfo}>
                 <div className={jup.authorName}>
