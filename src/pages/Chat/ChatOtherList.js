@@ -5,14 +5,14 @@ import { getRelativeTime } from "util/day";
 import s from "./chat.module.scss";
 import { useAtom } from "jotai";
 import { userAtom } from "store/User";
-import { selectedGiveawayIdAtom } from 'store/Chat';
+// import { selectedGiveawayIdAtom } from 'store/Chat';
 import { useEffect, useState, useCallback } from 'react';
 
 export default function ChatOtherList() {
   const [user] = useAtom(userAtom);
-  const [selectedGiveawayId] = useAtom(selectedGiveawayIdAtom);
+  // const [selectedGiveawayId] = useAtom(selectedGiveawayIdAtom);
   const location = useLocation();
-  const giveawayId = location.state?.giveawayId || selectedGiveawayId;
+  const giveawayId = location.state?.giveawayId;
   const refreshRequired = location.state?.refreshRequired;
   const navigationTimestamp = location.state?.timestamp;
   
@@ -29,15 +29,20 @@ export default function ChatOtherList() {
     }
   }, [refetch]);
 
+  console.log(giveawayId, 'giveawayId')
 
   useEffect(() => {
-    if (data) {
-      const newFilteredData = selectedGiveawayId 
-        ? data.filter(item => item.giveaway_id === selectedGiveawayId) 
+    if (giveawayId == 'header') {
+      setFilteredData(data);
+
+    } else {
+      const newFilteredData = giveawayId 
+        ? data.filter(item => item.giveaway_id === giveawayId) 
         : data;
       setFilteredData(newFilteredData);
+      console.log('안되는건가??뭐지ㅏ?')
     }
-  }, [data, selectedGiveawayId]);
+  }, [data, giveawayId]);
 
   const OtherUser = (data) => {
     const nameFilter = data.map((item) =>

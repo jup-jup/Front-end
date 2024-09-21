@@ -176,6 +176,8 @@ const Header = () => {
                         <Link
                           to="/chatOtherList"
                           className={h.menuItem}
+                          onClick={handleLinkClick}
+                          state={{ type: "old", giveawayId: 'header' }}
                         >
                           <span>채팅</span>
                           <span className={h.badge}>

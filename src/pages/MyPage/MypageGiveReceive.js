@@ -23,7 +23,7 @@ export default function MypageGive() {
 
   const [matchId, setMatchId] = useState(null);
 
-  const [, setSelectedGiveawayId] = useAtom(selectedGiveawayIdAtom);
+  // const [, setSelectedGiveawayId] = useAtom(selectedGiveawayIdAtom);
 
   console.log("채팅 리스트", data);
 
@@ -37,7 +37,7 @@ export default function MypageGive() {
         console.log(parseInt(id), 'matchingGiveawayID')
         setMatchId(matchingGiveaway.giveaway_id);
 
-        setSelectedGiveawayId(matchingGiveaway.giveaway_id);
+        // setSelectedGiveawayId(matchingGiveaway.giveaway_id);
         // 여기서 matchingGiveaway를 사용하여 추가 작업을 수행할 수 있습니다.
       } else {
         console.log("일치하는 giveaway를 찾을 수 없습니다.");

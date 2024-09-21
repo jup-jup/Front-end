@@ -14,4 +14,4 @@ export const updateChatAtom = atom(
   }
 );
 
-export const selectedGiveawayIdAtom = atom(null);
+// export const selectedGiveawayIdAtom = atom(null);
