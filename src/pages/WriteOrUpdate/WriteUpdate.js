@@ -59,6 +59,10 @@ export default function JupJupWrite() {
   };
 
   useEffect(() => {
+    setValue('location', getAddress || address.address);
+  }, [getAddress, address.address, setValue]);
+
+  useEffect(() => {
     const fetchData = async () => {
       if (id !== "new") {
         try {
@@ -171,7 +175,6 @@ export default function JupJupWrite() {
                   id="location"
                   className={jw.textarea}
                   placeholder="위치를 입력해주세요"
-                  defaultValue={getAddress ? getAddress : address.address}
                   {...register("location", { required: "위치를 입력해주세요" })}
                 />
                 <Button onClick={() => setModal(true)}>검색</Button>
