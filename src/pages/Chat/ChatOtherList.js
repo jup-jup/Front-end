@@ -4,6 +4,8 @@ import { Link } from "react-router-dom";
 import { getRelativeTime } from "util/day";
 import s from "./chat.module.scss";
 import { useEffect } from "react";
+import { useAtom } from "jotai";
+import { userAtom } from "store/User";
 
 {
   /* <div className={s.status}>
@@ -13,13 +15,14 @@ import { useEffect } from "react";
 }
 
 export default function ChatOtherList() {
+  const [user] = useAtom(userAtom);
   const { data, isLoading } = useGetChatList();
 
   console.log("채팅 리스트", data);
 
   const OtherUser = (data) => {
     const nameFilter = data.map((item) =>
-      item.joined_users.filter((item) => item.name !== "경")
+      item.joined_users.filter((item) => item.name !== user.userName)
     );
     return nameFilter;
   }
