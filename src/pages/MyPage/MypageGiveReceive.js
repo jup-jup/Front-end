@@ -28,6 +28,7 @@ export default function MypageGive() {
       const matchingGiveaway = data.find(item => item.giveaway_id === parseInt(id));
       if (matchingGiveaway) {
         console.log(matchingGiveaway.giveaway_id, 'matchingGiveaway')
+        console.log(parseInt(id), 'matchingGiveawayID')
         setMatchId(matchingGiveaway.giveaway_id);
         // 여기서 matchingGiveaway를 사용하여 추가 작업을 수행할 수 있습니다.
       } else {
@@ -89,7 +90,11 @@ export default function MypageGive() {
             {type === 'give' && (
               <div className={styles.actionButtons}>
                 {matchId &&
-                <Link to={`/chatOtherDetail/${matchId}`} className={styles.button} state={{ type: "old" }}>
+                // <Link to={`/chatOtherDetail/${matchId}`} className={styles.button} state={{ type: "old" }}>
+                //   대화중인 채팅 방
+                // </Link>
+
+                <Link to={`/chatOtherList`} className={styles.button} state={{ type: "old" }}>
                   대화중인 채팅 방
                 </Link>
                 }
