@@ -1,24 +1,43 @@
 import { useGetChatList } from "hooks/useChatApi";
 import Gravatar from "react-gravatar";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { getRelativeTime } from "util/day";
 import s from "./chat.module.scss";
-import { useEffect } from "react";
 import { useAtom } from "jotai";
 import { userAtom } from "store/User";
-
-{
-  /* <div className={s.status}>
-  <span className={s.icon}></span>
-  <p>Online</p>
-</div>; */
-}
+import { selectedGiveawayIdAtom } from 'store/Chat';
+import { useEffect, useState, useCallback } from 'react';
 
 export default function ChatOtherList() {
   const [user] = useAtom(userAtom);
-  const { data, isLoading } = useGetChatList();
+  const [selectedGiveawayId] = useAtom(selectedGiveawayIdAtom);
+  const location = useLocation();
+  const giveawayId = location.state?.giveawayId || selectedGiveawayId;
+  const refreshRequired = location.state?.refreshRequired;
+  const navigationTimestamp = location.state?.timestamp;
+  
+  const [filteredData, setFilteredData] = useState([]);
+  const { data, isLoading, refetch } = useGetChatList();
 
-  console.log("채팅 리스트", data);
+  const refreshData = useCallback(async () => {
+    console.log("Refreshing data...");
+    try {
+      await refetch();
+      console.log("Data refreshed successfully");
+    } catch (error) {
+      console.error("Failed to refresh chat data:", error);
+    }
+  }, [refetch]);
+
+
+  useEffect(() => {
+    if (data) {
+      const newFilteredData = selectedGiveawayId 
+        ? data.filter(item => item.giveaway_id === selectedGiveawayId) 
+        : data;
+      setFilteredData(newFilteredData);
+    }
+  }, [data, selectedGiveawayId]);
 
   const OtherUser = (data) => {
     const nameFilter = data.map((item) =>
@@ -28,10 +47,11 @@ export default function ChatOtherList() {
   }
 
   if (isLoading) return <div>로딩중 ...</div>;
-  return (
+
+  const renderChatList = (chatData) => (
     <ul className={s.chat_list}>
-      {data.length > 0 ? (
-        data?.map((item, index) => (
+      {chatData.length > 0 ? (
+        chatData.map((item, index) => (
           <li key={index}>
             <Link
               to={`/chatOtherDetail/${item.id}`}
@@ -40,10 +60,10 @@ export default function ChatOtherList() {
             >
               <div className={s.profile}>
                 <Gravatar
-                  email={`${OtherUser(data).flat()[index].name}`}
+                  email={`${OtherUser(chatData).flat()[index].name}`}
                   className={s.img}
                 />
-                <p> {OtherUser(data).flat()[index].name} </p>
+                <p> {OtherUser(chatData).flat()[index].name} </p>
               </div>
               <div className={s.text}>
                 <p>{item?.last_chat?.content}</p>
@@ -64,4 +84,6 @@ export default function ChatOtherList() {
       )}
     </ul>
   );
+
+  return renderChatList(filteredData);
 }

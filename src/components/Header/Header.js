@@ -13,17 +13,15 @@ import { useGetChatList } from "hooks/useChatApi";
 import { useAtom } from "jotai";
 import { Fragment, useCallback, useEffect, useState } from "react";
 import Gravatar from "react-gravatar";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { userAtom } from "store/User";
 import h from "./header.module.scss";
 
 const faqs = [
   {
     menuTitle: "마이페이지",
-    // detailTitle1: '프로필수정',
     detailTitle2: "줍줍내역",
   },
-  // More questions...
 ];
 
 const Header = () => {
@@ -31,8 +29,9 @@ const Header = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [openErrorModal, setOpenErrorModal] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
-  const { data: chatRoomCount } = useGetChatList();
+  const { data: chatRoomCount, refetch: refetchChatList } = useGetChatList();
   const [userName] = useAtom(userAtom);
+  const navigate = useNavigate();
 
   console.log(userName, "useAtom(userAtom)");
 
@@ -51,7 +50,6 @@ const Header = () => {
       window.removeEventListener("loginStateChange", handleLoginStateChange);
     };
   }, [userName.userName]);
-  // }, []);
 
   const { refetch } = useLogout();
 
@@ -81,8 +79,6 @@ const Header = () => {
   const handleLinkClick = useCallback(() => {
     setMobileMenuOpen(false);
   }, []);
-
-  //
 
   return (
     <>
@@ -177,10 +173,8 @@ const Header = () => {
                         >
                           줍줍
                         </Link>
-                        <Link
-                          to="/chatOtherList"
+                        <button
                           className={h.menuItem}
-                          onClick={handleLinkClick}
                         >
                           <span>채팅</span>
                           <span className={h.badge}>
@@ -193,7 +187,7 @@ const Header = () => {
                             </svg>
                             {chatRoomCount?.length}
                           </span>
-                        </Link>
+                        </button>
 
                         <dl className={h.faqList}>
                           {faqs.map((faq) => (
@@ -228,13 +222,6 @@ const Header = () => {
                                     as="dd"
                                     className={h.faqPanel}
                                   >
-                                    {/* <Link
-                                    to='/ProfileUpdate'
-                                    className={h.faqLink}
-                                    onClick={handleLinkClick}
-                                  >
-                                    {faq.detailTitle1}
-                                  </Link> */}
                                     <br />
                                     <Link
                                       to="/Mypage"
@@ -273,7 +260,6 @@ const Header = () => {
             </Transition.Child>
           </Dialog>
         </Transition.Root>
-        {/* 에러 발생 시 모달 표시 */}
         {openErrorModal && (
           <BasicModal
             setOnModal={setOpenErrorModal}

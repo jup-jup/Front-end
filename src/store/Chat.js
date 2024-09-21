@@ -9,3 +9,6 @@ export const updateChatAtom = atom(
     set(ChatAtom, [...currentChats, newChat]);
   }
 );
+
+
+export const selectedGiveawayIdAtom = atom(null);
