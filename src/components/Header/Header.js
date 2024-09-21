@@ -173,7 +173,8 @@ const Header = () => {
                         >
                           줍줍
                         </Link>
-                        <button
+                        <Link
+                          to="/chatOtherList"
                           className={h.menuItem}
                         >
                           <span>채팅</span>
@@ -187,7 +188,7 @@ const Header = () => {
                             </svg>
                             {chatRoomCount?.length}
                           </span>
-                        </button>
+                        </Link>
 
                         <dl className={h.faqList}>
                           {faqs.map((faq) => (
