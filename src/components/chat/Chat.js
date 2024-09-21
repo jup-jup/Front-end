@@ -36,7 +36,7 @@ const Chat = ({ postId, upText, setUpText }) => {
           const newChat = {
             user_id: parsedMessage.user_id,
             content: parsedMessage.content,
-            created_at: new Date().toISOString(),
+            created_at: parsedMessage.created_at,
           };
           updateChat(newChat);
         },

@@ -14,6 +14,8 @@ import { useLocation } from "react-router-dom";
 import axios from "axios";
 import instance from "api/axios";
 import s from './chat.module.scss';
+import { useAtom } from "jotai";
+import { updateChatAtom } from "store/Chat";
 
 export default function ChatOtherDetail() {
   const { id } = useParams();
@@ -23,6 +25,7 @@ export default function ChatOtherDetail() {
   const [address, setAddress] = useState("");
   const [upText, setUpText] = useState([{}]);
   const [roomId, setRoomId] = useState();
+  const [, updateChat] = useAtom(updateChatAtom);
 
   const [showMap, setShowMap] = useState(false);
   const chatContainerRef = useRef(null);
@@ -48,6 +51,10 @@ export default function ChatOtherDetail() {
     } else {
       // 이미 있는 채팅방이면 게시글 id만 전송
       setRoomId(id);
+    }
+
+    return () => {
+      updateChat("reset");
     }
   }, []);
 
@@ -85,7 +92,7 @@ export default function ChatOtherDetail() {
           </div>
         )}
 
-        <div className="flex justify-around">
+        {/* <div className="flex justify-around">
           <button className="p-2 transition bg-gray-200 rounded-full hover:bg-gray-300">
             <PhotoIcon className="w-6 h-6 text-gray-600" />
           </button>
@@ -102,7 +109,7 @@ export default function ChatOtherDetail() {
           <button className="p-2 transition bg-gray-200 rounded-full hover:bg-gray-300">
             <CalendarIcon className="w-6 h-6 text-gray-600" />
           </button>
-        </div>
+        </div> */}
       </div>
       <button className="float-right p-2 mt-4 mb-20 text-white transition bg-indigo-500 rounded-full hover:bg-gray-300">
         거래 완료

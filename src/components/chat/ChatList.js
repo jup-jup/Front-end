@@ -80,7 +80,7 @@ const ChatList = ({ postId, upText, otherUserId }) => {
   useEffect(() => {
     setTimeout(() => {
       scrollToBottom();
-    }, 500);
+    }, 100);
     setAtBottom(true);
     
   }, []);
@@ -114,8 +114,8 @@ const ChatList = ({ postId, upText, otherUserId }) => {
                 {myid === item.user_id ? (
                   <>
                     <span className="createDate">
-                      {/* {dayChat(item.created_at)} a*/}
-                      {typeof myid}
+                      {dayChat(item.created_at)}
+                      {/* {typeof myid} */}
                     </span>
                     <span className="message">
                       {lineConverter(item.content)}
@@ -125,10 +125,10 @@ const ChatList = ({ postId, upText, otherUserId }) => {
                   <>
                     <span className="message">
                       {lineConverter(item.content)}
-                      {typeof item.user_id}
+                      {/* {typeof item.user_id} */}
                     </span>
                     <span className="createDate">
-                      {/* {dayChat(item.created_at)} */}
+                      {dayChat(item.created_at)}
                     </span>
                   </>
                 )}
@@ -139,10 +139,10 @@ const ChatList = ({ postId, upText, otherUserId }) => {
             <div
               key={i}
               className={classNames("chat-item", {
-                "is-my": otherUserId !== myid,
+                "is-my": myid == item.user_id,
               })}
             >
-              {otherUserId !== myid ? (
+              {myid === item.user_id ? (
                 <>
                   <span className="createDate">{dayChat(item.created_at)}</span>
                   <span className="message">{item.content}</span>
