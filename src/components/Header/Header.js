@@ -92,7 +92,7 @@ const Header = () => {
               <p className={h.logoText}>JUPJUP</p>
             </Link>
           </div>
-          {userName && (
+          {userName.userName && (
             <div className={h.userInfo}>
               <Gravatar email={`${userName.userName}`} className={h.userAvatar} />
               <p className={h.userName}>{userName.userName}</p>
@@ -180,6 +180,7 @@ const Header = () => {
                           state={{ type: "old", giveawayId: 'header' }}
                         >
                           <span>채팅</span>
+                          {userName.userName && 
                           <span className={h.badge}>
                             <svg
                               className={h.badgeIcon}
@@ -190,6 +191,7 @@ const Header = () => {
                             </svg>
                             {chatRoomCount?.length}
                           </span>
+                          }
                         </Link>
 
                         <dl className={h.faqList}>

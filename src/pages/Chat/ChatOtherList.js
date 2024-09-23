@@ -6,41 +6,28 @@ import s from "./chat.module.scss";
 import { useAtom } from "jotai";
 import { userAtom } from "store/User";
 // import { selectedGiveawayIdAtom } from 'store/Chat';
-import { useEffect, useState, useCallback } from 'react';
+import { useEffect, useState, useCallback } from "react";
 
 export default function ChatOtherList() {
   const [user] = useAtom(userAtom);
   // const [selectedGiveawayId] = useAtom(selectedGiveawayIdAtom);
   const location = useLocation();
   const giveawayId = location.state?.giveawayId;
-  const refreshRequired = location.state?.refreshRequired;
-  const navigationTimestamp = location.state?.timestamp;
-  
+
   const [filteredData, setFilteredData] = useState([]);
   const { data, isLoading, refetch } = useGetChatList();
 
-  const refreshData = useCallback(async () => {
-    console.log("Refreshing data...");
-    try {
-      await refetch();
-      console.log("Data refreshed successfully");
-    } catch (error) {
-      console.error("Failed to refresh chat data:", error);
-    }
-  }, [refetch]);
-
-  console.log(giveawayId, 'giveawayId')
+  console.log(giveawayId, "giveawayId");
 
   useEffect(() => {
-    if (giveawayId == 'header') {
+    if (giveawayId == "header") {
       setFilteredData(data);
-
     } else {
-      const newFilteredData = giveawayId 
-        ? data.filter(item => item.giveaway_id === giveawayId) 
+      const newFilteredData = giveawayId
+        ? data.filter((item) => item.giveaway_id === giveawayId)
         : data;
       setFilteredData(newFilteredData);
-      console.log('안되는건가??뭐지ㅏ?')
+      console.log("안되는건가??뭐지ㅏ?");
     }
   }, [data, giveawayId]);
 
@@ -49,7 +36,7 @@ export default function ChatOtherList() {
       item.joined_users.filter((item) => item.name !== user.userName)
     );
     return nameFilter;
-  }
+  };
 
   if (isLoading) return <div>로딩중 ...</div>;
 
