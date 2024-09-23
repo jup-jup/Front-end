@@ -17,8 +17,6 @@ export default function ChatOtherList() {
   const [filteredData, setFilteredData] = useState([]);
   const { data, isLoading, refetch } = useGetChatList();
 
-  console.log(giveawayId, "giveawayId");
-
   useEffect(() => {
     if (giveawayId == "header") {
       setFilteredData(data);
@@ -27,7 +25,6 @@ export default function ChatOtherList() {
         ? data.filter((item) => item.giveaway_id === giveawayId)
         : data;
       setFilteredData(newFilteredData);
-      console.log("안되는건가??뭐지ㅏ?");
     }
   }, [data, giveawayId]);
 

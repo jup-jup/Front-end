@@ -15,6 +15,7 @@ import "swiper/css/pagination";
 import "swiper/css/navigation";
 import JupJupDetailCompo from "components/jupjup/JupJupDetailCompo";
 import { userAuth } from "hooks/useAuth";
+import instance from "api/axios";
 
 export default function JupJupDetail() {
   const { id } = useParams();
@@ -24,6 +25,7 @@ export default function JupJupDetail() {
   const [error, setError] = useState(null);
 
   const { userName } = userAuth(localStorage.getItem("accessToken"));
+
   const toggleHeart = () => {
     setIsFilled(!isFilled);
   };
@@ -44,6 +46,15 @@ export default function JupJupDetail() {
     fetchDetailData();
   }, [id]);
 
+  const intoChat = () => {
+    const res = instance.post(
+      `${process.env.REACT_APP_API_URL}/v1/chat-rooms`, {
+        giveaway_id: id
+      }
+    );
+    return res.roomId;
+  }
+
   if (loading) return <div>로딩 중...</div>;
   if (error) return <div>에러 발생: {error}</div>;
   if (!detailData) return <div>데이터가 없습니다.</div>;
@@ -55,13 +66,14 @@ export default function JupJupDetail() {
           <JupJupDetailCompo data={detailData} />
           <div className={jd.chatButtonContainer}>
             {detailData.giver.name !== userName && (
-              <Link
-                to={`/chatOtherDetail/${id}`}
+              <button
+                // to={`/chatOtherDetail/${id}`}
+                onClick={intoChat}
                 state={{ type: "new" }}
                 className={jd.chatButton}
               >
                 채팅하기
-              </Link>
+              </button>
             )}
           </div>
         </div>
