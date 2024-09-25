@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import jd from "./JupJupDetail.module.scss";
 import CommentIcon from "components/icons/CommentIcon";
 import ViewIcon from "components/icons/ViewIcon";
@@ -19,6 +19,7 @@ import instance from "api/axios";
 
 export default function JupJupDetail() {
   const { id } = useParams();
+  const navigate = useNavigate();
   const [isFilled, setIsFilled] = useState(false);
   const [detailData, setDetailData] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -46,14 +47,20 @@ export default function JupJupDetail() {
     fetchDetailData();
   }, [id]);
 
-  const intoChat = () => {
-    const res = instance.post(
-      `${process.env.REACT_APP_API_URL}/v1/chat-rooms`, {
-        giveaway_id: id
-      }
-    );
-    return res.roomId;
-  }
+  const intoChat = async () => {
+    try {
+      const res = await instance.post(
+        `${process.env.REACT_APP_API_URL}/v1/chat-rooms`,
+        {
+          giveaway_id: id,
+        }
+      );
+      console.log("cc", res.data?.room_id);
+      return res?.data?.room_id;
+    } catch (error) {
+      console.error("Error fetching room id:", error);
+    }
+  };
 
   if (loading) return <div>로딩 중...</div>;
   if (error) return <div>에러 발생: {error}</div>;
@@ -67,9 +74,14 @@ export default function JupJupDetail() {
           <div className={jd.chatButtonContainer}>
             {detailData.giver.name !== userName && (
               <button
-                // to={`/chatOtherDetail/${id}`}
-                onClick={intoChat}
-                state={{ type: "new" }}
+                onClick={async () => {
+                  const roomId = await intoChat();
+                  if (roomId) {
+                    navigate(`/chatOtherDetail/${roomId}`, {
+                      state: { type: "new" },
+                    });
+                  }
+                }}
                 className={jd.chatButton}
               >
                 채팅하기

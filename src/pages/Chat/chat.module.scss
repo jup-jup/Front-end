@@ -18,9 +18,10 @@ $font-size-small: 15px;
       height: 48px;
       border-radius: 10vw;
     }
-    p {
+    .name {
       font-size: $font-size-small;
       font-weight: 600;
+      word-break: keep-all;
     }
   }
   .text {
@@ -29,6 +30,9 @@ $font-size-small: 15px;
     p {
       font-size: 14px;
       text-align: right;
+      white-space: pre;
+    }
+    .chat {
       @include dotdotdot(14px, 1);
     }
   }

@@ -31,7 +31,7 @@ export const usePostSharing = () => {
 export const useGetSharingId = (id) => {
   return useQuery({
     queryKey: ["shareItem", id],
-    queryFn: sharingDetailApi(id),
+    queryFn: () => sharingDetailApi(id),
   });
 };
 

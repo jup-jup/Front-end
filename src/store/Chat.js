@@ -2,6 +2,8 @@ import { atom } from "jotai";
 
 export const ChatAtom = atom([]);
 
+export const chatList = atom([]);
+
 export const updateChatAtom = atom(
   (get) => get(ChatAtom),
   (get, set, action) => {

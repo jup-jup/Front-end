@@ -7,15 +7,19 @@ import { useAtom } from "jotai";
 import { userAtom } from "store/User";
 // import { selectedGiveawayIdAtom } from 'store/Chat';
 import { useEffect, useState, useCallback } from "react";
+import { useGetSharingId } from "hooks/useSharingApi";
+import { sharingDetailApi } from "api/sharingApi";
 
 export default function ChatOtherList() {
   const [user] = useAtom(userAtom);
   // const [selectedGiveawayId] = useAtom(selectedGiveawayIdAtom);
   const location = useLocation();
   const giveawayId = location.state?.giveawayId;
+  const [descriptions, setDescriptions] = useState({});
 
   const [filteredData, setFilteredData] = useState([]);
   const { data, isLoading, refetch } = useGetChatList();
+  // const { data: postDetail } = useGetSharingId(location?.state?.giveaway_id);
 
   useEffect(() => {
     if (giveawayId == "header") {
@@ -28,6 +32,19 @@ export default function ChatOtherList() {
     }
   }, [data, giveawayId]);
 
+  useEffect(() => {
+    const fetchDescriptions = async () => {
+      const descriptionData = {};
+      for (let item of data) {
+        const description = await contentRender(item.giveaway_id);
+        descriptionData[item.giveaway_id] = description;
+      }
+      setDescriptions(descriptionData);
+    };
+
+    fetchDescriptions();
+  }, [data]);
+
   const OtherUser = (data) => {
     const nameFilter = data.map((item) =>
       item.joined_users.filter((item) => item.name !== user.userName)
@@ -37,6 +54,18 @@ export default function ChatOtherList() {
 
   if (isLoading) return <div>로딩중 ...</div>;
 
+  console.log("dd", sharingDetailApi(10));
+  const contentRender = async (id) => {
+    try {
+      console.log("di", id);
+      const res = await sharingDetailApi(id);
+      return res.data?.description;
+      // return `Description for ${id}`; // 여기서는 예시로 id를 반환
+    } catch (error) {
+      console.error("Error fetching description", error);
+    }
+  };
+
   const renderChatList = (chatData) => (
     <ul className={s.chat_list}>
       {chatData.length > 0 ? (
@@ -45,23 +74,25 @@ export default function ChatOtherList() {
             <Link
               to={`/chatOtherDetail/${item.id}`}
               className={s.item}
-              state={{ type: "old" }}
+              state={{ type: "old", giveaway_id: `${item.giveaway_id}` }}
             >
               <div className={s.profile}>
                 <Gravatar
                   email={`${OtherUser(chatData).flat()[index].name}`}
                   className={s.img}
                 />
-                <p> {OtherUser(chatData).flat()[index].name} </p>
+                <p className={s.name}>
+                  {OtherUser(chatData).flat()[index].name}{" "}
+                </p>
+                {/* {contentRender(item.giveaway_id)} */}
+                {/* {item.giveaway_id} */}
+                {descriptions[item.giveaway_id] || "Loading..."}
               </div>
               <div className={s.text}>
-                <p>{item?.last_chat?.content}</p>
+                <p className={s.chat}>{item?.last_chat?.content}</p>
                 {item?.last_chat?.content && (
                   <p className={s.status}>
-                    Last seen{" "}
-                    <time dateTime={item.last_chat.created_at}>
-                      {getRelativeTime(item.last_chat.created_at)}
-                    </time>
+                    Last seen {getRelativeTime(item.last_chat.created_at)}
                   </p>
                 )}
               </div>

@@ -1,21 +1,15 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useState, useRef, useEffect, useCallback } from "react";
-import {
-  PhotoIcon,
-  CameraIcon,
-  MapPinIcon,
-  CalendarIcon,
-} from "@heroicons/react/24/solid";
-import { useParams } from "react-router-dom";
-import MapModal from "components/portalModal/mapModal/MapModal";
+import instance from "api/axios";
 import Chat from "components/chat/Chat";
 import ChatList from "components/chat/ChatList";
-import { useLocation } from "react-router-dom";
-import axios from "axios";
-import instance from "api/axios";
-import s from './chat.module.scss';
+import MapModal from "components/portalModal/mapModal/MapModal";
+import { useGetSharingId } from "hooks/useSharingApi";
 import { useAtom } from "jotai";
+import { useEffect, useRef, useState } from "react";
+import Gravatar from "react-gravatar";
+import { useLocation, useParams } from "react-router-dom";
 import { updateChatAtom } from "store/Chat";
+import s from "./chat.module.scss";
 
 export default function ChatOtherDetail() {
   const { id } = useParams();
@@ -38,6 +32,7 @@ export default function ChatOtherDetail() {
   }, [messages]);
 
   useEffect(() => {
+    console.log("받은거", location?.state?.giveaway_id);
     // 없던 채팅방을 요청할때 새로운 채팅방 생성
     if (location.state.type === "new") {
       instance
@@ -55,33 +50,43 @@ export default function ChatOtherDetail() {
 
     return () => {
       updateChat("reset");
-    }
+    };
   }, []);
 
+  // 지도 검색 모달
   const handleMapButtonClick = () => {
     setShowMap(true);
   };
 
+  const {
+    data: postDetail,
+  } = useGetSharingId(location?.state?.giveaway_id);
+
+
   return (
     <div className="mx-auto max-w-7xl">
       <div className="flex mb-12">
-        <img
+        {/* <img
           className="w-20"
           src="https://images.unsplash.com/photo-1505840717430-882ce147ef2d?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=8&w=1024&h=1024&q=80"
           alt="Header"
-        />
+        /> */}
         <div className="ml-2">
-          <p>제목제목</p>
-          <p>설명설명</p>
+          <p>{postDetail.data?.title}</p>
+          {/* <p>{postDetail.data?.description}</p> */}
         </div>
       </div>
       <div className="flex mb-4">
-        <img
+        {/* <img
           src={"https://via.placeholder.com/40"}
           className="w-10 h-10 mr-3 rounded-full"
           alt="User avatar"
+        /> */}
+        <Gravatar
+          email={`${postDetail.data?.giver.name}`}
+          className="w-10 h-10 mr-3 rounded-full"
         />
-        <p>채팅걸어오신 분의 닉네임</p>
+        <p>{postDetail.data?.giver.name}</p>
       </div>
       <div className="flex flex-col h-[40rem] w-[30rem] bg-gray-100">
         {/* 채팅 */}
