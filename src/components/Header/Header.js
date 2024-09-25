@@ -16,6 +16,7 @@ import Gravatar from "react-gravatar";
 import { Link, useNavigate } from "react-router-dom";
 import { userAtom } from "store/User";
 import h from "./header.module.scss";
+import { chatList, getChatListAtom } from "store/Chat";
 
 const faqs = [
   {
@@ -29,11 +30,35 @@ const Header = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [openErrorModal, setOpenErrorModal] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
-  const { data: chatRoomCount, refetch: refetchChatList } = useGetChatList();
+  const {
+    data: chatRoomCount,
+    refetch: refetchChatList,
+    isSuccess,
+  } = useGetChatList();
   const [userName] = useAtom(userAtom);
   const navigate = useNavigate();
+  const [, setChatList] = useAtom(getChatListAtom);
+  console.log("목록", chatRoomCount);
 
-  console.log(userName, "useAtom(userAtom)");
+  // const result = chatRoomCount?.map((item) => item.id);
+  // console.log(
+  //   "넣을 데이터",
+  //   chatRoomCount?.map((item) => item.id)
+  // );
+  // if(result) {
+  //   console.log('들어가도됨?');
+  //   setChatList(result);
+  // }
+  useEffect(() => {
+    if (isSuccess && chatRoomCount) {
+      const result = chatRoomCount.map((item) => ({
+        id: item.id,
+        giveaway_id: item.giveaway_id,
+      }));
+      setChatList(result); // Jotai atom에 데이터 저장
+      console.log("넣을 데이터", result);
+    }
+  }, [isSuccess, chatRoomCount]);
 
   useEffect(() => {
     const accessToken = localStorage.getItem("accessToken");
@@ -94,7 +119,10 @@ const Header = () => {
           </div>
           {userName.userName && (
             <div className={h.userInfo}>
-              <Gravatar email={`${userName.userName}`} className={h.userAvatar} />
+              <Gravatar
+                email={`${userName.userName}`}
+                className={h.userAvatar}
+              />
               <p className={h.userName}>{userName.userName}</p>
             </div>
           )}
@@ -177,21 +205,21 @@ const Header = () => {
                           to="/chatOtherList"
                           className={h.menuItem}
                           onClick={handleLinkClick}
-                          state={{ type: "old", giveawayId: 'header' }}
+                          state={{ type: "old", giveawayId: "header" }}
                         >
                           <span>채팅</span>
-                          {userName.userName && 
-                          <span className={h.badge}>
-                            <svg
-                              className={h.badgeIcon}
-                              viewBox="0 0 6 6"
-                              aria-hidden="true"
-                            >
-                              <circle cx="3" cy="3" r="3" />
-                            </svg>
-                            {chatRoomCount?.length}
-                          </span>
-                          }
+                          {userName.userName && (
+                            <span className={h.badge}>
+                              <svg
+                                className={h.badgeIcon}
+                                viewBox="0 0 6 6"
+                                aria-hidden="true"
+                              >
+                                <circle cx="3" cy="3" r="3" />
+                              </svg>
+                              {chatRoomCount?.length}
+                            </span>
+                          )}
                         </Link>
 
                         <dl className={h.faqList}>

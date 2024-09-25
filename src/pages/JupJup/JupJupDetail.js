@@ -1,21 +1,16 @@
-import React, { useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import jd from "./JupJupDetail.module.scss";
-import CommentIcon from "components/icons/CommentIcon";
-import ViewIcon from "components/icons/ViewIcon";
-import Heart from "components/icons/Heart";
-import UnHeart from "components/icons/UnHeart";
-import { Swiper, SwiperSlide } from "swiper/react";
-import { Pagination, Navigation } from "swiper/modules";
-import { useParams } from "react-router-dom";
 import { sharingDetailApi } from "api/sharingApi";
+import { useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import jd from "./JupJupDetail.module.scss";
 // Import Swiper styles
-import "swiper/css";
-import "swiper/css/pagination";
-import "swiper/css/navigation";
+import instance from "api/axios";
 import JupJupDetailCompo from "components/jupjup/JupJupDetailCompo";
 import { userAuth } from "hooks/useAuth";
-import instance from "api/axios";
+import { useAtom } from "jotai";
+import { getChatListAtom } from "store/Chat";
+import "swiper/css";
+import "swiper/css/navigation";
+import "swiper/css/pagination";
 
 export default function JupJupDetail() {
   const { id } = useParams();
@@ -24,6 +19,7 @@ export default function JupJupDetail() {
   const [detailData, setDetailData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const getChatList = useAtom(getChatListAtom);
 
   const { userName } = userAuth(localStorage.getItem("accessToken"));
 
@@ -36,7 +32,7 @@ export default function JupJupDetail() {
       try {
         setLoading(true);
         const response = await sharingDetailApi(id);
-        setDetailData(response.data); // API 응답 구조에 따라 .data가 필요할 수 있습니다
+        setDetailData(response.data);
       } catch (err) {
         setError(err.message);
       } finally {
@@ -55,7 +51,6 @@ export default function JupJupDetail() {
           giveaway_id: id,
         }
       );
-      console.log("cc", res.data?.room_id);
       return res?.data?.room_id;
     } catch (error) {
       console.error("Error fetching room id:", error);
@@ -75,10 +70,17 @@ export default function JupJupDetail() {
             {detailData.giver.name !== userName && (
               <button
                 onClick={async () => {
-                  const roomId = await intoChat();
-                  if (roomId) {
+                  if (getChatList[0].some((item) => item.giveaway_id == id)) {
+                    const result = getChatList[0].find(
+                      (item) => item.giveaway_id == id
+                    )?.id;
+                    navigate(`/chatOtherDetail/${result}`, {
+                      state: { type: "old", giveaway_id: id },
+                    });
+                  } else {
+                    const roomId = await intoChat();
                     navigate(`/chatOtherDetail/${roomId}`, {
-                      state: { type: "new" },
+                      state: { type: "new", giveaway_id: id },
                     });
                   }
                 }}

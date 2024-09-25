@@ -8,7 +8,7 @@ import { useAtom } from "jotai";
 import { useEffect, useRef, useState } from "react";
 import Gravatar from "react-gravatar";
 import { useLocation, useParams } from "react-router-dom";
-import { updateChatAtom } from "store/Chat";
+import { getChatListAtom, updateChatAtom } from "store/Chat";
 import s from "./chat.module.scss";
 
 export default function ChatOtherDetail() {
@@ -20,6 +20,7 @@ export default function ChatOtherDetail() {
   const [upText, setUpText] = useState([{}]);
   const [roomId, setRoomId] = useState();
   const [, updateChat] = useAtom(updateChatAtom);
+  const getChatList = useAtom(getChatListAtom);
 
   const [showMap, setShowMap] = useState(false);
   const chatContainerRef = useRef(null);
@@ -32,7 +33,7 @@ export default function ChatOtherDetail() {
   }, [messages]);
 
   useEffect(() => {
-    console.log("받은거", location?.state?.giveaway_id);
+    console.log("받은거 : ", location?.state?.giveaway_id);
     // 없던 채팅방을 요청할때 새로운 채팅방 생성
     if (location.state.type === "new") {
       instance
@@ -45,7 +46,17 @@ export default function ChatOtherDetail() {
         });
     } else {
       // 이미 있는 채팅방이면 게시글 id만 전송
-      setRoomId(id);
+      console.log(
+        "cc11",
+        getChatList[0].find(
+          (item) => item.giveaway_id == location?.state?.giveaway_id
+        )?.id
+      );
+      const roomindex = getChatList[0].find(
+        (item) => item.giveaway_id == location?.state?.giveaway_id
+      )?.id;
+      // setRoomId(getChatList[0].find((item) => item.giveaway_id == id)?.id);
+      setRoomId(roomindex);
     }
 
     return () => {
@@ -58,10 +69,7 @@ export default function ChatOtherDetail() {
     setShowMap(true);
   };
 
-  const {
-    data: postDetail,
-  } = useGetSharingId(location?.state?.giveaway_id);
-
+  const { data: postDetail } = useGetSharingId(location?.state?.giveaway_id);
 
   return (
     <div className="mx-auto max-w-7xl">
@@ -72,8 +80,8 @@ export default function ChatOtherDetail() {
           alt="Header"
         /> */}
         <div className="ml-2">
-          <p>{postDetail.data?.title}</p>
-          {/* <p>{postDetail.data?.description}</p> */}
+          <p>{postDetail?.data?.title}</p>
+          <p>{postDetail?.data?.description}</p>
         </div>
       </div>
       <div className="flex mb-4">
@@ -83,10 +91,10 @@ export default function ChatOtherDetail() {
           alt="User avatar"
         /> */}
         <Gravatar
-          email={`${postDetail.data?.giver.name}`}
+          email={`${postDetail?.data?.giver.name}`}
           className="w-10 h-10 mr-3 rounded-full"
         />
-        <p>{postDetail.data?.giver.name}</p>
+        <p>{postDetail?.data?.giver.name}</p>
       </div>
       <div className="flex flex-col h-[40rem] w-[30rem] bg-gray-100">
         {/* 채팅 */}

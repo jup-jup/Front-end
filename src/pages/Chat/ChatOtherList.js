@@ -54,10 +54,9 @@ export default function ChatOtherList() {
 
   if (isLoading) return <div>로딩중 ...</div>;
 
-  console.log("dd", sharingDetailApi(10));
+  // console.log("dd", sharingDetailApi(10));
   const contentRender = async (id) => {
     try {
-      console.log("di", id);
       const res = await sharingDetailApi(id);
       return res.data?.description;
       // return `Description for ${id}`; // 여기서는 예시로 id를 반환
