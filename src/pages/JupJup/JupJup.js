@@ -24,9 +24,6 @@ export default function JupJup() {
     queryKey: ["jupjupList", searchValue],
     queryFn: async ({ pageParam = 0 }) => {
       const response = await sharingListApi(searchValue, pageParam, size);
-      console.log(response, 'response');
-      console.log(response.length, 'response length');
-      console.log(pageParam, 'pageParam');
       return response;
     },
     getNextPageParam: (lastPage, allPages) => {
@@ -39,7 +36,6 @@ export default function JupJup() {
     if (isView && jupjupListHasNextPage) {
       jupjupListFetchNextPage();
     }
-    console.log(jupjupList, "jupjupList");
   }, [isView, jupjupListHasNextPage, jupjupListFetchNextPage, jupjupList]);
 
   const handleInputChange = (e) => {

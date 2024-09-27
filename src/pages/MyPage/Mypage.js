@@ -74,9 +74,9 @@ function PostList({ activeTab, searchTerm }) {
   return (
     <div className={mp.postsContainer}>
       {filteredPosts.length > 0 ? (
-        filteredPosts.map((post) => (
+        filteredPosts.map((post, index) => (
           <Link
-            key={post.id}
+            key={index}
             to={`/MypageGiveReceive/${post.giveaway_id}`}
             state={{
               type: activeTab === "나눔내역" ? "give" : "receive",

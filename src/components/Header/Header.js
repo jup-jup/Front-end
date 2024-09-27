@@ -38,7 +38,6 @@ const Header = () => {
   const [userName] = useAtom(userAtom);
   const navigate = useNavigate();
   const [, setChatList] = useAtom(getChatListAtom);
-  console.log("목록", chatRoomCount);
 
   // const result = chatRoomCount?.map((item) => item.id);
   // console.log(
@@ -56,7 +55,6 @@ const Header = () => {
         giveaway_id: item.giveaway_id,
       }));
       setChatList(result); // Jotai atom에 데이터 저장
-      console.log("넣을 데이터", result);
     }
   }, [isSuccess, chatRoomCount]);
 
@@ -94,6 +92,8 @@ const Header = () => {
       })
       .catch((error) => {
         setErrorMessage("로그아웃 중 문제가 발생했습니다.");
+        localStorage.removeItem("accessToken");
+        localStorage.removeItem("refreshToken");
         setOpenErrorModal(true);
       })
       .finally(() => {

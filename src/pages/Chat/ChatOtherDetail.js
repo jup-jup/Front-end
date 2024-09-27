@@ -81,7 +81,6 @@ export default function ChatOtherDetail() {
   },[postDetail])
 
   const sharingSuccess = () => {
-    console.log('나눔완료')
     console.log(postDetail, '나눔완료')
     console.log(userId.userId, '나눔완료')
 
@@ -92,7 +91,7 @@ export default function ChatOtherDetail() {
 
     const sample = {
       status: 'COMPLETED',
-      receiverId: postDetail.data.giver.id,
+      receiverId: postDetail?.data?.giver?.id,
     };
 
     // useSuccessUpdate(postDetail.data.giveaway_id, sample) 
