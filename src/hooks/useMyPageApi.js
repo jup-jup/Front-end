@@ -2,7 +2,7 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import * as api from '../api/myPageApi';
 import { myPageSharingGet, myPageReceiveGet } from "api/myPageApi";
 import { type } from '@testing-library/user-event/dist/type';
-import { myPageUpdateApi } from 'api/myPageApi';
+import { myPageUpdateApi, userPatchSuccess } from 'api/myPageApi';
 
 // MyPage 관련 API 훅
 // 아래는 예시
@@ -22,6 +22,12 @@ export const useGetMyPageReceive = (type) => {
 export const useMyPageUpdate = () => {
   return useMutation({
     mutationFn: ({ id, data }) => myPageUpdateApi(id, data),
+  });
+};
+
+export const useSuccessUpdate = () => {
+  return useMutation({
+    mutationFn: ({ id, data }) => userPatchSuccess(id, data),
   });
 };
 

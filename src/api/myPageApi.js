@@ -55,3 +55,14 @@ export async function myPageReceiveGet(pageParam, size) {
     return res.data;
 }
 
+// 나눔완료처리
+export async function userPatchSuccess(id, data) {
+  console.log('Updating giveaway:', id, data);
+  const res = await instance.patch(
+    `${process.env.REACT_APP_API_URL}/v1/giveaways/${id}/status`,
+    data,
+  );
+  console.log(res.data, 'res.data')
+  return res.data;
+
+}

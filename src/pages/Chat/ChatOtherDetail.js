@@ -4,11 +4,13 @@ import Chat from "components/chat/Chat";
 import ChatList from "components/chat/ChatList";
 import MapModal from "components/portalModal/mapModal/MapModal";
 import { useGetSharingId } from "hooks/useSharingApi";
+import { useSuccessUpdate } from "hooks/useMyPageApi";
 import { useAtom } from "jotai";
 import { useEffect, useRef, useState } from "react";
 import Gravatar from "react-gravatar";
 import { useLocation, useParams } from "react-router-dom";
 import { getChatListAtom, updateChatAtom } from "store/Chat";
+import { userAtom } from "store/User";
 import s from "./chat.module.scss";
 
 export default function ChatOtherDetail() {
@@ -21,9 +23,11 @@ export default function ChatOtherDetail() {
   const [roomId, setRoomId] = useState();
   const [, updateChat] = useAtom(updateChatAtom);
   const getChatList = useAtom(getChatListAtom);
+  const [userId] = useAtom(userAtom);
 
   const [showMap, setShowMap] = useState(false);
   const chatContainerRef = useRef(null);
+  const [giveaway, setGiveWay] = useState(null);
 
   useEffect(() => {
     if (chatContainerRef.current) {
@@ -70,6 +74,34 @@ export default function ChatOtherDetail() {
   };
 
   const { data: postDetail } = useGetSharingId(location?.state?.giveaway_id);
+  const updateMutation = useSuccessUpdate();
+
+  useEffect(()=>{
+    if (postDetail) setGiveWay(postDetail.data.giveaway_id)
+  },[postDetail])
+
+  const sharingSuccess = () => {
+    console.log('나눔완료')
+    console.log(postDetail, '나눔완료')
+    console.log(userId.userId, '나눔완료')
+
+    // 내가 올린 게시글이면
+    // if(postDetail.data.giver == userId.userId) { 
+    //   userPatchSuccess(userId.userId) 
+    // } else {
+
+    const sample = {
+      status: 'COMPLETED',
+      receiverId: postDetail.data.giver.id,
+    };
+
+    // useSuccessUpdate(postDetail.data.giveaway_id, sample) 
+    updateMutation.mutate({ id:giveaway, data: sample });
+
+    console.log(giveaway, 'giveaway')
+    // }
+    
+  }
 
   return (
     <div className="mx-auto max-w-7xl">
@@ -124,8 +156,8 @@ export default function ChatOtherDetail() {
           </button>
         </div> */}
       </div>
-      <button className="float-right p-2 mt-4 mb-20 text-white transition bg-indigo-500 rounded-full hover:bg-gray-300">
-        거래 완료
+      <button onClick={sharingSuccess} className="float-right p-2 mt-4 mb-20 text-white transition bg-indigo-500 rounded-full hover:bg-gray-300">
+        나눔 완료
       </button>
       {showMap && (
         <MapModal
