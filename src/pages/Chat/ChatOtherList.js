@@ -54,7 +54,8 @@ export default function ChatOtherList() {
 
   if (isLoading) return <div>로딩중 ...</div>;
 
-  // console.log("dd", sharingDetailApi(10));
+  console.log('목록', data);
+
   const contentRender = async (id) => {
     try {
       const res = await sharingDetailApi(id);
@@ -73,7 +74,11 @@ export default function ChatOtherList() {
             <Link
               to={`/chatOtherDetail/${item.id}`}
               className={s.item}
-              state={{ type: "old", giveaway_id: `${item.giveaway_id}` }}
+              state={{
+                type: "old",
+                giveaway_id: `${item.giveaway_id}`,
+                receiverId: `${item.joined_users[0].id}`,
+              }}
             >
               <div className={s.profile}>
                 <Gravatar

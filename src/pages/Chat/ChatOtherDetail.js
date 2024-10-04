@@ -90,8 +90,8 @@ export default function ChatOtherDetail() {
     // } else {
 
     const sample = {
-      status: 'COMPLETED',
-      receiverId: postDetail?.data?.giver?.id,
+      status: "COMPLETED",
+      receiverId: location?.state?.receiverId,
     };
 
     // useSuccessUpdate(postDetail.data.giveaway_id, sample) 
