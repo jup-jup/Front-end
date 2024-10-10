@@ -42,10 +42,11 @@ instance.interceptors.response.use(
 
       // if (getCookie("dtrtk") !== "undefined") {
       if (epochConvert(date)) {
-        const data = await axios.post(
-          `${process.env.REACT_APP_API_URL}/v1/auth/reissue`,
-          {
-            refreshToken: localStorage.getItem("refreshToken"),
+        const data = await axios.get(
+          `${process.env.REACT_APP_API_URL}/v1/auth/reissue`, {
+            params: {
+              refreshToken: localStorage.getItem("refreshToken"),
+            },
             headers: {
               accept: "*/*",
               "Content-Type": "application/json",
