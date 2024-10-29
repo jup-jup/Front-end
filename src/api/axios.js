@@ -1,5 +1,6 @@
 import axios from "axios";
 import { jwtDecode } from "jwt-decode";
+import { getCookie } from "util/authCookie";
 import epochConvert from "util/epochConverter";
 
 const instance = axios.create({
@@ -15,7 +16,7 @@ const instance = axios.create({
 instance.interceptors.request.use(
   (config) => {
     // 요청 전에 수행할 작업
-    const token = localStorage.getItem("accessToken");
+    const token = getCookie("jup-jup-atk");
     if (token) {
       config.headers["Authorization"] = `Bearer ${token}`;
     }
@@ -34,27 +35,43 @@ instance.interceptors.response.use(
   },
   async function (error) {
     if (error.response && error.response.status === 401) {
-      // 토큰을 쿠키로 관리 해야 하고, 
+      // 토큰을 쿠키로 관리 해야 하고,
       // 쿠키의 리프레쉬가 언디파인드가 아닐때만 토큰 재발급으로 변경해야함.
       // 처음 토큰 저장시에는 refreshtoken의 만료기간을 파악해서 만료기간이 되면 제거 시켜야 함.
-      const date = jwtDecode(localStorage.getItem("accessToken")).exp;
+      // const date = jwtDecode(localStorage.getItem("accessToken")).exp;
+      const date = jwtDecode(getCookie("jup-jup-atk")).exp;
       // console.log("dd", epochConvert(date));
+
+      const rtk = getCookie("jup-jup-rtk");
+      console.log("rtk", rtk);
 
       // if (getCookie("dtrtk") !== "undefined") {
       if (epochConvert(date)) {
+        console.log("여기");
         const data = await axios.get(
-          `${process.env.REACT_APP_API_URL}/v1/auth/reissue`, {
-            params: {
-              refreshToken: localStorage.getItem("refreshToken"),
-            },
+          `${process.env.REACT_APP_API_URL}/v1/auth/reissue`,
+          {
+            withCredentials: true,
+          },
+          // ,
+          // {
+          //   Authorization: `Bearer ${rtk}`,
+          // },
+
+          // params: {
+          //   refreshToken: localStorage.getItem("refreshToken"),
+          // },
+          {
             headers: {
               accept: "*/*",
               "Content-Type": "application/json",
+              Cookie: `refreshToken=${rtk}`,
+              // Authorization: `Bearer ${rtk}`,
             },
           }
         );
 
-        console.log('c', data);
+        console.log("c", data);
 
         // 헤더에 담긴 토큰 값 변경
         error.config.headers = {

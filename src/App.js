@@ -21,6 +21,7 @@ import { userAtom } from "store/User";
 import { isDev } from "util/Util";
 import PrivateRoute from "components/privateRoute/PrivateRoute";
 import useRefreshToken from "useRefreshToken";
+import { getCookie, setCookie } from "util/authCookie";
 
 export default function App() {
   const navigate = useNavigate();
@@ -35,12 +36,9 @@ export default function App() {
 
     if (accessToken) {
       try {
-        // localStorage 저장
-        localStorage.setItem("accessToken", accessToken);
-        localStorage.setItem("refreshToken", refreshToken);
-
-        // 토큰 만료 시간 저장 (밀리초 단위)
-        // localStorage.setItem("tokenExpiration", exp * 1000);
+        // cookie 저장
+        setCookie("jup-jup-atk", accessToken);
+        setCookie("jup-jup-rtk", refreshToken);
 
         // 로그인 상태 변경 이벤트 발생
         window.dispatchEvent(new Event("loginStateChange"));
@@ -54,7 +52,7 @@ export default function App() {
       }
     }
 
-    const accessTokenforName = localStorage.getItem("accessToken");
+    const accessTokenforName = getCookie("jup-jup-atk");
 
     if (accessTokenforName) {
       const decodedToken = jwtDecode(accessTokenforName);

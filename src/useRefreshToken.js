@@ -4,12 +4,13 @@ import { parseJwt } from "hooks/useParseJwt";
 import { jwtDecode } from "jwt-decode";
 import { useEffect } from "react";
 import { useLocation } from "react-router-dom";
+import { getCookie } from "util/authCookie";
 import epochConvert from "util/epochConverter";
 
 export default function useRefreshToken() {
   const location = useLocation();
-  const accessToken = localStorage.getItem("accessToken");
-  const refreshToken = localStorage.getItem("accessToken");
+  const accessToken = getCookie("jup-jup-atk");
+  const refreshToken = getCookie("jup-jup-rtk");
   const accessDecoded = jwtDecode(accessToken);
   const refreshDecoded = jwtDecode(refreshToken);
 
@@ -25,15 +26,14 @@ export default function useRefreshToken() {
       if (refreshToken) {
         if (epochConvert(refreshDecoded.refreshTokenExpiration)) {
           axios
-            .get(`https://jupjup.store/api/v1/auth/reissue`, {
-              refreshToken: refreshToken,
+            .post(`https://jupjup.store/api/v1/auth/reissue`, {
               headers: {
                 accept: "*/*",
                 "Content-Type": "application/json",
               },
             })
             .then((res) => {
-              localStorage.setItem("refreshToken", res);
+              console.log("리이슈 받음", res);
             });
         }
       }
