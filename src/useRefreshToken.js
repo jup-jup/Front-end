@@ -25,7 +25,7 @@ export default function useRefreshToken() {
       }
       if (refreshToken) {
         if (epochConvert(refreshDecoded.refreshTokenExpiration)) {
-          axios
+          await axios
             .post(`https://jupjup.store/api/v1/auth/reissue`, {
               headers: {
                 accept: "*/*",
