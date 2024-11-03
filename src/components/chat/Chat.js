@@ -4,6 +4,7 @@ import Stomp from "stompjs";
 import ChatInput from "./ChatInput";
 import { useAtom } from "jotai";
 import { updateChatAtom } from "store/Chat";
+import { getCookie } from "util/authCookie";
 
 const Chat = ({ postId, upText, setUpText }) => {
   const [, updateChat] = useAtom(updateChatAtom);
@@ -12,7 +13,7 @@ const Chat = ({ postId, upText, setUpText }) => {
   const stompClient = useRef(null);
 
   const headers = {
-    Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+    Authorization: `Bearer ${getCookie("jup-jup-atk")}`,
   };
 
   console.log("챗 아이디", postId);
@@ -60,7 +61,7 @@ const Chat = ({ postId, upText, setUpText }) => {
       stompClient.current.send(
         `/pub/room/${postId}/chat`,
         {
-          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+          Authorization: `Bearer ${getCookie("jup-jup-atk")}`,
         },
         JSON.stringify({ content: text })
       );

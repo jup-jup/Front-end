@@ -2,6 +2,7 @@
 
 import axios from "axios";
 import instance from "./axios";
+import { getCookie } from "util/authCookie";
 
 // 목록보기
 // export async function sharingListApi(page, size = 10) {
@@ -31,7 +32,7 @@ export async function sharingPostIMGApi(formData) {
     {
       headers: {
         "Content-Type": "multipart/form-data",
-        Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+        Authorization: `Bearer ${getCookie('jup-jup-atk')}`,
       },
     }
   );

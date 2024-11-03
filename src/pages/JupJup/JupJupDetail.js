@@ -11,6 +11,7 @@ import { getChatListAtom } from "store/Chat";
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
+import { getCookie } from "util/authCookie";
 
 export default function JupJupDetail() {
   const { id } = useParams();
@@ -21,7 +22,7 @@ export default function JupJupDetail() {
   const [error, setError] = useState(null);
   const getChatList = useAtom(getChatListAtom);
 
-  const { userName } = userAuth(localStorage.getItem("accessToken"));
+  const { userName } = userAuth(getCookie('jup-jup-atk'));
 
   const toggleHeart = () => {
     setIsFilled(!isFilled);

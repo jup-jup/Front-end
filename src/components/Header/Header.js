@@ -17,6 +17,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { userAtom } from "store/User";
 import h from "./header.module.scss";
 import { chatList, getChatListAtom } from "store/Chat";
+import { getCookie, removeCookie } from "util/authCookie";
 
 const faqs = [
   {
@@ -59,11 +60,11 @@ const Header = () => {
   }, [isSuccess, chatRoomCount]);
 
   useEffect(() => {
-    const accessToken = localStorage.getItem("accessToken");
+    const accessToken = getCookie("jup-jup-atk");
     setIsLoggedIn(!!accessToken);
 
     const handleLoginStateChange = () => {
-      const newAccessToken = localStorage.getItem("accessToken");
+      const newAccessToken = getCookie("jup-jup-atk");
       setIsLoggedIn(!!newAccessToken);
     };
 
@@ -80,9 +81,8 @@ const Header = () => {
     instance
       .post(`${process.env.PUBLIC_URL}/v1/auth/logout`)
       .then(() => {
-        localStorage.removeItem("accessToken");
-        localStorage.removeItem("refreshToken");
-        sessionStorage.removeItem("accessToken");
+        removeCookie("jup-jup-atk");
+        removeCookie("jup-jup-rtk");
         document.cookie = "JSESSIONID=; max-age=0; path=/;";
 
         setIsLoggedIn(false);
@@ -92,8 +92,8 @@ const Header = () => {
       })
       .catch((error) => {
         setErrorMessage("로그아웃 중 문제가 발생했습니다.");
-        localStorage.removeItem("accessToken");
-        localStorage.removeItem("refreshToken");
+        removeCookie("jup-jup-atk");
+        removeCookie("jup-jup-rtk");
         setOpenErrorModal(true);
       })
       .finally(() => {

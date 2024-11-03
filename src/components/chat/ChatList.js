@@ -8,10 +8,11 @@ import { useQuery } from "@tanstack/react-query";
 import { useAtom } from "jotai";
 import { userAtom } from "store/User";
 import { updateChatAtom } from "store/Chat";
+import { getCookie } from "util/authCookie";
 
 const ChatList = ({ postId, upText, otherUserId }) => {
   const scroll = useRef();
-  const { userId: myid } = userAuth(localStorage.getItem("accessToken"));
+  const { userId: myid } = userAuth(getCookie("jup-jup-atk"));
   // const [userData] = useAtom(userAtom);
   const [chatList] = useAtom(updateChatAtom);
 
@@ -27,7 +28,7 @@ const ChatList = ({ postId, upText, otherUserId }) => {
         params: { page: dataPage, size: dataSize },
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+          Authorization: `Bearer ${getCookie("jup-jup-atk")}`,
         },
       }
     );
