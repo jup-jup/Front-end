@@ -80,8 +80,8 @@ const ChatList = ({ postId, upText, otherUserId }) => {
       scrollToBottom();
     }, 100);
     setAtBottom(true);
-    
-  }, []);
+    // 내가 채팅치면 스크롤 아래로 이동.
+  }, [upText]);
 
   // data && isSuccess && scrollToBottom();
 
