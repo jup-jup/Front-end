@@ -20,6 +20,8 @@ const ChatList = ({ postId, upText, otherUserId }) => {
   const [dataSize, setDataSize] = useState(10);
   const [atBottom, setAtBottom] = useState(false);
   const [newMessage, setNewMessage] = useState({});
+  const [dataLength, setDataLength] = useState(0); // data length 체크용도
+  const [isEndData, setIsEndData] = useState(false); // 마지막 데이터인지 체크용도
 
   async function getChatList() {
     console.log("postId", postId);
@@ -86,6 +88,16 @@ const ChatList = ({ postId, upText, otherUserId }) => {
     // 내가 채팅치면 스크롤 아래로 이동.
   }, [upText]);
 
+  useEffect(() => {
+    if (data?.length !== dataLength) {
+      setDataLength(data?.length);
+      setIsEndData(false);
+    }
+    if (data?.length === dataLength) {
+      setIsEndData(true);
+    }
+  }, [data]);
+
   // data && isSuccess && scrollToBottom();
 
   // console.log("cc", isSuccess && data);
@@ -100,6 +112,9 @@ const ChatList = ({ postId, upText, otherUserId }) => {
         <div className="chat_list">
           {/* {isLoading && "로딩중.."} */}
           {/* 이전 대화리스트 */}
+          <div className="preview">
+            {isEndData ? "마지막대화" : "이전 대화목록을 보려면 위로 스크롤"}
+          </div>
           {data &&
             isSuccess &&
             reversedList.map((item, i) => (
