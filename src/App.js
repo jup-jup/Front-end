@@ -6,7 +6,7 @@ import SignIn from "./pages/SignIn/SignIn";
 import { PageLayout } from "Outlet";
 import Main from "pages/Main/Main";
 import ModalView from "pages/ModalView";
-import Chat from "./pages/Chat/Chat";
+import Chat from "./pages/Chat/RegacyChat";
 import ChatOtherDetail from "./pages/Chat/ChatOtherDetail";
 import ChatOtherList from "./pages/Chat/ChatOtherList";
 import JupjupDetail from "./pages/JupJup/JupJupDetail";

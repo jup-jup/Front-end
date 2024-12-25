@@ -22,6 +22,7 @@ const ChatList = ({ postId, upText, otherUserId }) => {
   const [newMessage, setNewMessage] = useState({});
 
   async function getChatList() {
+    console.log("postId", postId);
     const { data } = await axios.get(
       `https://jupjup.store/api/v1/chat-rooms/${postId}/chats`,
       {
@@ -42,7 +43,9 @@ const ChatList = ({ postId, upText, otherUserId }) => {
   });
 
   const reversedList = data && [...data].reverse();
-  
+
+  console.log("첫 대화 리스트", data);
+
   const lineConverter = (text) => {
     return (
       <>

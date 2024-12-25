@@ -54,7 +54,7 @@ export default function ChatOtherList() {
 
   if (isLoading) return <div>로딩중 ...</div>;
 
-  console.log('목록', data);
+  console.log("목록", data);
 
   const contentRender = async (id) => {
     try {
@@ -85,12 +85,12 @@ export default function ChatOtherList() {
                   email={`${OtherUser(chatData).flat()[index].name}`}
                   className={s.img}
                 />
-                <p className={s.name}>
-                  {OtherUser(chatData).flat()[index].name}{" "}
-                </p>
+                <div className={s.name}>
+                  <p>{OtherUser(chatData).flat()[index].name} </p>
+                  <p className={s.title}>{descriptions[item.giveaway_id] || "Loading..."}</p>
+                </div>
                 {/* {contentRender(item.giveaway_id)} */}
                 {/* {item.giveaway_id} */}
-                {descriptions[item.giveaway_id] || "Loading..."}
               </div>
               <div className={s.text}>
                 <p className={s.chat}>{item?.last_chat?.content}</p>

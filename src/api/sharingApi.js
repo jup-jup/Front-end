@@ -32,7 +32,7 @@ export async function sharingPostIMGApi(formData) {
     {
       headers: {
         "Content-Type": "multipart/form-data",
-        Authorization: `Bearer ${getCookie('jup-jup-atk')}`,
+        Authorization: `Bearer ${getCookie("jup-jup-atk")}`,
       },
     }
   );
@@ -45,12 +45,15 @@ export async function sharingListApi(serachValue, pageParam, size) {
   console.log(pageParam);
   if (serachValue) {
     const res = await axios
-      .get(`${process.env.REACT_APP_API_URL}/v1/giveaways/search?keyword=${serachValue}`, {
-        params: {
-          size: size,
-          page: pageParam,
-        },
-      })
+      .get(
+        `${process.env.REACT_APP_API_URL}/v1/giveaways/search?keyword=${serachValue}`,
+        {
+          params: {
+            size: size,
+            page: pageParam,
+          },
+        }
+      )
       .then((response) => response.data)
       .catch((err) => {
         console.log("err", err);
@@ -80,6 +83,8 @@ export async function sharingPostApi(data) {
     `${process.env.REACT_APP_API_URL}/v1/giveaways`,
     data
   );
+  // console.log(data);
+  // alert(res);
   return res;
 }
 

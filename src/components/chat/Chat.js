@@ -5,10 +5,12 @@ import ChatInput from "./ChatInput";
 import { useAtom } from "jotai";
 import { updateChatAtom } from "store/Chat";
 import { getCookie } from "util/authCookie";
+import Spinner from "components/spinner/Spinner";
 
 const Chat = ({ postId, upText, setUpText }) => {
   const [, updateChat] = useAtom(updateChatAtom);
   const [text, setText] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
   const [messages, setMessages] = useState([]);
   const stompClient = useRef(null);
 
@@ -23,10 +25,11 @@ const Chat = ({ postId, upText, setUpText }) => {
     const socket = new SockJS(`https://jupjup.store/ws`);
     stompClient.current = Stomp.over(socket);
 
+    setIsLoading(true);
     // STOMP 클라이언트 연결
     stompClient.current.connect(headers, (frame) => {
       console.log("Connected to WebSocket, Frame:", frame);
-
+      setIsLoading(false);
       // 방 구독
       stompClient.current.subscribe(
         `/sub/room/${postId}`,
@@ -48,12 +51,20 @@ const Chat = ({ postId, upText, setUpText }) => {
     // 컴포넌트가 언마운트될 때 연결 해제
     return () => {
       if (stompClient.current) {
+        setIsLoading(true);
         stompClient.current.disconnect(() => {
           console.log("WebSocket 연결 해제");
+          setIsLoading(false);
         });
       }
     };
   }, [postId]);
+
+  useEffect(() => {
+    if(isLoading) {
+      <Spinner />;
+    }
+  }, [isLoading]);
 
   const sendMessage = (e, text) => {
     e.preventDefault();

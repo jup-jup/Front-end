@@ -6,6 +6,7 @@ import React, { useEffect, useState } from "react";
 import { useInView } from "react-intersection-observer";
 import { Link } from "react-router-dom";
 import jup from "./JupJup.module.scss";
+import { cleanup } from "@testing-library/react";
 
 export default function JupJup() {
   const [ref, isView] = useInView();
@@ -26,6 +27,10 @@ export default function JupJup() {
       const response = await sharingListApi(searchValue, pageParam, size);
       return response;
     },
+    refetchOnMount: true,
+    refetchIntervalInBackground: true,
+    staleTime: 0, // NOTE: 0 초로 해도 괜찮을까
+    refetchOnWindowFocus: true,
     getNextPageParam: (lastPage, allPages) => {
       return lastPage.length === size ? allPages.length : undefined;
     },
@@ -52,6 +57,8 @@ export default function JupJup() {
       handleSearch();
     }
   };
+
+  
 
   return (
     <div className={jup.container}>
