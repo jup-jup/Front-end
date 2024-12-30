@@ -32,10 +32,12 @@ export default function JupJup() {
     staleTime: 0, // NOTE: 0 초로 해도 괜찮을까
     refetchOnWindowFocus: true,
     getNextPageParam: (lastPage, allPages) => {
+      console.log('aa', allPages);
       return lastPage.length === size ? allPages.length : undefined;
     },
     initialPageParam: 0,
   });
+
 
   useEffect(() => {
     if (isView && jupjupListHasNextPage) {

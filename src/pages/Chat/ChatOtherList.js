@@ -68,7 +68,7 @@ export default function ChatOtherList() {
 
   const renderChatList = (chatData) => (
     <ul className={s.chat_list}>
-      {chatData.length > 0 ? (
+      {chatData?.length > 0 ? (
         chatData.map((item, index) => (
           <li key={index}>
             <Link

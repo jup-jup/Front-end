@@ -89,13 +89,14 @@ const ChatList = ({ postId, upText, otherUserId }) => {
   }, [upText]);
 
   useEffect(() => {
-    if (data?.length !== dataLength) {
-      setDataLength(data?.length);
-      setIsEndData(false);
-    }
-    if (data?.length === dataLength) {
-      setIsEndData(true);
-    }
+    console.log("data", data);
+    // if (data?.length !== dataLength) {
+    //   setDataLength(data?.length);
+    //   setIsEndData(false);
+    // }
+    // if (data?.length === dataLength) {
+    //   setIsEndData(true);
+    // }
   }, [data]);
 
   // data && isSuccess && scrollToBottom();
@@ -113,7 +114,7 @@ const ChatList = ({ postId, upText, otherUserId }) => {
           {/* {isLoading && "로딩중.."} */}
           {/* 이전 대화리스트 */}
           <div className="preview">
-            {isEndData ? "마지막대화" : "이전 대화목록을 보려면 위로 스크롤"}
+            {/* {isEndData ? "마지막대화" : "이전 대화목록을 보려면 위로 스크롤"} */}
           </div>
           {data &&
             isSuccess &&

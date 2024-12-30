@@ -71,8 +71,8 @@ export default function JupJupDetail() {
             {detailData.giver.name !== userName && (
               <button
                 onClick={async () => {
-                  if (getChatList[0].some((item) => item.giveaway_id == id)) {
-                    const result = getChatList[0].find(
+                  if (getChatList[0]?.some((item) => item.giveaway_id == id)) {
+                    const result = getChatList && getChatList[0]?.find(
                       (item) => item.giveaway_id == id
                     )?.id;
                     navigate(`/chatOtherDetail/${result}`, {

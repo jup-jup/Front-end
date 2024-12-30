@@ -52,11 +52,13 @@ export default function ChatOtherDetail() {
       // 이미 있는 채팅방이면 게시글 id만 전송
       console.log(
         "cc11",
-        getChatList[0].find( (item) => item.giveaway_id == location?.state?.giveaway_id )?.id
+        getChatList && getChatList[0]?.find(
+          (item) => item.giveaway_id == location?.state?.giveaway_id
+        )?.id
       );
       console.log('11', getChatList);
       console.log('location', location);
-      const roomindex = getChatList[0].find(
+      const roomindex = getChatList && getChatList[0]?.find(
         (item) => item.giveaway_id == location?.state?.giveaway_id
       )?.id;
       // setRoomId(getChatList[0].find((item) => item.giveaway_id == id)?.id);

@@ -52,6 +52,7 @@ const Chat = ({ postId, upText, setUpText }) => {
     return () => {
       if (stompClient.current) {
         setIsLoading(true);
+        socket.close();
         stompClient.current.disconnect(() => {
           console.log("WebSocket 연결 해제");
           setIsLoading(false);
@@ -60,11 +61,9 @@ const Chat = ({ postId, upText, setUpText }) => {
     };
   }, [postId]);
 
-  useEffect(() => {
-    if(isLoading) {
-      <Spinner />;
-    }
-  }, [isLoading]);
+  if (isLoading) {
+    return <div>로딩 중...</div>; // 로딩 중 표시
+  }
 
   const sendMessage = (e, text) => {
     e.preventDefault();
